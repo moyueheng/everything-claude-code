@@ -1,7 +1,6 @@
 ---
 description: 复杂功能和重构的专家规划专员。当用户请求功能实现、架构变更或复杂重构时，主动使用。规划任务自动激活。
 mode: subagent
-model: anthropic/claude-opus-4-20250514
 temperature: 0.1
 tools:
   read: true

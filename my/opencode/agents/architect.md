@@ -1,7 +1,6 @@
 ---
 description: 软件架构专家，专注于系统设计、可扩展性和技术决策。规划新功能、重构大型系统或做架构决策时主动使用。
 mode: subagent
-model: anthropic/claude-opus-4-20250514
 temperature: 0.1
 tools:
   read: true

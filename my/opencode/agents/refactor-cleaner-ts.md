@@ -1,7 +1,6 @@
 ---
 description: 死代码清理和代码重构专家。主动移除未使用代码、重复代码，并运行分析工具（knip、depcheck、ts-prune）识别并安全移除死代码。
 mode: subagent
-model: anthropic/claude-opus-4-20250514
 temperature: 0.1
 tools:
   read: true

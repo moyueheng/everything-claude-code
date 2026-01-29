@@ -1,7 +1,6 @@
 ---
 description: 文档和代码地图专家。主动用于更新代码地图和文档。生成 docs/CODEMAPS/*，更新 README 和指南。
 mode: subagent
-model: anthropic/claude-opus-4-20250514
 temperature: 0.1
 tools:
   read: true
