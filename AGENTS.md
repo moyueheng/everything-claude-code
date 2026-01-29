@@ -21,25 +21,27 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ├── my/                          # 个人配置
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
-│   │   ├── rules/               # 改造后的 rules
 │   │   └── skills/              # 改造后的 skills
-│   └── opencode/                # OpenCode 专属配置
-│       ├── agents/
-│       ├── commands/
-│       └── skills/
+│   ├── opencode/                # OpenCode 专属配置
+│   │   ├── agents/
+│   │   ├── commands/
+│   │   └── skills/
+│   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（subtree 管理）
 │   ├── agents/
 │   ├── rules/
 │   ├── commands/
 │   ├── skills/
+│   ├── contexts/
 │   └── ...
 │
 ├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（subtree 管理）
+│   ├── agents/
 │   └── skills/
 │
 ├── install.sh                   # 安装脚本
-└── MIGRATION_TO_SUBTREE.md      # 迁移文档
+└── MIGRATION_STEPS.md           # 迁移文档
 ```
 
 ## 安装配置
@@ -56,7 +58,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | 目录 | 目标位置 |
 |------|----------|
 | `my/claudecode/agents/` | Claude Code (`~/.claude/agents/`) |
-| `my/claudecode/rules/` | Claude Code (`~/.claude/rules/`) |
 | `my/claudecode/skills/` | Claude Code (`~/.claude/skills/`) |
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
 | `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
@@ -69,6 +70,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # 查看上游有哪些可用配置
 ls upstream/everything-claude-code/agents/
+ls upstream/everything-claude-code/skills/
+ls upstream/anthropics-skills/agents/
+ls upstream/anthropics-skills/skills/
 
 # 复制想用的文件到 my/ 进行改造
 cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
@@ -146,4 +150,4 @@ EOF
 ## 参考文档
 
 - 上游项目文档：`upstream/everything-claude-code/README.md`
-- 迁移方案：`MIGRATION_TO_SUBTREE.md`
+- 迁移方案：`MIGRATION_STEPS.md`

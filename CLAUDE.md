@@ -18,38 +18,50 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 .
-├── my/                          # 个人配置（实际安装到 Claude）
-│   ├── agents/                  # 改造后的 agents（中文/个性化）
-│   ├── rules/                   # 改造后的 rules
-│   ├── commands/                # 改造后的 commands
-│   └── skills/                  # 改造后的 skills
+├── my/                          # 个人配置
+│   ├── claudecode/              # Claude Code 专属配置
+│   │   ├── agents/              # 改造后的 agents（中文/个性化）
+│   │   └── skills/              # 改造后的 skills
+│   ├── opencode/                # OpenCode 专属配置
+│   │   ├── agents/
+│   │   ├── commands/
+│   │   └── skills/
+│   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（subtree 管理）
 │   ├── agents/
 │   ├── rules/
 │   ├── commands/
 │   ├── skills/
+│   ├── contexts/
 │   └── ...
 │
 ├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（subtree 管理）
+│   ├── agents/
 │   └── skills/
 │
-├── install.sh                   # 安装脚本：将 my/ 安装到 ~/.claude/
-└── MIGRATION_TO_SUBTREE.md      # 迁移文档
+├── install.sh                   # 安装脚本
+└── MIGRATION_STEPS.md           # 迁移文档
 ```
 
 ## 安装配置
 
 ```bash
-# 将 my/ 下的配置安装到 Claude Code
+# 将 my/ 下的配置安装到 Claude Code 和 OpenCode
 ./install.sh
 ```
 
-安装逻辑：
-- 将 `my/agents/*.md` → `~/.claude/agents/`
-- 将 `my/rules/*.md` → `~/.claude/rules/`
-- 将 `my/commands/*.md` → `~/.claude/commands/`
-- 将 `my/skills/*` → `~/.claude/skills/`
+### 安装规则
+
+安装脚本基于目录结构自动处理：
+
+| 目录 | 目标位置 |
+|------|----------|
+| `my/claudecode/agents/` | Claude Code (`~/.claude/agents/`) |
+| `my/claudecode/skills/` | Claude Code (`~/.claude/skills/`) |
+| `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
+| `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
+| `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
 
 ## 日常工作流
 
@@ -58,12 +70,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # 查看上游有哪些可用配置
 ls upstream/everything-claude-code/agents/
+ls upstream/everything-claude-code/skills/
+ls upstream/anthropics-skills/agents/
+ls upstream/anthropics-skills/skills/
 
 # 复制想用的文件到 my/ 进行改造
-cp upstream/everything-claude-code/agents/planner.md my/agents/planner.md
+cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
 
 # 编辑改造（翻译成中文、调整内容）
-vim my/agents/planner.md
+vim my/claudecode/agents/planner.md
 
 # 安装测试
 ./install.sh
@@ -84,8 +99,8 @@ git subtree pull --prefix=upstream/anthropics-skills \
 git diff HEAD~1 --name-only
 
 # 如果有新内容想改造，复制到 my/
-cp upstream/everything-claude-code/agents/new-agent.md my/agents/new-agent.md
-cp upstream/anthropics-skills/skills/some-skill.md my/skills/some-skill.md
+cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
+cp upstream/anthropics-skills/skills/some-skill.md my/claudecode/skills/some-skill.md
 ```
 
 ### 创建原创配置
@@ -93,8 +108,9 @@ cp upstream/anthropics-skills/skills/some-skill.md my/skills/some-skill.md
 直接在 `my/` 下创建新文件：
 
 ```bash
-# 创建新的 agent
-cat > my/agents/my-helper.md << 'EOF'
+# 创建新的 agent（根据目标工具选择目录）
+# Claude Code 专属:
+cat > my/claudecode/agents/my-helper.md << 'EOF'
 ---
 name: my-helper
 description: 我的自定义助手
@@ -103,6 +119,15 @@ description: 我的自定义助手
 # My Helper
 
 这是我自己定义的 agent...
+EOF
+
+# OpenCode command:
+cat > my/opencode/commands/my-command.md << 'EOF'
+description: 我的自定义命令
+
+# My Command
+
+这是我自己定义的 command...
 EOF
 
 ./install.sh
@@ -125,4 +150,4 @@ EOF
 ## 参考文档
 
 - 上游项目文档：`upstream/everything-claude-code/README.md`
-- 迁移方案：`MIGRATION_TO_SUBTREE.md`
+- 迁移方案：`MIGRATION_STEPS.md`
