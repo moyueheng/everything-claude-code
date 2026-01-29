@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+# 将 my/ 目录下的配置安装到 Claude Code 和 OpenCode
+# Claude Code: 覆盖 ~/.claude/{agents,rules,skills}
+# OpenCode:    覆盖 ~/.config/opencode/{agents,commands,skills}
+
 CLAUDE_DIR="$HOME/.claude"
 OPENCODE_DIR="$HOME/.config/opencode"
 
@@ -18,6 +22,7 @@ echo ">>> 安装 Claude Code 专属配置"
 rm -rf "$CLAUDE_DIR/agents/"/* 2>/dev/null || true
 rm -rf "$CLAUDE_DIR/rules/"/* 2>/dev/null || true
 rm -rf "$CLAUDE_DIR/skills/"/* 2>/dev/null || true
+rm -rf "$CLAUDE_DIR/commands/"/* 2>/dev/null || true
 
 # 复制 Claude Code 专属配置
 if [ -d "my/claudecode/agents" ]; then
@@ -35,12 +40,7 @@ if [ -d "my/claudecode/skills" ]; then
   echo "  ✓ skills"
 fi
 
-# 复制共用 commands（覆盖可能已存在的）
-rm -rf "$CLAUDE_DIR/commands/"/* 2>/dev/null || true
-if [ -d "my/commands" ]; then
-  cp my/commands/*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
-  echo "  ✓ commands (共用)"
-fi
+
 
 echo ""
 echo ">>> 安装 OpenCode 专属配置"
@@ -64,11 +64,11 @@ else
   echo "  - skills (无配置)"
 fi
 
-# 复制共用 commands（覆盖可能已存在的）
+# 复制 commands
 rm -rf "$OPENCODE_DIR/commands/"/* 2>/dev/null || true
-if [ -d "my/commands" ]; then
-  cp my/commands/*.md "$OPENCODE_DIR/commands/" 2>/dev/null || true
-  echo "  ✓ commands (共用)"
+if [ -d "my/opencode/commands" ]; then
+  cp my/opencode/commands/*.md "$OPENCODE_DIR/commands/" 2>/dev/null || true
+  echo "  ✓ commands"
 fi
 
 echo ""

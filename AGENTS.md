@@ -17,13 +17,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 .
 ├── my/                          # 个人配置
-│   ├── commands/                # 共用 commands（安装到 Claude Code 和 OpenCode）
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
 │   │   ├── rules/               # 改造后的 rules
 │   │   └── skills/              # 改造后的 skills
 │   └── opencode/                # OpenCode 专属配置
 │       ├── agents/
+│       ├── commands/
 │       └── skills/
 │
 ├── upstream/everything-claude-code/  # 上游原项目（subtree 管理）
@@ -53,11 +53,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | 目录 | 目标位置 |
 |------|----------|
-| `my/commands/` | Claude Code (`~/.claude/commands/`) + OpenCode (`~/.config/opencode/commands/`) |
 | `my/claudecode/agents/` | Claude Code (`~/.claude/agents/`) |
 | `my/claudecode/rules/` | Claude Code (`~/.claude/rules/`) |
 | `my/claudecode/skills/` | Claude Code (`~/.claude/skills/`) |
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
+| `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
 | `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
 
 ## 日常工作流
@@ -115,8 +115,8 @@ description: 我的自定义助手
 这是我自己定义的 agent...
 EOF
 
-# 共用 command:
-cat > my/commands/my-command.md << 'EOF'
+# OpenCode command:
+cat > my/opencode/commands/my-command.md << 'EOF'
 description: 我的自定义命令
 
 # My Command
