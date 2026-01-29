@@ -1,3 +1,5 @@
+**Language:** English | [繁體中文](docs/zh-TW/README.md)
+
 # Everything Claude Code
 
 [![Stars](https://img.shields.io/github/stars/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/stargazers)
@@ -6,6 +8,11 @@
 ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white)
 ![Go](https://img.shields.io/badge/-Go-00ADD8?logo=go&logoColor=white)
 ![Markdown](https://img.shields.io/badge/-Markdown-000000?logo=markdown&logoColor=white)
+
+<p align="left">
+  <span>English</span> |
+  <a href="README.zh-CN.md">简体中文</a>
+</p>
 
 **The complete collection of Claude Code configs from an Anthropic hackathon winner.**
 
