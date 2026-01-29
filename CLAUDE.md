@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 采用 subtree 架构管理：
 - `upstream/` - 原项目完整内容（只读，通过 subtree 同步更新）
+  - `everything-claude-code/` - affaan-m 的配置仓库
+  - `anthropics-skills/` - anthropics 官方的 skills 仓库
 - `my/` - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -26,6 +28,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   ├── commands/
 │   ├── skills/
 │   └── ...
+│
+├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（subtree 管理）
+│   └── skills/
 │
 ├── install.sh                   # 安装脚本：将 my/ 安装到 ~/.claude/
 └── MIGRATION_TO_SUBTREE.md      # 迁移文档
@@ -53,10 +58,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ls upstream/everything-claude-code/agents/
 
 # 复制想用的文件到 my/ 进行改造
-cp upstream/everything-claude-code/agents/planner.md my/agents/planner-zh.md
+cp upstream/everything-claude-code/agents/planner.md my/agents/planner.md
 
 # 编辑改造（翻译成中文、调整内容）
-vim my/agents/planner-zh.md
+vim my/agents/planner.md
 
 # 安装测试
 ./install.sh
@@ -65,15 +70,20 @@ vim my/agents/planner-zh.md
 ### 同步上游更新
 
 ```bash
-# 拉取原项目最新内容
+# 拉取 everything-claude-code 最新内容
 git subtree pull --prefix=upstream/everything-claude-code \
   https://github.com/affaan-m/everything-claude-code.git main --squash
+
+# 拉取 anthropics-skills 最新内容
+git subtree pull --prefix=upstream/anthropics-skills \
+  https://github.com/anthropics/skills.git main --squash
 
 # 查看有什么新变化
 git diff HEAD~1 --name-only
 
 # 如果有新内容想改造，复制到 my/
-cp upstream/everything-claude-code/agents/new-agent.md my/agents/new-agent-zh.md
+cp upstream/everything-claude-code/agents/new-agent.md my/agents/new-agent.md
+cp upstream/anthropics-skills/skills/some-skill.md my/skills/some-skill.md
 ```
 
 ### 创建原创配置
@@ -101,7 +111,7 @@ EOF
 | 位置 | 命名建议 | 说明 |
 |------|----------|------|
 | `upstream/` | 保持原名 | 不修改，仅参考 |
-| `my/` | `xxx-zh.md` 或自定义名 | 中文改造版本或原创内容 |
+| `my/` | `xxx.md` 或自定义名 | 中文改造版本或原创内容 |
 
 ## 注意事项
 
