@@ -8,37 +8,88 @@ OPENCODE_DIR="$HOME/.config/opencode"
 mkdir -p "$CLAUDE_DIR"/{agents,rules,commands,skills}
 mkdir -p "$OPENCODE_DIR"/{agents,commands,skills}
 
-echo "=== 安装 my/ 下的配置 ==="
+echo "=== 安装配置文件 ==="
+echo ""
 
-# 清空并重新复制所有配置到 Claude Code（目录级别覆盖）
+# === Claude Code 安装 ===
+echo ">>> 安装 Claude Code 专属配置"
+
+# 清空 Claude Code 目录
 rm -rf "$CLAUDE_DIR/agents/"/* 2>/dev/null || true
 rm -rf "$CLAUDE_DIR/rules/"/* 2>/dev/null || true
-rm -rf "$CLAUDE_DIR/commands/"/* 2>/dev/null || true
 rm -rf "$CLAUDE_DIR/skills/"/* 2>/dev/null || true
 
-cp my/agents/*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
-cp my/rules/*.md "$CLAUDE_DIR/rules/" 2>/dev/null || true
-cp my/commands/*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
-cp -r my/skills/* "$CLAUDE_DIR/skills/" 2>/dev/null || true
+# 复制 Claude Code 专属配置
+if [ -d "my/claudecode/agents" ]; then
+  cp my/claudecode/agents/*.md "$CLAUDE_DIR/agents/" 2>/dev/null || true
+  echo "  ✓ agents"
+fi
 
-# 清空并重新复制所有配置到 OpenCode（目录级别覆盖）
+if [ -d "my/claudecode/rules" ]; then
+  cp my/claudecode/rules/*.md "$CLAUDE_DIR/rules/" 2>/dev/null || true
+  echo "  ✓ rules"
+fi
+
+if [ -d "my/claudecode/skills" ]; then
+  cp -r my/claudecode/skills/* "$CLAUDE_DIR/skills/" 2>/dev/null || true
+  echo "  ✓ skills"
+fi
+
+# 复制共用 commands（覆盖可能已存在的）
+rm -rf "$CLAUDE_DIR/commands/"/* 2>/dev/null || true
+if [ -d "my/commands" ]; then
+  cp my/commands/*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
+  echo "  ✓ commands (共用)"
+fi
+
+echo ""
+echo ">>> 安装 OpenCode 专属配置"
+
+# 清空 OpenCode 目录
 rm -rf "$OPENCODE_DIR/agents/"/* 2>/dev/null || true
-rm -rf "$OPENCODE_DIR/commands/"/* 2>/dev/null || true
 rm -rf "$OPENCODE_DIR/skills/"/* 2>/dev/null || true
 
-cp my/agents/*.md "$OPENCODE_DIR/agents/" 2>/dev/null || true
-cp my/commands/*.md "$OPENCODE_DIR/commands/" 2>/dev/null || true
-cp -r my/skills/* "$OPENCODE_DIR/skills/" 2>/dev/null || true
+# 复制 OpenCode 专属配置（如果目录为空则跳过）
+if [ -d "my/opencode/agents" ] && [ "$(ls -A my/opencode/agents/ 2>/dev/null)" ]; then
+  cp my/opencode/agents/*.md "$OPENCODE_DIR/agents/" 2>/dev/null || true
+  echo "  ✓ agents"
+else
+  echo "  - agents (无配置)"
+fi
 
-echo "✓ 安装完成"
+if [ -d "my/opencode/skills" ] && [ "$(ls -A my/opencode/skills/ 2>/dev/null)" ]; then
+  cp -r my/opencode/skills/* "$OPENCODE_DIR/skills/" 2>/dev/null || true
+  echo "  ✓ skills"
+else
+  echo "  - skills (无配置)"
+fi
+
+# 复制共用 commands（覆盖可能已存在的）
+rm -rf "$OPENCODE_DIR/commands/"/* 2>/dev/null || true
+if [ -d "my/commands" ]; then
+  cp my/commands/*.md "$OPENCODE_DIR/commands/" 2>/dev/null || true
+  echo "  ✓ commands (共用)"
+fi
+
 echo ""
-echo "已安装到 Claude Code (~/.claude/):"
-ls -la "$CLAUDE_DIR/agents/" 2>/dev/null || echo "  (无 agents)"
-ls -la "$CLAUDE_DIR/rules/" 2>/dev/null || echo "  (无 rules)"
-ls -la "$CLAUDE_DIR/commands/" 2>/dev/null || echo "  (无 commands)"
-ls -la "$CLAUDE_DIR/skills/" 2>/dev/null || echo "  (无 skills)"
+echo "=== 安装完成 ==="
 echo ""
-echo "已安装到 OpenCode (~/.config/opencode/):"
-ls -la "$OPENCODE_DIR/agents/" 2>/dev/null || echo "  (无 agents)"
-ls -la "$OPENCODE_DIR/commands/" 2>/dev/null || echo "  (无 commands)"
-ls -la "$OPENCODE_DIR/skills/" 2>/dev/null || echo "  (无 skills)"
+
+echo "Claude Code (~/.claude/):"
+echo "  agents:"
+ls -la "$CLAUDE_DIR/agents/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  rules:"
+ls -la "$CLAUDE_DIR/rules/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  commands:"
+ls -la "$CLAUDE_DIR/commands/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  skills:"
+ls "$CLAUDE_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
+echo ""
+
+echo "OpenCode (~/.config/opencode/):"
+echo "  agents:"
+ls -la "$OPENCODE_DIR/agents/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  commands:"
+ls -la "$OPENCODE_DIR/commands/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  skills:"
+ls "$OPENCODE_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"

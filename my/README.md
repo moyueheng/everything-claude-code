@@ -180,13 +180,44 @@ Observer Agent 分析 (Haiku 后台运行)
 
 ---
 
+## 目录结构
+
+```
+my/
+├── README.md                      # 本文档
+├── commands/                      # 共用 commands（Claude Code & OpenCode）
+│   ├── code-review-py.md
+│   ├── code-review-ts.md
+│   ├── plan.md
+│   ├── tdd.md
+│   ├── update-codemaps.md
+│   └── update-docs.md
+├── claudecode/                    # Claude Code 专属配置
+│   ├── agents/                    # Agents (8个)
+│   ├── rules/                     # Rules (空，可自定义)
+│   └── skills/                    # Skills
+│       └── skill-creator/
+├── opencode/                      # OpenCode 专属配置
+│   ├── agents/                    # 空目录（可添加兼容的 agent）
+│   └── skills/                    # 空目录（可添加兼容的 skill）
+└── mcp-configs/                   # MCP 服务器配置（参考）
+    └── mcp-servers.json
+```
+
 ## 安装
 
 ```bash
 ./install.sh
 ```
 
-会将 `my/` 下的配置安装到 `~/.claude/`。
+会将 `my/` 下的配置安装到：
+- **Claude Code**: `~/.claude/` (agents, rules, commands, skills)
+- **OpenCode**: `~/.config/opencode/` (agents, commands, skills)
+
+**说明**:
+- `commands/` 目录的内容会安装到两个工具
+- `claudecode/` 的内容只安装到 Claude Code
+- `opencode/` 的内容只安装到 OpenCode
 
 ---
 
