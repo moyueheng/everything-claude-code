@@ -1,6 +1,6 @@
 # Code Review
 
-对未提交的更改进行全面的安全和质量审查：
+对未提交TypeScript/JavaScript的更改进行全面的安全和质量审查：
 
 1. 获取更改的文件：git diff --name-only HEAD
 
