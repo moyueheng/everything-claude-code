@@ -23,7 +23,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
 │   │   └── skills/              # 改造后的 skills
 │   ├── opencode/                # OpenCode 专属配置
-│   │   ├── agents/
+│   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
 │   │   ├── commands/
 │   │   └── skills/
 │   └── mcp-configs/             # MCP 服务器配置
@@ -151,3 +151,34 @@ EOF
 
 - 上游项目文档：`upstream/everything-claude-code/README.md`
 - 迁移方案：`MIGRATION_STEPS.md`
+- 配置对比：`docs/differences.md` - OpenCode、Claude Code、Codex 配置系统对比
+
+## 可用 Agents
+
+### Claude Code Agents (`my/claudecode/agents/`)
+
+| 文件 | 描述 | 工具 |
+|------|------|------|
+| `architect.md` | 软件架构专家，系统设计和可扩展性 | Read, Grep, Glob |
+| `code-reviewer-py.md` | Python 代码审查专员 | Read, Grep, Glob, Bash |
+| `code-reviewer-ts.md` | TypeScript 代码审查专员 | Read, Grep, Glob, Bash |
+| `doc-updater.md` | 文档和代码地图专家 | Read, Write, Edit, Bash, Grep, Glob |
+| `planner.md` | 复杂功能和重构规划专员 | Read, Grep, Glob |
+| `refactor-cleaner-python.md` | Python 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
+| `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
+| `tdd-guide.md` | 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+
+### OpenCode Agents (`my/opencode/agents/`)
+
+| 文件 | 描述 | 模式 |
+|------|------|------|
+| `architect.md` | 软件架构专家（只读） | subagent |
+| `code-reviewer-py.md` | Python 代码审查 | subagent |
+| `code-reviewer-ts.md` | TypeScript 代码审查 | subagent |
+| `doc-updater.md` | 文档和代码地图专家 | subagent |
+| `planner.md` | 规划专家（只读） | subagent |
+| `refactor-cleaner-python.md` | Python 重构和清理 | subagent |
+| `refactor-cleaner-ts.md` | TypeScript 重构和清理 | subagent |
+| `tdd-guide.md` | TDD 测试专家 | subagent |
+
+> 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
