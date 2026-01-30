@@ -209,3 +209,4 @@ EOF
 | `writing-plans/` | 详细规划编写方法 | `$writing-plans` |
 | `writing-skills/` | 编写技能文档的 TDD 方法 | `$writing-skills` |
 | `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
+| `rehabilitating-legacy-tests/` | 遗留测试改造成 pytest 的 TDD 流程 | `$rehabilitating-legacy-tests` |
