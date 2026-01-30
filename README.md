@@ -11,6 +11,7 @@
 - **`upstream/`** - 原项目完整内容（只读，通过 submodule 同步更新）
   - `everything-claude-code/` - affaan-m 的配置仓库（submodule）
   - `anthropics-skills/` - anthropics 官方的 skills 仓库（submodule）
+  - `openai-skills/` - OpenAI 官方的 skills 仓库（submodule）
 - **`my/`** - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -36,6 +37,9 @@
 │
 ├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（submodule）
 │   └── skills/
+│
+├── upstream/openai-skills/      # OpenAI 官方 skills 仓库（submodule）
+│   └── ...
 │
 ├── install.sh                   # 安装脚本
 └── README.md                    # 本文档
@@ -88,14 +92,17 @@ git submodule update --remote
 # 或者分别更新
 git submodule update --remote upstream/everything-claude-code
 git submodule update --remote upstream/anthropics-skills
+git submodule update --remote upstream/openai-skills
 
 # 查看有什么新变化
 cd upstream/everything-claude-code && git log HEAD@{1}..HEAD --oneline
 cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
+cd ../openai-skills && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
 cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
 cp upstream/anthropics-skills/skills/some-skill.md my/claudecode/skills/some-skill.md
+cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```
 
 ### 创建原创配置
