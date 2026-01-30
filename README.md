@@ -197,6 +197,7 @@ EOF
 ### Skills (Claude Code)
 
 - `skill-creator` - 从 Git 历史提取技能
+- `python-async-modernizer` - Python 异步代码分析和现代化（检测阻塞调用、迁移到 TaskGroup）
 
 ## 注意事项
 

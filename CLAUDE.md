@@ -182,3 +182,11 @@ EOF
 | `tdd-guide.md` | TDD 测试专家 | subagent |
 
 > 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
+
+## 可用 Skills
+
+### Claude Code Skills (`my/claudecode/skills/`)
+
+| 文件 | 描述 | 触发场景 |
+|------|------|----------|
+| `python-async-modernizer/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup、检测阻塞调用 |
