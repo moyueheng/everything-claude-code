@@ -13,6 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `everything-claude-code/` - affaan-m 的配置仓库（submodule）
   - `anthropics-skills/` - anthropics 官方的 skills 仓库（submodule）
   - `openai-skills/` - OpenAI 官方的 skills 仓库（submodule）
+  - `superpowers/` - obra/superpowers 完整软件开发工作流系统（submodule）
 - `my/` - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -43,6 +44,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │
 ├── upstream/openai-skills/      # OpenAI 官方 skills 仓库（submodule）
 │   └── ...
+│
+├── upstream/superpowers/        # obra/superpowers 完整软件开发工作流系统（submodule）
+│   ├── agents/
+│   ├── commands/
+│   ├── skills/
+│   └── hooks/
 │
 ├── install.sh                   # 安装脚本
 └── MIGRATION_STEPS.md           # 迁移文档
@@ -98,11 +105,13 @@ git submodule update --remote
 git submodule update --remote upstream/everything-claude-code
 git submodule update --remote upstream/anthropics-skills
 git submodule update --remote upstream/openai-skills
+git submodule update --remote upstream/superpowers
 
 # 查看有什么新变化
 cd upstream/everything-claude-code && git log HEAD@{1}..HEAD --oneline
 cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
 cd ../openai-skills && git log HEAD@{1}..HEAD --oneline
+cd ../superpowers && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
 cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
