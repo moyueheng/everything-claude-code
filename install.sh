@@ -1,16 +1,19 @@
 #!/bin/bash
 set -e
 
-# 将 my/ 目录下的配置安装到 Claude Code 和 OpenCode
+# 将 my/ 目录下的配置安装到 Claude Code、OpenCode 和 Codex
 # Claude Code: 覆盖 ~/.claude/{agents,rules,skills}
 # OpenCode:    覆盖 ~/.config/opencode/{agents,commands,skills}
+# Codex:       覆盖 ~/.codex/skills
 
 CLAUDE_DIR="$HOME/.claude"
 OPENCODE_DIR="$HOME/.config/opencode"
+CODEX_DIR="$HOME/.codex"
 
 # 确保目录存在
 mkdir -p "$CLAUDE_DIR"/{agents,rules,commands,skills}
 mkdir -p "$OPENCODE_DIR"/{agents,commands,skills}
+mkdir -p "$CODEX_DIR"/skills
 
 echo "=== 安装配置文件 ==="
 echo ""
@@ -72,6 +75,20 @@ if [ -d "my/opencode/commands" ]; then
 fi
 
 echo ""
+echo ">>> 安装 Codex 专属配置"
+
+# 清空 Codex 目录
+rm -rf "$CODEX_DIR/skills/"/* 2>/dev/null || true
+
+# 复制 Codex 专属配置
+if [ -d "my/codex/skills" ] && [ "$(ls -A my/codex/skills/ 2>/dev/null)" ]; then
+  cp -r my/codex/skills/* "$CODEX_DIR/skills/" 2>/dev/null || true
+  echo "  ✓ skills"
+else
+  echo "  - skills (无配置)"
+fi
+
+echo ""
 echo "=== 安装完成 ==="
 echo ""
 
@@ -93,3 +110,8 @@ echo "  commands:"
 ls -la "$OPENCODE_DIR/commands/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
 echo "  skills:"
 ls "$OPENCODE_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
+echo ""
+
+echo "Codex (~/.codex/):"
+echo "  skills:"
+ls "$CODEX_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
