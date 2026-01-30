@@ -8,10 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 这是个人 Claude Code 配置仓库，基于 [everything-claude-code](https://github.com/affaan-m/everything-claude-code) 改造。
 
-采用 subtree 架构管理：
-- `upstream/` - 原项目完整内容（只读，通过 subtree 同步更新）
-  - `everything-claude-code/` - affaan-m 的配置仓库
-  - `anthropics-skills/` - anthropics 官方的 skills 仓库
+采用 submodule 架构管理：
+- `upstream/` - 原项目完整内容（只读，通过 submodule 同步更新）
+  - `everything-claude-code/` - affaan-m 的配置仓库（submodule）
+  - `anthropics-skills/` - anthropics 官方的 skills 仓库（submodule）
 - `my/` - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -28,7 +28,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   │   └── skills/
 │   └── mcp-configs/             # MCP 服务器配置
 │
-├── upstream/everything-claude-code/  # 上游原项目（subtree 管理）
+├── upstream/everything-claude-code/  # 上游原项目（submodule）
 │   ├── agents/
 │   ├── rules/
 │   ├── commands/
@@ -36,7 +36,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   ├── contexts/
 │   └── ...
 │
-├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（subtree 管理）
+├── upstream/anthropics-skills/  # anthropics 官方 skills 仓库（submodule）
 │   ├── agents/
 │   └── skills/
 │
@@ -87,16 +87,16 @@ vim my/claudecode/agents/planner.md
 ### 同步上游更新
 
 ```bash
-# 拉取 everything-claude-code 最新内容
-git subtree pull --prefix=upstream/everything-claude-code \
-  https://github.com/affaan-m/everything-claude-code.git main --squash
+# 更新所有 submodule 到最新版本
+git submodule update --remote
 
-# 拉取 anthropics-skills 最新内容
-git subtree pull --prefix=upstream/anthropics-skills \
-  https://github.com/anthropics/skills.git main --squash
+# 或者分别更新
+git submodule update --remote upstream/everything-claude-code
+git submodule update --remote upstream/anthropics-skills
 
 # 查看有什么新变化
-git diff HEAD~1 --name-only
+cd upstream/everything-claude-code && git log HEAD@{1}..HEAD --oneline
+cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
 cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
@@ -142,7 +142,7 @@ EOF
 
 ## 注意事项
 
-1. **永远不要修改 `upstream/` 目录** - 只使用 `subtree pull` 更新
+1. **永远不要修改 `upstream/` 目录** - 只使用 `git submodule update --remote` 更新
 2. **所有个人配置放在 `my/`** - 这是唯一会被 `install.sh` 安装的目录
 3. **改造前先从 upstream 复制** - 保留原文件参考，在副本上修改
 4. **定期同步上游** - 获取原项目的新功能和修复
