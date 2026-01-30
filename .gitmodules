@@ -1,0 +1,6 @@
+[submodule "upstream/everything-claude-code"]
+	path = upstream/everything-claude-code
+	url = https://github.com/affaan-m/everything-claude-code.git
+[submodule "upstream/anthropics-skills"]
+	path = upstream/anthropics-skills
+	url = https://github.com/anthropics/skills.git
