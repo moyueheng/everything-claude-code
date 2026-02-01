@@ -1,11 +1,15 @@
 # 上游仓库更新记录
 
-最后更新：2026-01-30
+最后更新：2026-02-02
 
 | 日期 | 仓库 | 更新内容 | 推荐 | 说明 |
 |------|------|----------|------|------|
-| 2026-01-30 | superpowers | 新增上游跟踪 | ⭐⭐⭐⭐⭐ | 完整的软件开发工作流系统，包含 TDD、调试、协作、并行开发等 13 个 skills |
+| 2026-02-02 | everything-claude-code | 新增 5 个 Python/Django skills | ⭐⭐⭐⭐⭐ | Python/Django 全栈支持，涵盖编码规范、测试、安全、架构模式 |
+| 2026-02-02 | openai-skills | 新增 12 个 curated skills | ⭐⭐⭐⭐ | Notion、Figma、Playwright、Sentry 等工具集成 |
+| 2026-02-02 | ai-research-skills | npm 包 v1.1.0，新增 OpenCode 支持 | ⭐⭐⭐⭐ | AI/ML 研究知识库，20 个主题章节，新增社区链接 |
+| 2026-02-02 | superpowers | 工作树要求、主分支警告机制 | ⭐⭐⭐⭐ | 新增 git worktree 使用要求、main branch red flag 警告 |
 | 2026-01-30 | everything-claude-code | 新增 6 个 Java Spring Boot skills | ⭐⭐⭐⭐⭐ | 适合 Java/Spring Boot 后端开发，涵盖编码规范、架构模式、安全、TDD、JPA 验证等完整开发生态 |
+| 2026-01-30 | superpowers | 新增上游跟踪 | ⭐⭐⭐⭐⭐ | 完整的软件开发工作流系统，包含 TDD、调试、协作、并行开发等 13 个 skills |
 
 ## 详情
 
@@ -72,8 +76,87 @@
    - 测试覆盖率、安全扫描
    - 发布/PR 前的完整验证循环
 
+### everything-claude-code (2026-02-02)
+
+**新增 Python/Django 支持：**
+
+| Skill | 说明 | 适用场景 |
+|-------|------|----------|
+| `python-patterns` | Python 架构模式、函数式编程、类型注解 | Python 项目架构设计 |
+| `python-testing` | 测试框架 (pytest/unittest)、mock、fixture | Python 测试策略 |
+| `django-patterns` | Django 模型、视图、URL、ORM 最佳实践 | Django 后端开发 |
+| `django-security` | 认证、授权、CSRF、XSS、SQL 注入防护 | Django 安全加固 |
+| `django-tdd` | Django 测试驱动开发、工厂模式、集成测试 | Django TDD 流程 |
+| `django-verification` | 代码审查、安全检查、发布前验证 | Django 项目验证 |
+
+**新增 Agent：**
+
+| Agent | 说明 |
+|-------|------|
+| `python-reviewer` | Python 代码审查专员，检查代码质量、安全性、可维护性 |
+
+**新增 Command：**
+
+| Command | 说明 |
+|---------|------|
+| `python-review` | Python 代码审查命令，触发 python-reviewer agent |
+
+---
+
+### openai-skills (2026-02-02)
+
+**新增 Curated Skills：**
+
+| Skill | 说明 | 适用场景 |
+|-------|------|----------|
+| `atlas` | 项目启动模板，快速初始化 | 新项目脚手架 |
+| `cloudflare-deploy` | Cloudflare Pages/Workers 部署 | 边缘部署 |
+| `develop-web-game` | 游戏开发流程 | 浏览器游戏 |
+| `figma-implement-design` | Figma 设计转代码 | UI 还原 |
+| `jupyter-notebook` | 数据科学工作流 | 数据分析/ML |
+| `linear` | Linear 项目管理集成 | 任务追踪 |
+| `notion-knowledge-capture` | Notion 知识捕获 | 文档管理 |
+| `notion-meeting-intelligence` | Notion 会议智能分析 | 会议记录 |
+| `notion-research-documentation` | Notion 研究文档 | 研究笔记 |
+| `notion-spec-to-implementation` | Notion 规格到实现 | 需求转化 |
+| `openai-docs` | OpenAI 文档查询 | API 参考 |
+| `playwright` | Playwright 自动化测试 | E2E 测试 |
+| `sentry` | Sentry 错误监控集成 | 生产监控 |
+| `transcribe` | 语音转文字 | 音频处理 |
+| `vercel-deploy` | Vercel 部署 | 前端托管 |
+
+---
+
+### ai-research-skills (2026-02-02)
+
+**更新内容：**
+- npm 包 v1.1.0：新增 OpenCode 支持
+- 新增社区链接：Slack、Twitter、LinkedIn
+- 完整的 AI/ML 研究知识库，包含 20 个主题章节
+
+**知识库涵盖主题：**
+模型架构、Tokenization、微调、可解释性、数据处理、后训练、安全对齐、分布式训练、基础设施、优化、评估、推理服务、MLOps、Agents、RAG、提示工程、可观测性、多模态、新兴技术、论文写作
+
+---
+
+### superpowers (2026-02-02)
+
+**更新内容：**
+
+| Skill | 更新内容 |
+|-------|----------|
+| `subagent-driven-development` | 新增主分支 red flag 警告，禁止在 main 分支直接开发 |
+| `executing-plans` | 新增 git worktree 使用要求，确保并行开发时工作树配置正确 |
+| `using-git-worktrees` | 更新子代理调用场景说明 |
+
+**安全改进：**
+- 新增 Test 9：主分支 red flag 警告测试
+- 新增工作树要求测试
+
+---
+
 ### anthropics-skills
 - 无更新
 
-### openai-skills
+### obsidian-skills
 - 无更新
