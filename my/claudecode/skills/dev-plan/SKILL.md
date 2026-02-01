@@ -1,5 +1,5 @@
 ---
-name: plan
+name: dev-plan
 description: 重述需求、评估风险、创建分步实施计划。在接触任何代码之前，必须等待用户确认。
 ---
 

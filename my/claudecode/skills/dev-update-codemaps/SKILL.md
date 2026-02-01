@@ -1,5 +1,5 @@
 ---
-name: update-codemaps
+name: dev-update-codemaps
 description: 分析代码库结构并更新架构文档
 ---
 

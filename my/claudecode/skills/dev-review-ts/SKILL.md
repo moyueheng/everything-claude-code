@@ -1,5 +1,5 @@
 ---
-name: code-review-ts
+name: dev-review-ts
 description: 对未提交TypeScript/JavaScript的更改进行全面的安全和质量审查
 disable-model-invocation: true
 ---

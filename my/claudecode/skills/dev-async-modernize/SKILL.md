@@ -1,5 +1,5 @@
 ---
-name: python-async-modernizer
+name: dev-async-modernize
 description: 分析和现代化 Python 异步代码。当用户需要：(1) 检查代码仓库中的异步代码质量问题，(2) 将旧版 asyncio 代码迁移到现代模式 (Python 3.11+)，(3) 检测阻塞调用和异步反模式，(4) 重构代码使用 TaskGroup 和结构化并发，(5) 优化异步性能时使用此技能。
 ---
 

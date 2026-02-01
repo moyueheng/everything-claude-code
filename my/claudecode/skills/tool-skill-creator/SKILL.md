@@ -1,5 +1,5 @@
 ---
-name: skill-creator
+name: tool-skill-creator
 description: 创建有效技能的指南。当用户想要创建新技能(或更新现有技能)以扩展 Claude 的能力,包括专业知识、工作流程或工具集成时,应使用此技能。
 license: 完整条款见 LICENSE.txt
 ---

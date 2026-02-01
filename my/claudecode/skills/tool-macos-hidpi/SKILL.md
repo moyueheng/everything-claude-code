@@ -1,5 +1,5 @@
 ---
-name: macos-hidpi
+name: tool-macos-hidpi
 description: 为 macOS 外接显示器创建自定义 HiDPI 分辨率。当用户需要调整显示器分辨率、字体大小、HiDPI 缩放时使用。适用于带鱼屏、4K 显示器等需要精细分辨率控制的场景。
 ---
 

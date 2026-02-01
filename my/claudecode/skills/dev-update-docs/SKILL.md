@@ -1,5 +1,5 @@
 ---
-name: update-docs
+name: dev-update-docs
 description: 从数据源同步文档
 disable-model-invocation: true
 ---

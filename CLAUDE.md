@@ -161,10 +161,26 @@ EOF
 
 ## 命名规范
 
+### 文件命名
+
 | 位置 | 命名建议 | 说明 |
 |------|----------|------|
 | `upstream/` | 保持原名 | 不修改，仅参考 |
 | `my/` | `xxx.md` 或自定义名 | 中文改造版本或原创内容 |
+
+### Skill 分类前缀
+
+所有 Skills 使用分类前缀，便于区分用途：
+
+| 前缀 | 类别 | 示例 |
+|------|------|------|
+| `dev-` | 开发相关 | `dev-plan`, `dev-tdd`, `dev-review-py` |
+| `life-` | 生活相关 | `life-notes`, `life-daily` |
+| `work-` | 工作相关 | `work-meeting`, `work-project` |
+| `tool-` | 工具相关 | `tool-mcp-builder`, `tool-sshfs-mount` |
+| `learn-` | 学习相关 | `learn-paper`, `learn-research` |
+
+详细规范见 `docs/skill-naming-convention.md`
 
 ## 注意事项
 
@@ -213,16 +229,23 @@ EOF
 
 ### Claude Code Skills (`my/claudecode/skills/`)
 
-| 文件 | 描述 | 触发场景 |
-|------|------|----------|
-| `python-async-modernizer/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup、检测阻塞调用 |
+| 分类 | 文件 | 描述 | 触发场景 |
+|------|------|------|----------|
+| **dev-** | `dev-async-modernize/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup |
+| **dev-** | `dev-plan/` | 开发项目规划 | 新功能、复杂重构前的实施计划 |
+| **dev-** | `dev-review-py/` | Python 代码审查 | 检查未提交的 Python 代码 |
+| **dev-** | `dev-review-ts/` | TypeScript 代码审查 | 检查未提交的 TS/JS 代码 |
+| **dev-** | `dev-tdd/` | 测试驱动开发 | TDD 工作流程 (RED-GREEN-REFACTOR) |
+| **dev-** | `dev-update-codemaps/` | 代码地图更新 | 从代码库结构生成架构文档 |
+| **dev-** | `dev-update-docs/` | 开发文档更新 | 从 package.json 和 .env.example 同步文档 |
+| **tool-** | `tool-macos-hidpi/` | macOS HiDPI 分辨率设置 | 创建自定义显示器分辨率 |
+| **tool-** | `tool-mcp-builder/` | MCP 服务器构建指南 | 创建 Python/TypeScript MCP 服务器 |
+| **tool-** | `tool-skill-creator/` | Skill 创建指南 | 从 Git 历史提取或创建新技能 |
+| **tool-** | `tool-sshfs-mount/` | SSH 远程目录挂载 | 挂载远程服务器目录到本地 |
 
 ### Codex Skills (`my/codex/skills/`)
 
-| 文件 | 描述 | 调用方式 |
-|------|------|----------|
-| `plan/` | 编写实现规划 | `$plan` |
-| `writing-plans/` | 详细规划编写方法 | `$writing-plans` |
-| `writing-skills/` | 编写技能文档的 TDD 方法 | `$writing-skills` |
-| `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
-| `rehabilitating-legacy-tests/` | 遗留测试改造成 pytest 的 TDD 流程 | `$rehabilitating-legacy-tests` |
+| 分类 | 文件 | 描述 | 调用方式 |
+|------|------|------|----------|
+| **dev-** | `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
+| **dev-** | `rehabilitating-legacy-tests/` | 遗留测试改造 TDD 流程 | `$rehabilitating-legacy-tests` |

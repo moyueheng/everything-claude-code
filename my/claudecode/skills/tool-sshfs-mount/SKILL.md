@@ -1,5 +1,5 @@
 ---
-name: sshfs-mount
+name: tool-sshfs-mount
 description: SSH 远程目录挂载到本地，像 NAS 一样访问。当用户需要"把远程服务器的某个路径挂载到本地"、"在 Finder 中访问远程文件"、"像 NAS 一样访问服务器目录"时使用。支持 macOS (FUSE-T) 和 Linux。包含自动挂载脚本、登录项配置和开关控制。
 ---
 
