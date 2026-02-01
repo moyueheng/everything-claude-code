@@ -225,6 +225,12 @@ EOF
 3. **改造前先从 upstream 复制** - 保留原文件参考，在副本上修改
 4. **定期同步上游** - 获取原项目的新功能和修复
 
+## 文档索引
+
+- [配置系统对比](docs/differences.md) - OpenCode、Claude Code、Codex 配置系统对比
+- [Skill 命名规范](docs/skill-naming-convention.md) - Skills 分类前缀命名规范
+- [上游更新记录](docs/upstream-updates.md) - 上游仓库更新追踪
+
 ## 参考文档
 
 - **上游项目文档**: `upstream/everything-claude-code/README.md`
