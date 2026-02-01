@@ -14,3 +14,6 @@
 	path = upstream/ai-research-skills
 	url = https://github.com/Orchestra-Research/AI-research-SKILLs.git
 	branch = main
+[submodule "upstream/obsidian-skills"]
+	path = upstream/obsidian-skills
+	url = https://github.com/kepano/obsidian-skills.git
