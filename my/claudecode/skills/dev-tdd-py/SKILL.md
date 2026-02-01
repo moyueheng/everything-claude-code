@@ -1,394 +1,584 @@
 ---
 name: dev-tdd-py
-description: 强制执行 Python 测试驱动开发工作流程。先搭建接口，先生成测试，然后实现最小代码以通过测试。确保 80%+ 覆盖率。
+description: Python 测试驱动开发工作流。强制执行 TDD 原则，确保 80%+ 覆盖率，包含单元测试、集成测试和 E2E 测试。
 ---
 
-# Python TDD 命令
+# Python 测试驱动开发工作流
 
-此命令调用 **tdd-guide-py** agent 来强制执行 Python 测试驱动开发方法论。
+此 skill 确保所有 Python 代码开发遵循 TDD 原则，具有全面的测试覆盖率。
 
-## 命令作用
+## 何时激活
 
-1. **搭建接口** - 首先定义类型/接口
-2. **先生成测试** - 编写失败的测试（RED）
-3. **实现最小代码** - 编写刚好足够的代码以通过（GREEN）
-4. **重构** - 在保持测试绿色的同时改进代码（REFACTOR）
-5. **验证覆盖率** - 确保 80%+ 测试覆盖率
-
-## 使用时机
-
-在以下情况使用 `/dev-tdd-py`：
-- 实现新功能
-- 添加新函数/组件
-- 修复 bug（首先编写重现 bug 的测试）
+- 编写新功能或功能
+- 修复 bug 或问题
 - 重构现有代码
-- 构建关键业务逻辑
+- 添加 API 端点
+- 创建新模块/类
 
-## 工作原理
+## 核心原则
 
-tdd-guide agent 将：
+### 1. 测试先于代码
+**始终**先编写测试，然后实现代码使测试通过。
 
-1. **定义接口** 用于输入/输出
-2. **编写将失败的测试**（因为代码还不存在）
-3. **运行测试** 并验证它们因正确的原因而失败
-4. **编写最小实现** 使测试通过
-5. **运行测试** 并验证它们通过
-6. **重构** 代码同时保持测试绿色
-7. **检查覆盖率** 如果低于 80% 则添加更多测试
+### 2. 覆盖率要求
+- 最低 80% 覆盖率（单元 + 集成 + E2E）
+- 覆盖所有边界情况
+- 测试错误场景
+- 验证边界条件
 
-## TDD 循环
+### 3. 测试类型
 
+#### 单元测试
+- 单个函数和工具
+- 类方法
+- 纯函数
+- 辅助函数和工具
+
+#### 集成测试
+- API 端点
+- 数据库操作
+- 服务交互
+- 外部 API 调用
+
+#### E2E 测试
+- 关键用户流程
+- 完整工作流
+- 端到端场景
+
+## TDD 工作流步骤
+
+### 第 1 步：编写用户旅程
 ```
-RED → GREEN → REFACTOR → REPEAT
+作为 [角色], 我想要 [动作], 以便 [收益]
 
-RED:      编写失败的测试
-GREEN:    编写最小代码以通过
-REFACTOR: 改进代码，保持测试通过
-REPEAT:   下一个功能/场景
+示例：
+作为用户，我想要语义化搜索市场，
+以便即使没有精确关键词也能找到相关市场。
 ```
 
-## 使用示例
-
-```
-用户: /dev-tdd-py 我需要一个计算市场流动性分数的函数
-
-Agent (tdd-guide):
-# TDD 会话：市场流动性分数计算器
-
-## 第 1 步：定义接口（搭建脚手架）
+### 第 2 步：生成测试用例
+为每个用户旅程创建全面的测试用例：
 
 ```python
-# lib/liquidity.py
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Union
+import pytest
 
-@dataclass
-class MarketData:
-    total_volume: float
-    bid_ask_spread: float
-    active_traders: int
-    last_trade_time: datetime
+class TestSemanticSearch:
+    def test_returns_relevant_markets_for_query(self):
+        # 测试实现
+        pass
 
-def calculate_liquidity_score(market: MarketData) -> float:
-    """计算市场流动性分数"""
-    # TODO：实现
-    raise NotImplementedError('Not implemented')
+    def test_handles_empty_query_gracefully(self):
+        # 测试边界情况
+        pass
+
+    def test_fallback_to_substring_when_redis_unavailable(self):
+        # 测试回退行为
+        pass
+
+    def test_sorts_results_by_similarity_score(self):
+        # 测试排序逻辑
+        pass
 ```
 
-## 第 2 步：编写失败的测试（RED）
+### 第 3 步：运行测试（应该失败）
+```bash
+pytest
+# 测试应该失败 - 我们还没有实现
+```
+
+### 第 4 步：实现代码
+编写最简代码使测试通过：
 
 ```python
-# tests/test_liquidity.py
+# 由测试指导的实现
+async def search_markets(query: str) -> list[Market]:
+    # 在这里实现
+    pass
+```
+
+### 第 5 步：再次运行测试
+```bash
+pytest
+# 测试现在应该通过
+```
+
+### 第 6 步：重构
+在保持测试通过的同时提高代码质量：
+- 消除重复
+- 改进命名
+- 优化性能
+- 增强可读性
+
+### 第 7 步：验证覆盖率
+```bash
+pytest --cov=src --cov-report=term-missing
+# 验证达到 80%+ 覆盖率
+```
+
+## 测试模式
+
+### 单元测试模式 (pytest)
+```python
 import pytest
 from datetime import datetime
-from lib.liquidity import calculate_liquidity_score, MarketData
+from myapp.market import Market, calculate_liquidity_score
 
-def test_high_liquidity_market_returns_high_score():
-    market = MarketData(
+class TestCalculateLiquidityScore:
+    """测试流动性分数计算"""
+
+    def test_high_liquidity_returns_high_score(self):
+        market = Market(
+            total_volume=100000,
+            bid_ask_spread=0.01,
+            active_traders=500,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score > 80
+        assert score <= 100
+
+    def test_low_liquidity_returns_low_score(self):
+        market = Market(
+            total_volume=100,
+            bid_ask_spread=0.5,
+            active_traders=2,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score < 30
+        assert score >= 0
+
+    def test_zero_volume_returns_zero(self):
+        market = Market(
+            total_volume=0,
+            bid_ask_spread=0,
+            active_traders=0,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score == 0
+```
+
+### API 集成测试模式 (FastAPI)
+```python
+import pytest
+from httpx import AsyncClient
+from myapp.main import app
+
+@pytest.mark.asyncio
+class TestMarketsAPI:
+    """测试市场 API 端点"""
+
+    async def test_get_markets_success(self):
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets")
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] is True
+        assert isinstance(data["data"], list)
+
+    async def test_get_markets_validates_query_params(self):
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets?limit=invalid")
+
+        assert response.status_code == 400
+
+    async def test_get_markets_handles_db_errors(self):
+        # Mock 数据库失败
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets")
+
+        assert response.status_code == 500
+```
+
+### 使用 Fixture 的测试
+```python
+import pytest
+from datetime import datetime
+from myapp.market import Market
+
+@pytest.fixture
+def high_liquidity_market():
+    """创建高流动性市场 fixture"""
+    return Market(
         total_volume=100000,
         bid_ask_spread=0.01,
         active_traders=500,
         last_trade_time=datetime.now()
     )
 
-    score = calculate_liquidity_score(market)
-
-    assert score > 80
-    assert score <= 100
-
-def test_low_liquidity_market_returns_low_score():
-    market = MarketData(
+@pytest.fixture
+def low_liquidity_market():
+    """创建低流动性市场 fixture"""
+    return Market(
         total_volume=100,
         bid_ask_spread=0.5,
         active_traders=2,
         last_trade_time=datetime.now()
     )
 
-    score = calculate_liquidity_score(market)
+class TestMarketLiquidity:
+    def test_high_liquidity(self, high_liquidity_market):
+        score = calculate_liquidity_score(high_liquidity_market)
+        assert score > 80
 
-    assert score < 30
-    assert score >= 0
-
-def test_edge_case_zero_volume():
-    market = MarketData(
-        total_volume=0,
-        bid_ask_spread=0,
-        active_traders=0,
-        last_trade_time=datetime.now()
-    )
-
-    score = calculate_liquidity_score(market)
-
-    assert score == 0
+    def test_low_liquidity(self, low_liquidity_market):
+        score = calculate_liquidity_score(low_liquidity_market)
+        assert score < 30
 ```
 
-## 第 3 步：运行测试 - 验证失败
-
-```bash
-pytest tests/test_liquidity.py -v
-
-FAIL tests/test_liquidity.py::test_high_liquidity_market_returns_high_score
-  - NotImplementedError: Not implemented
-
-1 测试失败，0 通过
-```
-
-✅ 测试按预期失败。准备好实现。
-
-## 第 4 步：实现最小代码（GREEN）
-
+### 参数化测试
 ```python
-# lib/liquidity.py
-def calculate_liquidity_score(market: MarketData) -> float:
-    # 处理零交易量边缘情况
-    if market.total_volume == 0:
-        return 0
+import pytest
 
-    # 计算各组件分数（0-100 范围）
-    volume_score = min(market.total_volume / 1000, 100)
-    spread_score = max(100 - (market.bid_ask_spread * 1000), 0)
-    trader_score = min(market.active_traders / 10, 100)
+@pytest.mark.parametrize("email,expected_valid", [
+    ("user@example.com", True),
+    ("user@", False),
+    ("@example.com", False),
+    ("", False),
+    ("user.name@example.co.uk", True),
+    ("user@example", False),
+])
+def test_validate_email(email, expected_valid):
+    assert validate_email(email) == expected_valid
 
-    # 最近活动奖励
-    hours_since_last_trade = (datetime.now() - market.last_trade_time).total_seconds() / 3600
-    recency_score = max(100 - (hours_since_last_trade * 10), 0)
-
-    # 加权平均
-    score = (
-        volume_score * 0.4 +
-        spread_score * 0.3 +
-        trader_score * 0.2 +
-        recency_score * 0.1
-    )
-
-    return max(0, min(score, 100))  # 限制在 0-100
+@pytest.mark.parametrize("volume,spread,traders,expected_range", [
+    (100000, 0.01, 500, (80, 100)),
+    (100, 0.5, 2, (0, 30)),
+    (0, 0, 0, (0, 0)),
+])
+def test_liquidity_score_ranges(volume, spread, traders, expected_range):
+    market = create_market(volume, spread, traders)
+    score = calculate_liquidity_score(market)
+    min_val, max_val = expected_range
+    assert min_val <= score <= max_val
 ```
 
-## 第 5 步：运行测试 - 验证通过
+## 测试文件组织
 
-```bash
-pytest tests/test_liquidity.py -v
-
-PASS tests/test_liquidity.py::test_high_liquidity_market_returns_high_score
-PASS tests/test_liquidity.py::test_low_liquidity_market_returns_low_score
-PASS tests/test_liquidity.py::test_edge_case_zero_volume
-
-3 测试通过
-```
-
-✅ 所有测试通过！
-
-## 第 6 步：重构（改进）
-
-```python
-# lib/liquidity.py - 使用常量和更好的可读性进行重构
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Final
-
-WEIGHTS: Final[dict[str, float]] = {
-    'VOLUME': 0.4,
-    'SPREAD': 0.3,
-    'TRADERS': 0.2,
-    'RECENCY': 0.1,
-}
-
-SCALE_FACTORS: Final[dict[str, float]] = {
-    'VOLUME': 1000,
-    'SPREAD': 1000,
-    'TRADERS': 10,
-    'RECENCY_PENALTY': 10,
-}
-
-def _clamp(value: float, min_val: float, max_val: float) -> float:
-    return max(min_val, min(value, max_val))
-
-def calculate_liquidity_score(market: MarketData) -> float:
-    if market.total_volume == 0:
-        return 0
-
-    volume_score = min(market.total_volume / SCALE_FACTORS['VOLUME'], 100)
-    spread_score = _clamp(100 - (market.bid_ask_spread * SCALE_FACTORS['SPREAD']), 0, 100)
-    trader_score = min(market.active_traders / SCALE_FACTORS['TRADERS'], 100)
-
-    hours_since_last_trade = (datetime.now() - market.last_trade_time).total_seconds() / 3600
-    recency_score = _clamp(100 - (hours_since_last_trade * SCALE_FACTORS['RECENCY_PENALTY']), 0, 100)
-
-    weighted_score = (
-        volume_score * WEIGHTS['VOLUME'] +
-        spread_score * WEIGHTS['SPREAD'] +
-        trader_score * WEIGHTS['TRADERS'] +
-        recency_score * WEIGHTS['RECENCY']
-    )
-
-    return _clamp(weighted_score, 0, 100)
-```
-
-## 第 7 步：验证测试仍然通过
-
-```bash
-pytest tests/test_liquidity.py -v
-
-PASS tests/test_liquidity.py::test_high_liquidity_market_returns_high_score
-PASS tests/test_liquidity.py::test_low_liquidity_market_returns_low_score
-PASS tests/test_liquidity.py::test_edge_case_zero_volume
-
-3 测试通过
-```
-
-✅ 重构完成，测试仍然通过！
-
-## 第 8 步：检查覆盖率
-
-```bash
-pytest tests/test_liquidity.py --cov=lib/liquidity --cov-report=term-missing
-
-File            Stmts   Miss  Cover   Missing
----------------  -----  ----  ------  --------
-lib/liquidity.py    25     0   100%
-
-覆盖率: 100% ✅ (目标: 80%)
-```
-
-✅ TDD 会话完成！
-
-
-## Python TDD 最佳实践
-
-**要这样做：**
-- ✅ 在任何实现之前先编写测试
-- ✅ 在实现之前运行测试并验证它们失败
-- ✅ 编写最小代码以使测试通过
-- ✅ 只有在测试通过后才重构
-- ✅ 添加边缘情况和错误场景
-- ✅ 目标是 80%+ 覆盖率（关键代码 100%）
-
-**不要这样做：**
-- ❌ 在测试之前编写实现
-- ❌ 跳过每次更改后运行测试
-- ❌ 一次编写太多代码
-- ❌ 忽略失败的测试
-- ❌ 测试实现细节（测试行为）
-- ❌ 模拟所有内容（首选集成测试）
-
-## Python 测试工具
-
-**pytest** (推荐):
-```bash
-# 基本测试
-pytest tests/ -v
-
-# 带覆盖率
-pytest tests/ --cov=src --cov-report=term-missing
-
-# 特定测试
-pytest tests/test_module.py::test_function -v
-
-# 重新运行上次失败的
-pytest --lf
-
-# 并行运行
-pytest -n auto
-```
-
-**项目结构**:
 ```
 project/
 ├── src/
-│   └── mymodule/
-│       └── __init__.py
-│       └── liquidity.py
+│   └── myapp/
+│       ├── __init__.py
+│       ├── market.py
+│       └── utils.py
 ├── tests/
 │   ├── __init__.py
-│   ├── conftest.py          # 共享 fixture
-│   └── test_liquidity.py
+│   ├── conftest.py              # 共享 fixture
+│   ├── unit/                    # 单元测试
+│   │   ├── __init__.py
+│   │   ├── test_market.py
+│   │   └── test_utils.py
+│   ├── integration/             # 集成测试
+│   │   ├── __init__.py
+│   │   ├── test_api.py
+│   │   └── test_database.py
+│   └── e2e/                     # E2E 测试
+│       ├── __init__.py
+│       └── test_user_flows.py
 ├── pyproject.toml
-└── requirements.txt
+└── pytest.ini
 ```
 
-**fixture 示例**:
+## 模拟外部服务
+
+### 数据库 Mock (pytest-asyncio)
 ```python
-# conftest.py
 import pytest
+from unittest.mock import AsyncMock, patch
 
 @pytest.fixture
-def mock_service():
-    class MockService:
-        def __init__(self):
-            self.calls = []
-        def call(self, *args):
-            self.calls.append(args)
-            return 'ok'
-    return MockService()
+def mock_db():
+    """Mock 数据库连接"""
+    with patch("myapp.db.get_connection") as mock:
+        mock_conn = AsyncMock()
+        mock_conn.fetch.return_value = [
+            {"id": 1, "name": "Test Market"}
+        ]
+        mock.return_value = mock_conn
+        yield mock
 
-# test_module.py
-def test_with_fixture(mock_service):
-    result = mock_service.call('arg1')
-    assert result == 'ok'
-    assert len(mock_service.calls) == 1
+async def test_get_markets(mock_db):
+    markets = await get_markets()
+    assert len(markets) == 1
+    assert markets[0]["name"] == "Test Market"
 ```
 
-**参数化测试**:
+### Redis Mock
 ```python
 import pytest
+from unittest.mock import patch
 
-@pytest.mark.parametrize('input_value,expected', [
-    ('user@example.com', True),
-    ('user@', False),
-    ('@example.com', False),
-    ('', False),
-])
-def test_validate_email(input_value, expected):
-    assert validate_email(input_value) == expected
+@pytest.fixture
+def mock_redis():
+    """Mock Redis 客户端"""
+    with patch("myapp.cache.redis_client") as mock:
+        mock.get.return_value = None
+        mock.set.return_value = True
+        mock.search_by_vector.return_value = [
+            {"slug": "test-market", "similarity_score": 0.95}
+        ]
+        yield mock
+
+def test_search_with_redis(mock_redis):
+    results = search_markets("test")
+    assert len(results) > 0
 ```
 
-## 要包含的测试类型
+### OpenAI Mock
+```python
+import pytest
+from unittest.mock import patch
 
-**单元测试**（函数级）：
-- 快乐路径场景
-- 边缘情况（空、None、最大值）
-- 错误条件
-- 边界值
+@pytest.fixture
+def mock_openai():
+    """Mock OpenAI API"""
+    with patch("myapp.ai.generate_embedding") as mock:
+        mock.return_value = [0.1] * 1536  # Mock 1536维 embedding
+        yield mock
 
-**集成测试**（组件级）：
-- API 端点
-- 数据库操作
-- 外部服务调用
+def test_generate_embedding(mock_openai):
+    embedding = generate_embedding("test text")
+    assert len(embedding) == 1536
+```
 
-**E2E 测试**（完整流程）：
-- 关键用户流程
-- 多步骤过程
-- 全栈集成
+### HTTP 请求 Mock (responses/httpx)
+```python
+import pytest
+import responses
 
-## 覆盖率要求
+@pytest.fixture
+def mock_api():
+    """Mock 外部 API 调用"""
+    with responses.RequestsMock() as rsps:
+        rsps.add(
+            responses.GET,
+            "https://api.example.com/data",
+            json={"result": "success"},
+            status=200
+        )
+        yield rsps
 
-- **所有代码最低 80%**
-- **以下要求 100%**：
-  - 金融计算
-  - 认证逻辑
-  - 安全关键代码
-  - 核心业务逻辑
+def test_fetch_external_data(mock_api):
+    data = fetch_external_data()
+    assert data["result"] == "success"
+```
 
-## 重要说明
+## 测试覆盖率验证
 
-**强制要求**：必须在实现之前编写测试。TDD 循环是：
+### 运行覆盖率报告
+```bash
+# 基本覆盖率
+pytest --cov=src --cov-report=term
 
-1. **RED** - 编写失败的测试
-2. **GREEN** - 实现以通过测试
-3. **REFACTOR** - 改进代码
+# 详细报告（显示缺失行）
+pytest --cov=src --cov-report=term-missing
 
-永远不要跳过 RED 阶段。永远不要在测试之前编写代码。
+# HTML 报告
+pytest --cov=src --cov-report=html
 
-## 与其他命令的集成
+# XML 报告（用于 CI）
+pytest --cov=src --cov-report=xml
+```
 
-- 首先使用 `/plan` 了解要构建什么
-- 使用 `/dev-tdd-py` 通过测试进行实现
-- 如果发生构建错误，使用 `/build-and-fix`
-- 使用 `/code-review` 审查实现
-- 使用 `/test-coverage` 验证覆盖率
+### 覆盖率阈值 (pyproject.toml)
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing"
 
-## 相关 Agent
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/test_*"]
 
-此命令调用位于以下位置的 `tdd-guide` agent：
-`~.claude/agents/tdd-guide-py.md`
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+fail_under = 80
+```
+
+## 应避免的常见测试错误
+
+### ❌ 错误：测试实现细节
+```python
+# 不要测试内部状态
+assert obj._internal_counter == 5
+```
+
+### ✅ 正确：测试公共行为
+```python
+# 测试公共接口
+assert obj.get_count() == 5
+```
+
+### ❌ 错误：测试没有隔离
+```python
+# 测试相互依赖
+class TestUser:
+    def test_create_user(self):
+        self.user_id = create_user()
+
+    def test_update_user(self):
+        # 依赖于前一个测试 - 错误！
+        update_user(self.user_id)
+```
+
+### ✅ 正确：独立的测试
+```python
+class TestUser:
+    def test_create_user(self):
+        user_id = create_user()
+        assert user_exists(user_id)
+
+    def test_update_user(self):
+        user_id = create_user()  # 每个测试自己创建数据
+        update_user(user_id)
+        assert get_user(user_id).updated
+```
+
+### ❌ 错误：过于宽松的断言
+```python
+# 不够具体
+assert result is not None
+```
+
+### ✅ 正确：精确的断言
+```python
+# 验证具体值
+assert result["id"] == 123
+assert result["name"] == "Test Market"
+assert len(result["items"]) == 3
+```
+
+## 持续测试
+
+### 开发时 watch 模式
+```bash
+# 文件更改时自动运行测试
+pytest -f
+
+# 或安装 pytest-watch
+ptw
+```
+
+### 只运行失败的测试
+```bash
+# 重新运行上次失败的测试
+pytest --lf
+
+# 先运行失败的，然后其他的
+pytest --ff
+```
+
+### 预提交钩子 (.pre-commit-config.yaml)
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+```
+
+### CI/CD 集成 (GitHub Actions)
+```yaml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Run tests
+        run: pytest --cov=src --cov-report=xml
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+```
+
+## 最佳实践
+
+1. **先写测试** - 始终 TDD
+2. **每个测试一个概念** - 专注于单一行为
+3. **描述性的测试名称** - 解释测试的内容
+4. **Arrange-Act-Assert** - 清晰的测试结构
+   ```python
+   def test_something():
+       # Arrange
+       data = setup_data()
+
+       # Act
+       result = do_something(data)
+
+       # Assert
+       assert result == expected
+   ```
+5. **使用 fixture 共享设置** - 避免重复
+6. **测试边界情况** - None、空值、最大值
+7. **测试错误路径** - 不只是快乐路径
+8. **保持测试快速** - 单元测试 < 50ms 每个
+9. **清理副作用** - 使用 fixture 清理
+10. **审查覆盖率报告** - 识别覆盖缺口
+
+## 异步测试
+
+```python
+import pytest
+import asyncio
+
+@pytest.mark.asyncio
+async def test_async_function():
+    result = await async_function()
+    assert result == "expected"
+
+@pytest.fixture
+async def async_client():
+    async with AsyncClient() as client:
+        yield client
+        # 清理在 yield 之后
+
+@pytest.mark.asyncio
+async def test_with_async_fixture(async_client):
+    response = await async_client.get("/api/test")
+    assert response.status_code == 200
+```
+
+## 成功指标
+
+- 达到 80%+ 代码覆盖率
+- 所有测试通过（绿色）
+- 没有跳过或禁用的测试
+- 快速测试执行（单元测试 < 30s）
+- E2E 测试覆盖关键用户流程
+- 测试在投入生产前捕获 bug
+
+---
+
+**记住**：测试不是可选的。它们是支持自信重构、快速开发和生产可靠性的安全网。

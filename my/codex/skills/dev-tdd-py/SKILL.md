@@ -1,462 +1,584 @@
 ---
 name: dev-tdd-py
-description: 实现任何 Python 功能或错误修复时，在编写实现代码之前使用
-metadata:
-  short-description: Python 测试驱动开发（TDD）核心原则和流程
+description: Python 测试驱动开发工作流。强制执行 TDD 原则，确保 80%+ 覆盖率，包含单元测试、集成测试和 E2E 测试。
 ---
 
-# Python 测试驱动开发 (TDD)
+# Python 测试驱动开发工作流
 
-## 概述
+此 skill 确保所有 Python 代码开发遵循 TDD 原则，具有全面的测试覆盖率。
 
-先写测试。观察它失败。编写最小代码使其通过。
+## 何时激活
 
-**核心原则：** 如果你没有观察到测试失败，你就不知道它是否测试了正确的东西。
+- 编写新功能或功能
+- 修复 bug 或问题
+- 重构现有代码
+- 添加 API 端点
+- 创建新模块/类
 
-**违反规则的字面就是违反规则的精神。**
+## 核心原则
 
-## 何时使用
+### 1. 测试先于代码
+**始终**先编写测试，然后实现代码使测试通过。
 
-**始终：**
-- 新功能
-- 错误修复
-- 重构
-- 行为变更
+### 2. 覆盖率要求
+- 最低 80% 覆盖率（单元 + 集成 + E2E）
+- 覆盖所有边界情况
+- 测试错误场景
+- 验证边界条件
 
-**例外（询问你的伙伴）：**
-- 一次性原型
-- 生成的代码
-- 配置文件
+### 3. 测试类型
 
-认为"这次就跳过 TDD"？停下来。那是合理化。
+#### 单元测试
+- 单个函数和工具
+- 类方法
+- 纯函数
+- 辅助函数和工具
 
-## 铁律
+#### 集成测试
+- API 端点
+- 数据库操作
+- 服务交互
+- 外部 API 调用
 
+#### E2E 测试
+- 关键用户流程
+- 完整工作流
+- 端到端场景
+
+## TDD 工作流步骤
+
+### 第 1 步：编写用户旅程
 ```
-没有失败的测试就不要写生产代码
-```
+作为 [角色], 我想要 [动作], 以便 [收益]
 
-测试前写代码？删除它。重新开始。
-
-**无例外：**
-- 不要将其保留为"参考"
-- 不要在写测试时"适应"它
-- 不要看它
-- 删除意味着删除
-
-完全根据测试重新实现。句号。
-
-## 红-绿-重构
-
-```dot
-digraph tdd_cycle {
-    rankdir=LR;
-    red [label="RED\n编写失败测试", shape=box, style=filled, fillcolor="#ffcccc"];
-    verify_red [label="验证正确\n失败", shape=diamond];
-    green [label="GREEN\n最小代码", shape=box, style=filled, fillcolor="#ccffcc"];
-    verify_green [label="验证通过\n全部绿色", shape=diamond];
-    refactor [label="REFACTOR\n清理", shape=box, style=filled, fillcolor="#ccccff"];
-    next [label="下一个", shape=ellipse];
-
-    red -> verify_red;
-    verify_red -> green [label="是"];
-    verify_red -> red [label="错误\n失败"];
-    green -> verify_green;
-    verify_green -> refactor [label="是"];
-    verify_green -> green [label="否"];
-    refactor -> verify_green [label="保持\n绿色"];
-    verify_green -> next;
-    next -> red;
-}
+示例：
+作为用户，我想要语义化搜索市场，
+以便即使没有精确关键词也能找到相关市场。
 ```
 
-### RED - 编写失败测试
+### 第 2 步：生成测试用例
+为每个用户旅程创建全面的测试用例：
 
-编写一个最小测试展示应该发生什么。
-
-<好>
 ```python
-def test_retry_failed_operation_3_times():
-    attempts = 0
-    def operation():
-        nonlocal attempts
-        attempts += 1
-        if attempts < 3:
-            raise Exception('fail')
-        return 'success'
+import pytest
 
-    result = retry_operation(operation)
+class TestSemanticSearch:
+    def test_returns_relevant_markets_for_query(self):
+        # 测试实现
+        pass
 
-    assert result == 'success'
-    assert attempts == 3
+    def test_handles_empty_query_gracefully(self):
+        # 测试边界情况
+        pass
+
+    def test_fallback_to_substring_when_redis_unavailable(self):
+        # 测试回退行为
+        pass
+
+    def test_sorts_results_by_similarity_score(self):
+        # 测试排序逻辑
+        pass
 ```
-清晰的名称，测试真实行为，一件事
-</好>
 
-<坏>
-```python
-def test_retry_works():
-    mock = Mock(side_effect=[
-        Exception(),
-        Exception(),
-        'success'
-    ])
-    retry_operation(mock)
-    assert mock.call_count == 3
-```
-模糊的名称，测试 mock 而非代码
-</坏>
-
-**要求：**
-- 一个行为
-- 清晰的名称
-- 真实代码（除非不可避免，否则不要用 mock）
-
-### 验证 RED - 观察失败
-
-**强制性。绝不跳过。**
-
+### 第 3 步：运行测试（应该失败）
 ```bash
-pytest tests/test_retry.py::test_retry_failed_operation_3_times -v
+pytest
+# 测试应该失败 - 我们还没有实现
 ```
 
-确认：
-- 测试失败（不是错误）
-- 失败消息是预期的
-- 因功能缺失而失败（不是拼写错误）
+### 第 4 步：实现代码
+编写最简代码使测试通过：
 
-**测试通过了？** 你在测试现有行为。修复测试。
-
-**测试出错？** 修复错误，重新运行直到正确失败。
-
-### GREEN - 最小代码
-
-编写最简单的代码通过测试。
-
-<好>
 ```python
-def retry_operation(fn):
-    for i in range(3):
-        try:
-            return fn()
-        except Exception as e:
-            if i == 2:
-                raise e
-    raise Exception('unreachable')
+# 由测试指导的实现
+async def search_markets(query: str) -> list[Market]:
+    # 在这里实现
+    pass
 ```
-刚好通过
-</好>
 
-<坏>
+### 第 5 步：再次运行测试
+```bash
+pytest
+# 测试现在应该通过
+```
+
+### 第 6 步：重构
+在保持测试通过的同时提高代码质量：
+- 消除重复
+- 改进命名
+- 优化性能
+- 增强可读性
+
+### 第 7 步：验证覆盖率
+```bash
+pytest --cov=src --cov-report=term-missing
+# 验证达到 80%+ 覆盖率
+```
+
+## 测试模式
+
+### 单元测试模式 (pytest)
 ```python
-def retry_operation(
-    fn: Callable[[], T],
-    max_retries: int = 3,
-    backoff: str = 'linear',
-    on_retry: Optional[Callable[[int], None]] = None
-) -> T:
-    # YAGNI
+import pytest
+from datetime import datetime
+from myapp.market import Market, calculate_liquidity_score
+
+class TestCalculateLiquidityScore:
+    """测试流动性分数计算"""
+
+    def test_high_liquidity_returns_high_score(self):
+        market = Market(
+            total_volume=100000,
+            bid_ask_spread=0.01,
+            active_traders=500,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score > 80
+        assert score <= 100
+
+    def test_low_liquidity_returns_low_score(self):
+        market = Market(
+            total_volume=100,
+            bid_ask_spread=0.5,
+            active_traders=2,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score < 30
+        assert score >= 0
+
+    def test_zero_volume_returns_zero(self):
+        market = Market(
+            total_volume=0,
+            bid_ask_spread=0,
+            active_traders=0,
+            last_trade_time=datetime.now()
+        )
+
+        score = calculate_liquidity_score(market)
+
+        assert score == 0
 ```
-过度工程
-</坏>
 
-不要添加功能、重构其他代码或超出测试范围的"改进"。
-
-### 验证 GREEN - 观察通过
-
-**强制性。**
-
-```bash
-pytest tests/test_retry.py -v
-```
-
-确认：
-- 测试通过
-- 其他测试仍然通过
-- 输出干净（无错误、警告）
-
-**测试失败？** 修复代码，不是测试。
-
-**其他测试失败？** 立即修复。
-
-### REFACTOR - 清理
-
-仅在通过之后：
-- 移除重复
-- 改进名称
-- 提取辅助函数
-
-保持测试绿色。不要添加行为。
-
-### 重复
-
-下一个功能的下一个失败测试。
-
-## 好的测试
-
-| 质量 | 好 | 坏 |
-|------|-----|-----|
-| **最小** | 一件事。名称中有"and"？拆分它。 | `def test_validate_email_and_domain_and_whitespace():` |
-| **清晰** | 名称描述行为 | `def test_test1():` |
-| **展示意图** | 演示期望的 API | 模糊代码应该做什么 |
-
-## 为什么顺序很重要
-
-**"我稍后会写测试来验证它有效"**
-
-之后编写的测试立即通过。立即通过证明不了什么：
-- 可能测试错误的东西
-- 可能测试实现而非行为
-- 可能遗漏你忘记的边缘情况
-- 你从未看到它捕获 bug
-
-测试优先迫使你看到测试失败，证明它确实测试了某些东西。
-
-**"我已经手动测试了所有边缘情况"**
-
-手动测试是临时的。你认为你测试了一切但：
-- 没有测试记录
-- 代码更改时无法重新运行
-- 压力下容易忘记情况
-- "我试的时候有效" ≠ 全面
-
-自动化测试是系统的。它们每次都以相同方式运行。
-
-**"删除 X 小时的工作是浪费"**
-
-沉没成本谬误。时间已经过去了。你现在的选择：
-- 删除并用 TDD 重写（X 更多小时，高信心）
-- 保留并稍后添加测试（30 分钟，低信心，可能有 bug）
-
-"浪费"是保留你无法信任的代码。没有真实测试的可工作代码是技术债务。
-
-**"TDD 是教条的，务实意味着适应"**
-
-TDD 就是务实的：
-- 在提交前发现 bug（比之后调试更快）
-- 防止回归（测试立即捕获破坏）
-- 记录行为（测试展示如何使用代码）
-- 启用重构（自由更改，测试捕获破坏）
-
-"务实"的捷径 = 生产环境调试 = 更慢。
-
-**"测试后达到相同目标 - 这是精神而非仪式"**
-
-不。测试后回答"这是做什么？"测试优先回答"这应该做什么？"
-
-测试后受你的实现偏见。你测试你构建的，而非必需的。你验证记住的边缘情况，而非发现的。
-
-测试优先在实现前强制发现边缘情况。测试后验证你是否记住了一切（你没有）。
-
-30 分钟的测试后 ≠ TDD。你得到覆盖率，失去测试有效的证明。
-
-## 常见合理化借口
-
-| 借口 | 现实 |
-|------|------|
-| "太简单无法测试" | 简单代码会坏。测试需要 30 秒。 |
-| "我稍后会测试" | 立即通过的测试证明不了什么。 |
-| "测试后达到相同目标" | 测试后 = "这是做什么？" 测试优先 = "这应该做什么？" |
-| "已经手动测试过了" | 临时 ≠ 系统。无记录，无法重新运行。 |
-| "删除 X 小时是浪费" | 沉没成本谬误。保留未验证代码是技术债务。 |
-| "保留作为参考，先写测试" | 你会适应它。那就是测试后。删除意味着删除。 |
-| "需要先探索" | 可以。扔掉探索，用 TDD 开始。 |
-| "测试难 = 设计不清晰" | 听测试的。难测试 = 难使用。 |
-| "TDD 会拖慢我" | TDD 比调试快。务实 = 测试优先。 |
-| "手动测试更快" | 手动不能证明边缘情况。每次更改你都会重新测试。 |
-| "现有代码没有测试" | 你在改进它。为现有代码添加测试。 |
-
-## 红旗 - 停止并重新开始
-
-- 测试前写代码
-- 实现后写测试
-- 测试立即通过
-- 无法解释为什么测试失败
-- "稍后"添加测试
-- 合理化"就这一次"
-- "我已经手动测试过了"
-- "测试后达到相同目的"
-- "这是关于精神而非仪式"
-- "保留作为参考"或"适应现有代码"
-- "已经花了 X 小时，删除是浪费"
-- "TDD 是教条的，我是务实的"
-- "这不同，因为..."
-
-**所有这些都意味着：删除代码。用 TDD 重新开始。**
-
-## 示例：错误修复
-
-**错误：** 接受空邮箱
-
-**RED**
+### API 集成测试模式 (FastAPI)
 ```python
-def test_reject_empty_email():
-    result = submit_form({'email': ''})
-    assert result['error'] == '需要邮箱'
+import pytest
+from httpx import AsyncClient
+from myapp.main import app
+
+@pytest.mark.asyncio
+class TestMarketsAPI:
+    """测试市场 API 端点"""
+
+    async def test_get_markets_success(self):
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets")
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["success"] is True
+        assert isinstance(data["data"], list)
+
+    async def test_get_markets_validates_query_params(self):
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets?limit=invalid")
+
+        assert response.status_code == 400
+
+    async def test_get_markets_handles_db_errors(self):
+        # Mock 数据库失败
+        async with AsyncClient(app=app, base_url="http://test") as client:
+            response = await client.get("/api/markets")
+
+        assert response.status_code == 500
 ```
 
-**验证 RED**
-```bash
-$ pytest tests/test_form.py::test_reject_empty_email -v
-FAIL: AssertionError: assert None == '需要邮箱'
-```
-
-**GREEN**
+### 使用 Fixture 的测试
 ```python
-def submit_form(data: dict) -> dict:
-    if not data.get('email', '').strip():
-        return {'error': '需要邮箱'}
-    # ...
+import pytest
+from datetime import datetime
+from myapp.market import Market
+
+@pytest.fixture
+def high_liquidity_market():
+    """创建高流动性市场 fixture"""
+    return Market(
+        total_volume=100000,
+        bid_ask_spread=0.01,
+        active_traders=500,
+        last_trade_time=datetime.now()
+    )
+
+@pytest.fixture
+def low_liquidity_market():
+    """创建低流动性市场 fixture"""
+    return Market(
+        total_volume=100,
+        bid_ask_spread=0.5,
+        active_traders=2,
+        last_trade_time=datetime.now()
+    )
+
+class TestMarketLiquidity:
+    def test_high_liquidity(self, high_liquidity_market):
+        score = calculate_liquidity_score(high_liquidity_market)
+        assert score > 80
+
+    def test_low_liquidity(self, low_liquidity_market):
+        score = calculate_liquidity_score(low_liquidity_market)
+        assert score < 30
 ```
 
-**验证 GREEN**
-```bash
-$ pytest tests/test_form.py::test_reject_empty_email -v
-PASS
+### 参数化测试
+```python
+import pytest
+
+@pytest.mark.parametrize("email,expected_valid", [
+    ("user@example.com", True),
+    ("user@", False),
+    ("@example.com", False),
+    ("", False),
+    ("user.name@example.co.uk", True),
+    ("user@example", False),
+])
+def test_validate_email(email, expected_valid):
+    assert validate_email(email) == expected_valid
+
+@pytest.mark.parametrize("volume,spread,traders,expected_range", [
+    (100000, 0.01, 500, (80, 100)),
+    (100, 0.5, 2, (0, 30)),
+    (0, 0, 0, (0, 0)),
+])
+def test_liquidity_score_ranges(volume, spread, traders, expected_range):
+    market = create_market(volume, spread, traders)
+    score = calculate_liquidity_score(market)
+    min_val, max_val = expected_range
+    assert min_val <= score <= max_val
 ```
 
-**REFACTOR**
-如果需要，提取验证用于多个字段。
-
-## Python 测试最佳实践
-
-### 测试框架选择
-
-```bash
-# pytest (推荐)
-pytest tests/ -v
-
-# 带覆盖率
-pytest tests/ --cov=src --cov-report=term-missing
-
-# 特定测试
-pytest tests/test_module.py::test_function -v
-```
-
-### 项目结构
+## 测试文件组织
 
 ```
 project/
 ├── src/
-│   └── mymodule/
-│       └── retry.py
+│   └── myapp/
+│       ├── __init__.py
+│       ├── market.py
+│       └── utils.py
 ├── tests/
 │   ├── __init__.py
-│   ├── conftest.py          # 共享 fixture
-│   └── test_retry.py
-└── pyproject.toml
+│   ├── conftest.py              # 共享 fixture
+│   ├── unit/                    # 单元测试
+│   │   ├── __init__.py
+│   │   ├── test_market.py
+│   │   └── test_utils.py
+│   ├── integration/             # 集成测试
+│   │   ├── __init__.py
+│   │   ├── test_api.py
+│   │   └── test_database.py
+│   └── e2e/                     # E2E 测试
+│       ├── __init__.py
+│       └── test_user_flows.py
+├── pyproject.toml
+└── pytest.ini
 ```
 
-### pytest fixture
+## 模拟外部服务
 
+### 数据库 Mock (pytest-asyncio)
 ```python
-# conftest.py
 import pytest
+from unittest.mock import AsyncMock, patch
 
 @pytest.fixture
-def mock_service():
-    class MockService:
-        def __init__(self):
-            self.calls = []
-        def call(self, *args):
-            self.calls.append(args)
-            return 'ok'
-    return MockService()
+def mock_db():
+    """Mock 数据库连接"""
+    with patch("myapp.db.get_connection") as mock:
+        mock_conn = AsyncMock()
+        mock_conn.fetch.return_value = [
+            {"id": 1, "name": "Test Market"}
+        ]
+        mock.return_value = mock_conn
+        yield mock
 
-# test_module.py
-def test_with_fixture(mock_service):
-    result = mock_service.call('arg1')
-    assert result == 'ok'
-    assert len(mock_service.calls) == 1
+async def test_get_markets(mock_db):
+    markets = await get_markets()
+    assert len(markets) == 1
+    assert markets[0]["name"] == "Test Market"
 ```
 
-### Mock 使用原则
-
-<好>
+### Redis Mock
 ```python
-def test_send_email_uses_smtp():
-    with patch('smtplib.SMTP') as mock_smtp:
-        send_email('to@example.com', 'subject', 'body')
+import pytest
+from unittest.mock import patch
 
-        mock_smtp.assert_called_once()
-        instance = mock_smtp.return_value
-        instance.send_message.assert_called_once()
+@pytest.fixture
+def mock_redis():
+    """Mock Redis 客户端"""
+    with patch("myapp.cache.redis_client") as mock:
+        mock.get.return_value = None
+        mock.set.return_value = True
+        mock.search_by_vector.return_value = [
+            {"slug": "test-market", "similarity_score": 0.95}
+        ]
+        yield mock
+
+def test_search_with_redis(mock_redis):
+    results = search_markets("test")
+    assert len(results) > 0
 ```
-</好>
 
-<坏>
+### OpenAI Mock
 ```python
-def test_send_email():
-    # Mock 自己的内部辅助函数
-    with patch('mymodule._format_body') as mock_format:
-        mock_format.return_value = 'formatted'
-        send_email('to@example.com', 'subject', 'body')
+import pytest
+from unittest.mock import patch
 
-        mock_format.assert_called_once()
+@pytest.fixture
+def mock_openai():
+    """Mock OpenAI API"""
+    with patch("myapp.ai.generate_embedding") as mock:
+        mock.return_value = [0.1] * 1536  # Mock 1536维 embedding
+        yield mock
+
+def test_generate_embedding(mock_openai):
+    embedding = generate_embedding("test text")
+    assert len(embedding) == 1536
 ```
-Mock 实现细节而非行为
-</坏>
 
-### 参数化测试
+### HTTP 请求 Mock (responses/httpx)
+```python
+import pytest
+import responses
+
+@pytest.fixture
+def mock_api():
+    """Mock 外部 API 调用"""
+    with responses.RequestsMock() as rsps:
+        rsps.add(
+            responses.GET,
+            "https://api.example.com/data",
+            json={"result": "success"},
+            status=200
+        )
+        yield rsps
+
+def test_fetch_external_data(mock_api):
+    data = fetch_external_data()
+    assert data["result"] == "success"
+```
+
+## 测试覆盖率验证
+
+### 运行覆盖率报告
+```bash
+# 基本覆盖率
+pytest --cov=src --cov-report=term
+
+# 详细报告（显示缺失行）
+pytest --cov=src --cov-report=term-missing
+
+# HTML 报告
+pytest --cov=src --cov-report=html
+
+# XML 报告（用于 CI）
+pytest --cov=src --cov-report=xml
+```
+
+### 覆盖率阈值 (pyproject.toml)
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["*/tests/*", "*/test_*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]
+fail_under = 80
+```
+
+## 应避免的常见测试错误
+
+### ❌ 错误：测试实现细节
+```python
+# 不要测试内部状态
+assert obj._internal_counter == 5
+```
+
+### ✅ 正确：测试公共行为
+```python
+# 测试公共接口
+assert obj.get_count() == 5
+```
+
+### ❌ 错误：测试没有隔离
+```python
+# 测试相互依赖
+class TestUser:
+    def test_create_user(self):
+        self.user_id = create_user()
+
+    def test_update_user(self):
+        # 依赖于前一个测试 - 错误！
+        update_user(self.user_id)
+```
+
+### ✅ 正确：独立的测试
+```python
+class TestUser:
+    def test_create_user(self):
+        user_id = create_user()
+        assert user_exists(user_id)
+
+    def test_update_user(self):
+        user_id = create_user()  # 每个测试自己创建数据
+        update_user(user_id)
+        assert get_user(user_id).updated
+```
+
+### ❌ 错误：过于宽松的断言
+```python
+# 不够具体
+assert result is not None
+```
+
+### ✅ 正确：精确的断言
+```python
+# 验证具体值
+assert result["id"] == 123
+assert result["name"] == "Test Market"
+assert len(result["items"]) == 3
+```
+
+## 持续测试
+
+### 开发时 watch 模式
+```bash
+# 文件更改时自动运行测试
+pytest -f
+
+# 或安装 pytest-watch
+ptw
+```
+
+### 只运行失败的测试
+```bash
+# 重新运行上次失败的测试
+pytest --lf
+
+# 先运行失败的，然后其他的
+pytest --ff
+```
+
+### 预提交钩子 (.pre-commit-config.yaml)
+```yaml
+repos:
+  - repo: local
+    hooks:
+      - id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        types: [python]
+        pass_filenames: false
+        always_run: true
+```
+
+### CI/CD 集成 (GitHub Actions)
+```yaml
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+      - name: Run tests
+        run: pytest --cov=src --cov-report=xml
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+```
+
+## 最佳实践
+
+1. **先写测试** - 始终 TDD
+2. **每个测试一个概念** - 专注于单一行为
+3. **描述性的测试名称** - 解释测试的内容
+4. **Arrange-Act-Assert** - 清晰的测试结构
+   ```python
+   def test_something():
+       # Arrange
+       data = setup_data()
+
+       # Act
+       result = do_something(data)
+
+       # Assert
+       assert result == expected
+   ```
+5. **使用 fixture 共享设置** - 避免重复
+6. **测试边界情况** - None、空值、最大值
+7. **测试错误路径** - 不只是快乐路径
+8. **保持测试快速** - 单元测试 < 50ms 每个
+9. **清理副作用** - 使用 fixture 清理
+10. **审查覆盖率报告** - 识别覆盖缺口
+
+## 异步测试
 
 ```python
 import pytest
+import asyncio
 
-@pytest.mark.parametrize('input,expected', [
-    ('user@example.com', True),
-    ('user@', False),
-    ('@example.com', False),
-    ('', False),
-])
-def test_validate_email(input, expected):
-    assert validate_email(input) == expected
+@pytest.mark.asyncio
+async def test_async_function():
+    result = await async_function()
+    assert result == "expected"
+
+@pytest.fixture
+async def async_client():
+    async with AsyncClient() as client:
+        yield client
+        # 清理在 yield 之后
+
+@pytest.mark.asyncio
+async def test_with_async_fixture(async_client):
+    response = await async_client.get("/api/test")
+    assert response.status_code == 200
 ```
 
-## 验证清单
+## 成功指标
 
-标记工作完成之前：
+- 达到 80%+ 代码覆盖率
+- 所有测试通过（绿色）
+- 没有跳过或禁用的测试
+- 快速测试执行（单元测试 < 30s）
+- E2E 测试覆盖关键用户流程
+- 测试在投入生产前捕获 bug
 
-- [ ] 每个新函数/方法都有测试
-- [ ] 在实现之前观察每个测试失败
-- [ ] 每个测试因预期原因失败（功能缺失，不是拼写错误）
-- [ ] 为通过每个测试编写了最小代码
-- [ ] 所有测试通过
-- [ ] 输出干净（无错误、警告）
-- [ ] 测试使用真实代码（仅当不可避免时使用 mock）
-- [ ] 覆盖边缘情况和错误
-- [ ] 测试覆盖率 ≥ 80%
+---
 
-无法勾选所有框？你跳过了 TDD。重新开始。
-
-## 卡住时
-
-| 问题 | 解决方案 |
-|------|----------|
-| 不知道如何测试 | 编写期望的 API。先写断言。问你的伙伴。 |
-| 测试太复杂 | 设计太复杂。简化接口。 |
-| 必须 mock 一切 | 代码太耦合。使用依赖注入。 |
-| 测试设置庞大 | 提取辅助函数。仍然复杂？简化设计。 |
-
-## 调试集成
-
-发现 bug？编写重现它的失败测试。遵循 TDD 循环。测试证明修复并防止回归。
-
-永远不要没有测试就修复 bug。
-
-## 测试反模式
-
-避免常见陷阱：
-- 测试 mock 行为而非真实行为
-- 向生产类添加仅测试方法
-- 不理解依赖就 mock
-- 测试私有方法（以 `_` 开头）
-- 测试实现而非行为
-
-## 最终规则
-
-```
-生产代码 → 测试存在且先失败
-否则 → 不是 TDD
-```
-
-没有你的伙伴的许可，无例外。
+**记住**：测试不是可选的。它们是支持自信重构、快速开发和生产可靠性的安全网。

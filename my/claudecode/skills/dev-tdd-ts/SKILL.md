@@ -1,327 +1,409 @@
 ---
 name: dev-tdd-ts
-description: 强制执行测试驱动开发工作流程。先搭建接口，先生成测试，然后实现最小代码以通过测试。确保 80%+ 覆盖率。
+description: TypeScript 测试驱动开发工作流。强制执行 TDD 原则，确保 80%+ 覆盖率，包含单元测试、集成测试和 E2E 测试。
 ---
 
-# TDD 命令
+# TypeScript 测试驱动开发工作流
 
-此命令调用 **tdd-guide-ts** agent 来强制执行测试驱动开发方法论。
+此 skill 确保所有 TypeScript 代码开发遵循 TDD 原则，具有全面的测试覆盖率。
 
-## 命令作用
+## 何时激活
 
-1. **搭建接口** - 首先定义类型/接口
-2. **先生成测试** - 编写失败的测试（RED）
-3. **实现最小代码** - 编写刚好足够的代码以通过（GREEN）
-4. **重构** - 在保持测试绿色的同时改进代码（REFACTOR）
-5. **验证覆盖率** - 确保 80%+ 测试覆盖率
-
-## 使用时机
-
-在以下情况使用 `/tdd`：
-- 实现新功能
-- 添加新函数/组件
-- 修复 bug（首先编写重现 bug 的测试）
+- 编写新功能或功能
+- 修复 bug 或问题
 - 重构现有代码
-- 构建关键业务逻辑
+- 添加 API 端点
+- 创建新组件
 
-## 工作原理
+## 核心原则
 
-tdd-guide agent 将：
+### 1. 测试先于代码
+**始终**先编写测试，然后实现代码使测试通过。
 
-1. **定义接口** 用于输入/输出
-2. **编写将失败的测试**（因为代码还不存在）
-3. **运行测试** 并验证它们因正确的原因而失败
-4. **编写最小实现** 使测试通过
-5. **运行测试** 并验证它们通过
-6. **重构** 代码同时保持测试绿色
-7. **检查覆盖率** 如果低于 80% 则添加更多测试
+### 2. 覆盖率要求
+- 最低 80% 覆盖率（单元 + 集成 + E2E）
+- 覆盖所有边界情况
+- 测试错误场景
+- 验证边界条件
 
-## TDD 循环
+### 3. 测试类型
 
+#### 单元测试
+- 单个函数和工具
+- 组件逻辑
+- 纯函数
+- 辅助函数和工具
+
+#### 集成测试
+- API 端点
+- 数据库操作
+- 服务交互
+- 外部 API 调用
+
+#### E2E 测试 (Playwright)
+- 关键用户流程
+- 完整工作流
+- 浏览器自动化
+- UI 交互
+
+## TDD 工作流步骤
+
+### 第 1 步：编写用户旅程
 ```
-RED → GREEN → REFACTOR → REPEAT
+作为 [角色], 我想要 [动作], 以便 [收益]
 
-RED:      编写失败的测试
-GREEN:    编写最小代码以通过
-REFACTOR: 改进代码，保持测试通过
-REPEAT:   下一个功能/场景
+示例：
+作为用户，我想要语义化搜索市场，
+以便即使没有精确关键词也能找到相关市场。
 ```
 
-## 使用示例
-
-```
-用户: /tdd 我需要一个计算市场流动性分数的函数
-
-Agent (tdd-guide):
-# TDD 会话：市场流动性分数计算器
-
-## 第 1 步：定义接口（搭建脚手架）
+### 第 2 步：生成测试用例
+为每个用户旅程创建全面的测试用例：
 
 ```typescript
-// lib/liquidity.ts
-export interface MarketData {
-  totalVolume: number
-  bidAskSpread: number
-  activeTraders: number
-  lastTradeTime: Date
-}
-
-export function calculateLiquidityScore(market: MarketData): number {
-  // TODO：实现
-  throw new Error('Not implemented')
-}
-```
-
-## 第 2 步：编写失败的测试（RED）
-
-```typescript
-// lib/liquidity.test.ts
-import { calculateLiquidityScore } from './liquidity'
-
-describe('calculateLiquidityScore', () => {
-  it('应该为高流动性市场返回高分', () => {
-    const market = {
-      totalVolume: 100000,
-      bidAskSpread: 0.01,
-      activeTraders: 500,
-      lastTradeTime: new Date()
-    }
-
-    const score = calculateLiquidityScore(market)
-
-    expect(score).toBeGreaterThan(80)
-    expect(score).toBeLessThanOrEqual(100)
+describe('语义搜索', () => {
+  it('返回查询的相关市场', async () => {
+    // 测试实现
   })
 
-  it('应该为低流动性市场返回低分', () => {
-    const market = {
-      totalVolume: 100,
-      bidAskSpread: 0.5,
-      activeTraders: 2,
-      lastTradeTime: new Date(Date.now() - 86400000) // 1 天前
-    }
-
-    const score = calculateLiquidityScore(market)
-
-    expect(score).toBeLessThan(30)
-    expect(score).toBeGreaterThanOrEqual(0)
+  it('优雅地处理空查询', async () => {
+    // 测试边界情况
   })
 
-  it('应该处理边缘情况：零交易量', () => {
-    const market = {
-      totalVolume: 0,
-      bidAskSpread: 0,
-      activeTraders: 0,
-      lastTradeTime: new Date()
-    }
+  it('当 Redis 不可用时回退到子字符串搜索', async () => {
+    // 测试回退行为
+  })
 
-    const score = calculateLiquidityScore(market)
-
-    expect(score).toBe(0)
+  it('按相似度分数排序结果', async () => {
+    // 测试排序逻辑
   })
 })
 ```
 
-## 第 3 步：运行测试 - 验证失败
-
+### 第 3 步：运行测试（应该失败）
 ```bash
-npm test lib/liquidity.test.ts
-
-FAIL lib/liquidity.test.ts
-  ✕ 应该为高流动性市场返回高分 (2 ms)
-    Error: Not implemented
-
-1 测试失败，0 通过
+npm test
+# 测试应该失败 - 我们还没有实现
 ```
 
-✅ 测试按预期失败。准备好实现。
-
-## 第 4 步：实现最小代码（GREEN）
+### 第 4 步：实现代码
+编写最简代码使测试通过：
 
 ```typescript
-// lib/liquidity.ts
-export function calculateLiquidityScore(market: MarketData): number {
-  // 处理零交易量边缘情况
-  if (market.totalVolume === 0) {
-    return 0
+// 由测试指导的实现
+export async function searchMarkets(query: string) {
+  // 在这里实现
+}
+```
+
+### 第 5 步：再次运行测试
+```bash
+npm test
+# 测试现在应该通过
+```
+
+### 第 6 步：重构
+在保持测试通过的同时提高代码质量：
+- 消除重复
+- 改进命名
+- 优化性能
+- 增强可读性
+
+### 第 7 步：验证覆盖率
+```bash
+npm run test:coverage
+# 验证达到 80%+ 覆盖率
+```
+
+## 测试模式
+
+### 单元测试模式 (Jest/Vitest)
+```typescript
+import { render, screen, fireEvent } from '@testing-library/react'
+import { Button } from './Button'
+
+describe('Button 组件', () => {
+  it('渲染正确的文本', () => {
+    render(<Button>点击我</Button>)
+    expect(screen.getByText('点击我')).toBeInTheDocument()
+  })
+
+  it('点击时调用 onClick', () => {
+    const handleClick = jest.fn()
+    render(<Button onClick={handleClick}>点击</Button>)
+
+    fireEvent.click(screen.getByRole('button'))
+
+    expect(handleClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('当 disabled 属性为 true 时禁用', () => {
+    render(<Button disabled>点击</Button>)
+    expect(screen.getByRole('button')).toBeDisabled()
+  })
+})
+```
+
+### API 集成测试模式
+```typescript
+import { NextRequest } from 'next/server'
+import { GET } from './route'
+
+describe('GET /api/markets', () => {
+  it('成功返回市场', async () => {
+    const request = new NextRequest('http://localhost/api/markets')
+    const response = await GET(request)
+    const data = await response.json()
+
+    expect(response.status).toBe(200)
+    expect(data.success).toBe(true)
+    expect(Array.isArray(data.data)).toBe(true)
+  })
+
+  it('验证查询参数', async () => {
+    const request = new NextRequest('http://localhost/api/markets?limit=invalid')
+    const response = await GET(request)
+
+    expect(response.status).toBe(400)
+  })
+
+  it('优雅地处理数据库错误', async () => {
+    // Mock 数据库失败
+    const request = new NextRequest('http://localhost/api/markets')
+    // 测试错误处理
+  })
+})
+```
+
+### E2E 测试模式 (Playwright)
+```typescript
+import { test, expect } from '@playwright/test'
+
+test('用户可以搜索和过滤市场', async ({ page }) => {
+  // 导航到市场页面
+  await page.goto('/')
+  await page.click('a[href="/markets"]')
+
+  // 验证页面加载
+  await expect(page.locator('h1')).toContainText('Markets')
+
+  // 搜索市场
+  await page.fill('input[placeholder="Search markets"]', 'election')
+
+  // 等待防抖和结果
+  await page.waitForTimeout(600)
+
+  // 验证搜索结果显示
+  const results = page.locator('[data-testid="market-card"]')
+  await expect(results).toHaveCount(5, { timeout: 5000 })
+
+  // 验证结果包含搜索词
+  const firstResult = results.first()
+  await expect(firstResult).toContainText('election', { ignoreCase: true })
+
+  // 按状态过滤
+  await page.click('button:has-text("Active")')
+
+  // 验证过滤后的结果
+  await expect(results).toHaveCount(3)
+})
+
+test('用户可以创建新市场', async ({ page }) => {
+  // 先登录
+  await page.goto('/creator-dashboard')
+
+  // 填写市场创建表单
+  await page.fill('input[name="name"]', 'Test Market')
+  await page.fill('textarea[name="description"]', 'Test description')
+  await page.fill('input[name="endDate"]', '2025-12-31')
+
+  // 提交表单
+  await page.click('button[type="submit"]')
+
+  // 验证成功消息
+  await expect(page.locator('text=Market created successfully')).toBeVisible()
+
+  // 验证重定向到市场页面
+  await expect(page).toHaveURL(/\/markets\/test-market/)
+})
+```
+
+## 测试文件组织
+
+```
+src/
+├── components/
+│   ├── Button/
+│   │   ├── Button.tsx
+│   │   ├── Button.test.tsx          # 单元测试
+│   │   └── Button.stories.tsx       # Storybook
+│   └── MarketCard/
+│       ├── MarketCard.tsx
+│       └── MarketCard.test.tsx
+├── app/
+│   └── api/
+│       └── markets/
+│           ├── route.ts
+│           └── route.test.ts         # 集成测试
+└── e2e/
+    ├── markets.spec.ts               # E2E 测试
+    ├── trading.spec.ts
+    └── auth.spec.ts
+```
+
+## 模拟外部服务
+
+### Supabase Mock
+```typescript
+jest.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => Promise.resolve({
+          data: [{ id: 1, name: 'Test Market' }],
+          error: null
+        }))
+      }))
+    }))
   }
-
-  // 计算各组件分数（0-100 范围）
-  const volumeScore = Math.min(market.totalVolume / 1000, 100)
-  const spreadScore = Math.max(100 - (market.bidAskSpread * 1000), 0)
-  const traderScore = Math.min(market.activeTraders / 10, 100)
-
-  // 最近活动奖励
-  const hoursSinceLastTrade = (Date.now() - market.lastTradeTime.getTime()) / (1000 * 60 * 60)
-  const recencyScore = Math.max(100 - (hoursSinceLastTrade * 10), 0)
-
-  // 加权平均
-  const score = (
-    volumeScore * 0.4 +
-    spreadScore * 0.3 +
-    traderScore * 0.2 +
-    recencyScore * 0.1
-  )
-
-  return Math.min(Math.max(score, 0), 100) // 限制在 0-100
-}
+}))
 ```
 
-## 第 5 步：运行测试 - 验证通过
-
-```bash
-npm test lib/liquidity.test.ts
-
-PASS lib/liquidity.test.ts
-  ✓ 应该为高流动性市场返回高分 (3 ms)
-  ✓ 应该为低流动性市场返回低分 (2 ms)
-  ✓ 应该处理边缘情况：零交易量 (1 ms)
-
-3 测试通过
-```
-
-✅ 所有测试通过！
-
-## 第 6 步：重构（改进）
-
+### Redis Mock
 ```typescript
-// lib/liquidity.ts - 使用常量和更好的可读性进行重构
-const WEIGHTS = {
-  VOLUME: 0.4,
-  SPREAD: 0.3,
-  TRADERS: 0.2,
-  RECENCY: 0.1,
-} as const
-
-const SCALE_FACTORS = {
-  VOLUME: 1000,
-  SPREAD: 1000,
-  TRADERS: 10,
-  RECENCY_PENALTY: 10,
-} as const
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max)
-}
-
-export function calculateLiquidityScore(market: MarketData): number {
-  if (market.totalVolume === 0) return 0
-
-  const volumeScore = Math.min(market.totalVolume / SCALE_FACTORS.VOLUME, 100)
-  const spreadScore = clamp(100 - (market.bidAskSpread * SCALE_FACTORS.SPREAD), 0, 100)
-  const traderScore = Math.min(market.activeTraders / SCALE_FACTORS.TRADERS, 100)
-
-  const hoursSinceLastTrade = (Date.now() - market.lastTradeTime.getTime()) / (1000 * 60 * 60)
-  const recencyScore = clamp(100 - (hoursSinceLastTrade * SCALE_FACTORS.RECENCY_PENALTY), 0, 100)
-
-  const weightedScore =
-    volumeScore * WEIGHTS.VOLUME +
-    spreadScore * WEIGHTS.SPREAD +
-    traderScore * WEIGHTS.TRADERS +
-    recencyScore * WEIGHTS.RECENCY
-
-  return clamp(weightedScore, 0, 100)
-}
+jest.mock('@/lib/redis', () => ({
+  searchMarketsByVector: jest.fn(() => Promise.resolve([
+    { slug: 'test-market', similarity_score: 0.95 }
+  ])),
+  checkRedisHealth: jest.fn(() => Promise.resolve({ connected: true }))
+}))
 ```
 
-## 第 7 步：验证测试仍然通过
+### OpenAI Mock
+```typescript
+jest.mock('@/lib/openai', () => ({
+  generateEmbedding: jest.fn(() => Promise.resolve(
+    new Array(1536).fill(0.1) // Mock 1536维 embedding
+  ))
+}))
+```
 
+## 测试覆盖率验证
+
+### 运行覆盖率报告
 ```bash
-npm test lib/liquidity.test.ts
-
-PASS lib/liquidity.test.ts
-  ✓ 应该为高流动性市场返回高分 (3 ms)
-  ✓ 应该为低流动性市场返回低分 (2 ms)
-  ✓ 应该处理边缘情况：零交易量 (1 ms)
-
-3 测试通过
+npm run test:coverage
 ```
 
-✅ 重构完成，测试仍然通过！
+### 覆盖率阈值
+```json
+{
+  "jest": {
+    "coverageThresholds": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  }
+}
+```
 
-## 第 8 步：检查覆盖率
+## 应避免的常见测试错误
 
+### ❌ 错误：测试实现细节
+```typescript
+// 不要测试内部状态
+expect(component.state.count).toBe(5)
+```
+
+### ✅ 正确：测试用户可见的行为
+```typescript
+// 测试用户看到的内容
+expect(screen.getByText('Count: 5')).toBeInTheDocument()
+```
+
+### ❌ 错误：脆弱的 CSS 选择器
+```typescript
+// 容易失效
+await page.click('.css-class-xyz')
+```
+
+### ✅ 正确：语义化选择器
+```typescript
+// 对变化有弹性
+await page.click('button:has-text("Submit")')
+await page.click('[data-testid="submit-button"]')
+```
+
+### ❌ 错误：测试没有隔离
+```typescript
+// 测试相互依赖
+test('创建用户', () => { /* ... */ })
+test('更新同一用户', () => { /* 依赖于前一个测试 */ })
+```
+
+### ✅ 正确：独立的测试
+```typescript
+// 每个测试设置自己的数据
+test('创建用户', () => {
+  const user = createTestUser()
+  // 测试逻辑
+})
+
+test('更新用户', () => {
+  const user = createTestUser()
+  // 更新逻辑
+})
+```
+
+## 持续测试
+
+### 开发时 watch 模式
 ```bash
-npm test -- --coverage lib/liquidity.test.ts
-
-File           | % Stmts | % Branch | % Funcs | % Lines
----------------|---------|----------|---------|--------
-liquidity.ts   |   100   |   100    |   100   |   100
-
-覆盖率: 100% ✅ (目标: 80%)
+npm test -- --watch
+# 文件更改时自动运行测试
 ```
 
-✅ TDD 会话完成！
+### 预提交钩子
+```bash
+# 每次提交前运行
+npm test && npm run lint
+```
 
+### CI/CD 集成
+```yaml
+# GitHub Actions
+- name: 运行测试
+  run: npm test -- --coverage
+- name: 上传覆盖率
+  uses: codecov/codecov-action@v3
+```
 
-## TDD 最佳实践
+## 最佳实践
 
-**要这样做：**
-- ✅ 在任何实现之前先编写测试
-- ✅ 在实现之前运行测试并验证它们失败
-- ✅ 编写最小代码以使测试通过
-- ✅ 只有在测试通过后才重构
-- ✅ 添加边缘情况和错误场景
-- ✅ 目标是 80%+ 覆盖率（关键代码 100%）
+1. **先写测试** - 始终 TDD
+2. **每个测试一个断言** - 专注于单一行为
+3. **描述性的测试名称** - 解释测试的内容
+4. **Arrange-Act-Assert** - 清晰的测试结构
+5. **模拟外部依赖** - 隔离单元测试
+6. **测试边界情况** - Null、undefined、空、大值
+7. **测试错误路径** - 不只是快乐路径
+8. **保持测试快速** - 单元测试 < 50ms 每个
+9. **测试后清理** - 没有副作用
+10. **审查覆盖率报告** - 识别覆盖缺口
 
-**不要这样做：**
-- ❌ 在测试之前编写实现
-- ❌ 跳过每次更改后运行测试
-- ❌ 一次编写太多代码
-- ❌ 忽略失败的测试
-- ❌ 测试实现细节（测试行为）
-- ❌ 模拟所有内容（首选集成测试）
+## 成功指标
 
-## 要包含的测试类型
+- 达到 80%+ 代码覆盖率
+- 所有测试通过（绿色）
+- 没有跳过或禁用的测试
+- 快速测试执行（单元测试 < 30s）
+- E2E 测试覆盖关键用户流程
+- 测试在投入生产前捕获 bug
 
-**单元测试**（函数级）：
-- 快乐路径场景
-- 边缘情况（空、null、最大值）
-- 错误条件
-- 边界值
+---
 
-**集成测试**（组件级）：
-- API 端点
-- 数据库操作
-- 外部服务调用
-- 带有 hooks 的 React 组件
-
-**E2E 测试**（使用 `/e2e` 命令）：
-- 关键用户流程
-- 多步骤过程
-- 全栈集成
-
-## 覆盖率要求
-
-- **所有代码最低 80%**
-- **以下要求 100%**：
-  - 金融计算
-  - 认证逻辑
-  - 安全关键代码
-  - 核心业务逻辑
-
-## 重要说明
-
-**强制要求**：必须在实现之前编写测试。TDD 循环是：
-
-1. **RED** - 编写失败的测试
-2. **GREEN** - 实现以通过测试
-3. **REFACTOR** - 改进代码
-
-永远不要跳过 RED 阶段。永远不要在测试之前编写代码。
-
-## 与其他命令的集成
-
-- 首先使用 `/plan` 了解要构建什么
-- 使用 `/tdd` 通过测试进行实现
-- 如果发生构建错误，使用 `/build-and-fix`
-- 使用 `/code-review` 审查实现
-- 使用 `/test-coverage` 验证覆盖率
-
-## 相关 Agent
-
-此命令调用位于以下位置的 `tdd-guide` agent：
-`~.claude/agents/tdd-guide-ts.md`
-
-并且可以引用位于以下位置的 `tdd-workflow` skill：
-`~/.claude/skills/tdd-workflow/`
+**记住**：测试不是可选的。它们是支持自信重构、快速开发和生产可靠性的安全网。
