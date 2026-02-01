@@ -3,7 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 - 重要原则： 不允许改上游仓库的任何东西， 如果修改了说明严重违反规定强行更正， 上游仓库是完全只读我们只需要跟踪就行了
-
+- 翻译成中文的时候专有名词不需要翻译, 比如Agent, Skill, Command, Hook
 ## 项目概述
 
 这是个人 Claude Code 配置仓库，基于 [everything-claude-code](https://github.com/affaan-m/everything-claude-code) 改造。
@@ -13,6 +13,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `everything-claude-code/` - affaan-m 的配置仓库（submodule）
   - `anthropics-skills/` - anthropics 官方的 skills 仓库（submodule）
   - `openai-skills/` - OpenAI 官方的 skills 仓库（submodule）
+  - `superpowers/` - obra/superpowers 完整软件开发工作流系统（submodule）
+  - `obsidian-skills/` - kepano/obsidian-skills 仓库（submodule）
 - `my/` - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -27,6 +29,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
 │   │   ├── commands/
 │   │   └── skills/
+│   ├── codex/                   # Codex 专属配置
+│   │   └── skills/              # 改造后的 skills
 │   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（submodule）
@@ -42,6 +46,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   └── skills/
 │
 ├── upstream/openai-skills/      # OpenAI 官方 skills 仓库（submodule）
+│   └── ...
+│
+├── upstream/superpowers/        # obra/superpowers 完整软件开发工作流系统（submodule）
+│   ├── agents/
+│   ├── commands/
+│   ├── skills/
+│   └── hooks/
+│
+├── upstream/obsidian-skills/    # kepano/obsidian-skills 仓库（submodule）
 │   └── ...
 │
 ├── install.sh                   # 安装脚本
@@ -66,6 +79,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
 | `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
 | `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
+| `my/codex/skills/` | Codex (`~/.codex/skills/`) |
 
 ## 日常工作流
 
@@ -77,6 +91,7 @@ ls upstream/everything-claude-code/agents/
 ls upstream/everything-claude-code/skills/
 ls upstream/anthropics-skills/agents/
 ls upstream/anthropics-skills/skills/
+ls upstream/obsidian-skills/
 
 # 复制想用的文件到 my/ 进行改造
 cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
@@ -98,11 +113,15 @@ git submodule update --remote
 git submodule update --remote upstream/everything-claude-code
 git submodule update --remote upstream/anthropics-skills
 git submodule update --remote upstream/openai-skills
+git submodule update --remote upstream/superpowers
+git submodule update --remote upstream/obsidian-skills
 
 # 查看有什么新变化
 cd upstream/everything-claude-code && git log HEAD@{1}..HEAD --oneline
 cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
 cd ../openai-skills && git log HEAD@{1}..HEAD --oneline
+cd ../superpowers && git log HEAD@{1}..HEAD --oneline
+cd ../obsidian-skills && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
 cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
@@ -197,3 +216,13 @@ EOF
 | 文件 | 描述 | 触发场景 |
 |------|------|----------|
 | `python-async-modernizer/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup、检测阻塞调用 |
+
+### Codex Skills (`my/codex/skills/`)
+
+| 文件 | 描述 | 调用方式 |
+|------|------|----------|
+| `plan/` | 编写实现规划 | `$plan` |
+| `writing-plans/` | 详细规划编写方法 | `$writing-plans` |
+| `writing-skills/` | 编写技能文档的 TDD 方法 | `$writing-skills` |
+| `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
+| `rehabilitating-legacy-tests/` | 遗留测试改造成 pytest 的 TDD 流程 | `$rehabilitating-legacy-tests` |

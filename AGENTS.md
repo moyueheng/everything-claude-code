@@ -27,6 +27,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
 │   │   ├── commands/
 │   │   └── skills/
+│   ├── codex/                   # Codex 专属配置
+│   │   └── skills/              # 改造后的 skills
 │   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（submodule）
@@ -66,6 +68,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
 | `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
 | `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
+| `my/codex/skills/` | Codex (`~/.codex/skills/`) |
 
 ## 日常工作流
 
@@ -197,3 +200,13 @@ EOF
 | 文件 | 描述 | 触发场景 |
 |------|------|----------|
 | `python-async-modernizer/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup、检测阻塞调用 |
+
+### Codex Skills (`my/codex/skills/`)
+
+| 文件 | 描述 | 调用方式 |
+|------|------|----------|
+| `plan/` | 编写实现规划 | `$plan` |
+| `writing-plans/` | 详细规划编写方法 | `$writing-plans` |
+| `writing-skills/` | 编写技能文档的 TDD 方法 | `$writing-skills` |
+| `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
+| `rehabilitating-legacy-tests/` | 遗留测试改造成 pytest 的 TDD 流程 | `$rehabilitating-legacy-tests` |

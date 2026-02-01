@@ -7,3 +7,13 @@
 [submodule "upstream/openai-skills"]
 	path = upstream/openai-skills
 	url = https://github.com/openai/skills.git
+[submodule "upstream/superpowers"]
+	path = upstream/superpowers
+	url = https://github.com/obra/superpowers.git
+[submodule "upstream/ai-research-skills"]
+	path = upstream/ai-research-skills
+	url = https://github.com/Orchestra-Research/AI-research-SKILLs.git
+	branch = main
+[submodule "upstream/obsidian-skills"]
+	path = upstream/obsidian-skills
+	url = https://github.com/kepano/obsidian-skills.git

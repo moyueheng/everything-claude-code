@@ -2,6 +2,7 @@
 set -e
 
 # 将 my/ 目录下的配置安装到 Claude Code、OpenCode 和 Codex
+# 将 my/ 目录下的配置安装到 Claude Code、OpenCode 和 Codex
 # Claude Code: 覆盖 ~/.claude/{agents,rules,skills}
 # OpenCode:    覆盖 ~/.config/opencode/{agents,commands,skills}
 # Codex:       覆盖 ~/.codex/{skills,rules}
