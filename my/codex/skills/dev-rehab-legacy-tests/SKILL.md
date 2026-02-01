@@ -1,5 +1,5 @@
 ---
-name: rehabilitating-legacy-tests
+name: dev-rehab-legacy-tests
 description: 使用于接手遗留 Python 项目且测试大量失败/很慢/缺失，需要把测试体系改造成符合 TDD 规范并使用 pytest 时使用
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: test-driven-development
+name: dev-tdd
 description: 实现任何功能或错误修复时，在编写实现代码之前使用
 metadata:
   short-description: 测试驱动开发（TDD）核心原则和流程

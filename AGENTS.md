@@ -231,5 +231,5 @@ EOF
 
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
-| **dev-** | `test-driven-development/` | 测试驱动开发核心原则 | `$test-driven-development` |
-| **dev-** | `rehabilitating-legacy-tests/` | 遗留测试改造 TDD 流程 | `$rehabilitating-legacy-tests` |
+| **dev-** | `dev-tdd/` | 测试驱动开发核心原则 | `$dev-tdd` |
+| **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |
