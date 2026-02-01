@@ -231,5 +231,6 @@ EOF
 
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
-| **dev-** | `dev-tdd/` | 测试驱动开发核心原则 | `$dev-tdd` |
+| **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | `$dev-tdd-ts` |
+| **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | `$dev-tdd-py` |
 | **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |

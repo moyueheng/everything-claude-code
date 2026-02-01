@@ -1,11 +1,11 @@
 ---
-name: dev-tdd
-description: 实现任何功能或错误修复时，在编写实现代码之前使用
+name: dev-tdd-py
+description: 实现任何 Python 功能或错误修复时，在编写实现代码之前使用
 metadata:
-  short-description: 测试驱动开发（TDD）核心原则和流程
+  short-description: Python 测试驱动开发（TDD）核心原则和流程
 ---
 
-# 测试驱动开发 (TDD)
+# Python 测试驱动开发 (TDD)
 
 ## 概述
 
@@ -75,34 +75,34 @@ digraph tdd_cycle {
 编写一个最小测试展示应该发生什么。
 
 <好>
-```typescript
-test('重试失败操作 3 次', async () => {
-  let attempts = 0;
-  const operation = () => {
-    attempts++;
-    if (attempts < 3) throw new Error('fail');
-    return 'success';
-  };
+```python
+def test_retry_failed_operation_3_times():
+    attempts = 0
+    def operation():
+        nonlocal attempts
+        attempts += 1
+        if attempts < 3:
+            raise Exception('fail')
+        return 'success'
 
-  const result = await retryOperation(operation);
+    result = retry_operation(operation)
 
-  expect(result).toBe('success');
-  expect(attempts).toBe(3);
-});
+    assert result == 'success'
+    assert attempts == 3
 ```
 清晰的名称，测试真实行为，一件事
 </好>
 
 <坏>
-```typescript
-test('重试有效', async () => {
-  const mock = jest.fn()
-    .mockRejectedValueOnce(new Error())
-    .mockRejectedValueOnce(new Error())
-    .mockResolvedValueOnce('success');
-  await retryOperation(mock);
-  expect(mock).toHaveBeenCalledTimes(3);
-});
+```python
+def test_retry_works():
+    mock = Mock(side_effect=[
+        Exception(),
+        Exception(),
+        'success'
+    ])
+    retry_operation(mock)
+    assert mock.call_count == 3
 ```
 模糊的名称，测试 mock 而非代码
 </坏>
@@ -117,7 +117,7 @@ test('重试有效', async () => {
 **强制性。绝不跳过。**
 
 ```bash
-npm test path/to/test.test.ts
+pytest tests/test_retry.py::test_retry_failed_operation_3_times -v
 ```
 
 确认：
@@ -134,33 +134,28 @@ npm test path/to/test.test.ts
 编写最简单的代码通过测试。
 
 <好>
-```typescript
-async function retryOperation<T>(fn: () => Promise<T>): Promise<T> {
-  for (let i = 0; i < 3; i++) {
-    try {
-      return await fn();
-    } catch (e) {
-      if (i === 2) throw e;
-    }
-  }
-  throw new Error('unreachable');
-}
+```python
+def retry_operation(fn):
+    for i in range(3):
+        try:
+            return fn()
+        except Exception as e:
+            if i == 2:
+                raise e
+    raise Exception('unreachable')
 ```
 刚好通过
 </好>
 
 <坏>
-```typescript
-async function retryOperation<T>(
-  fn: () => Promise<T>,
-  options?: {
-    maxRetries?: number;
-    backoff?: 'linear' | 'exponential';
-    onRetry?: (attempt: number) => void;
-  }
-): Promise<T> {
-  // YAGNI
-}
+```python
+def retry_operation(
+    fn: Callable[[], T],
+    max_retries: int = 3,
+    backoff: str = 'linear',
+    on_retry: Optional[Callable[[int], None]] = None
+) -> T:
+    # YAGNI
 ```
 过度工程
 </坏>
@@ -172,7 +167,7 @@ async function retryOperation<T>(
 **强制性。**
 
 ```bash
-npm test path/to/test.test.ts
+pytest tests/test_retry.py -v
 ```
 
 确认：
@@ -201,8 +196,8 @@ npm test path/to/test.test.ts
 
 | 质量 | 好 | 坏 |
 |------|-----|-----|
-| **最小** | 一件事。名称中有"and"？拆分它。 | `test('验证邮箱和域名和空格')` |
-| **清晰** | 名称描述行为 | `test('test1')` |
+| **最小** | 一件事。名称中有"and"？拆分它。 | `def test_validate_email_and_domain_and_whitespace():` |
+| **清晰** | 名称描述行为 | `def test_test1():` |
 | **展示意图** | 演示期望的 API | 模糊代码应该做什么 |
 
 ## 为什么顺序很重要
@@ -294,37 +289,128 @@ TDD 就是务实的：
 **错误：** 接受空邮箱
 
 **RED**
-```typescript
-test('拒绝空邮箱', async () => {
-  const result = await submitForm({ email: '' });
-  expect(result.error).toBe('需要邮箱');
-});
+```python
+def test_reject_empty_email():
+    result = submit_form({'email': ''})
+    assert result['error'] == '需要邮箱'
 ```
 
 **验证 RED**
 ```bash
-$ npm test
-FAIL: expected '需要邮箱', got undefined
+$ pytest tests/test_form.py::test_reject_empty_email -v
+FAIL: AssertionError: assert None == '需要邮箱'
 ```
 
 **GREEN**
-```typescript
-function submitForm(data: FormData) {
-  if (!data.email?.trim()) {
-    return { error: '需要邮箱' };
-  }
-  // ...
-}
+```python
+def submit_form(data: dict) -> dict:
+    if not data.get('email', '').strip():
+        return {'error': '需要邮箱'}
+    # ...
 ```
 
 **验证 GREEN**
 ```bash
-$ npm test
+$ pytest tests/test_form.py::test_reject_empty_email -v
 PASS
 ```
 
 **REFACTOR**
 如果需要，提取验证用于多个字段。
+
+## Python 测试最佳实践
+
+### 测试框架选择
+
+```bash
+# pytest (推荐)
+pytest tests/ -v
+
+# 带覆盖率
+pytest tests/ --cov=src --cov-report=term-missing
+
+# 特定测试
+pytest tests/test_module.py::test_function -v
+```
+
+### 项目结构
+
+```
+project/
+├── src/
+│   └── mymodule/
+│       └── retry.py
+├── tests/
+│   ├── __init__.py
+│   ├── conftest.py          # 共享 fixture
+│   └── test_retry.py
+└── pyproject.toml
+```
+
+### pytest fixture
+
+```python
+# conftest.py
+import pytest
+
+@pytest.fixture
+def mock_service():
+    class MockService:
+        def __init__(self):
+            self.calls = []
+        def call(self, *args):
+            self.calls.append(args)
+            return 'ok'
+    return MockService()
+
+# test_module.py
+def test_with_fixture(mock_service):
+    result = mock_service.call('arg1')
+    assert result == 'ok'
+    assert len(mock_service.calls) == 1
+```
+
+### Mock 使用原则
+
+<好>
+```python
+def test_send_email_uses_smtp():
+    with patch('smtplib.SMTP') as mock_smtp:
+        send_email('to@example.com', 'subject', 'body')
+
+        mock_smtp.assert_called_once()
+        instance = mock_smtp.return_value
+        instance.send_message.assert_called_once()
+```
+</好>
+
+<坏>
+```python
+def test_send_email():
+    # Mock 自己的内部辅助函数
+    with patch('mymodule._format_body') as mock_format:
+        mock_format.return_value = 'formatted'
+        send_email('to@example.com', 'subject', 'body')
+
+        mock_format.assert_called_once()
+```
+Mock 实现细节而非行为
+</坏>
+
+### 参数化测试
+
+```python
+import pytest
+
+@pytest.mark.parametrize('input,expected', [
+    ('user@example.com', True),
+    ('user@', False),
+    ('@example.com', False),
+    ('', False),
+])
+def test_validate_email(input, expected):
+    assert validate_email(input) == expected
+```
 
 ## 验证清单
 
@@ -338,6 +424,7 @@ PASS
 - [ ] 输出干净（无错误、警告）
 - [ ] 测试使用真实代码（仅当不可避免时使用 mock）
 - [ ] 覆盖边缘情况和错误
+- [ ] 测试覆盖率 ≥ 80%
 
 无法勾选所有框？你跳过了 TDD。重新开始。
 
@@ -358,10 +445,12 @@ PASS
 
 ## 测试反模式
 
-添加 mock 或测试工具时，阅读 testing-anti-patterns.md 以避免常见陷阱：
+避免常见陷阱：
 - 测试 mock 行为而非真实行为
 - 向生产类添加仅测试方法
 - 不理解依赖就 mock
+- 测试私有方法（以 `_` 开头）
+- 测试实现而非行为
 
 ## 最终规则
 
