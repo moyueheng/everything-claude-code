@@ -1,5 +1,5 @@
 ---
-name: tdd-guide
+name: tdd-guide-ts
 description: 测试驱动开发专家，强制执行先写测试的方法论。在开发新功能、修复 bug 或重构代码时主动使用。确保 80%+ 测试覆盖率。
 tools: ["Read", "Write", "Edit", "Bash", "Grep"]
 model: opus

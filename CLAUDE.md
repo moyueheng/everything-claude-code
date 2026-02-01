@@ -208,7 +208,8 @@ EOF
 | `planner.md` | 复杂功能和重构规划专员 | Read, Grep, Glob |
 | `refactor-cleaner-python.md` | Python 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
 | `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
-| `tdd-guide.md` | 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| `tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| `tdd-guide-py.md` | Python 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
 
 ### OpenCode Agents (`my/opencode/agents/`)
 
@@ -221,7 +222,8 @@ EOF
 | `planner.md` | 规划专家（只读） | subagent |
 | `refactor-cleaner-python.md` | Python 重构和清理 | subagent |
 | `refactor-cleaner-ts.md` | TypeScript 重构和清理 | subagent |
-| `tdd-guide.md` | TDD 测试专家 | subagent |
+| `tdd-guide-ts.md` | TypeScript TDD 测试专家 | subagent |
+| `tdd-guide-py.md` | Python TDD 测试专家 | subagent |
 
 > 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
 
@@ -235,7 +237,8 @@ EOF
 | **dev-** | `dev-plan/` | 开发项目规划 | 新功能、复杂重构前的实施计划 |
 | **dev-** | `dev-review-py/` | Python 代码审查 | 检查未提交的 Python 代码 |
 | **dev-** | `dev-review-ts/` | TypeScript 代码审查 | 检查未提交的 TS/JS 代码 |
-| **dev-** | `dev-tdd/` | 测试驱动开发 | TDD 工作流程 (RED-GREEN-REFACTOR) |
+| **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | TDD 工作流程 (RED-GREEN-REFACTOR) |
+| **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | Python TDD 工作流程 (pytest) |
 | **dev-** | `dev-update-codemaps/` | 代码地图更新 | 从代码库结构生成架构文档 |
 | **dev-** | `dev-update-docs/` | 开发文档更新 | 从 package.json 和 .env.example 同步文档 |
 | **tool-** | `tool-macos-hidpi/` | macOS HiDPI 分辨率设置 | 创建自定义显示器分辨率 |

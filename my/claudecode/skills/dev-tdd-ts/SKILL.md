@@ -1,11 +1,11 @@
 ---
-name: dev-tdd
+name: dev-tdd-ts
 description: 强制执行测试驱动开发工作流程。先搭建接口，先生成测试，然后实现最小代码以通过测试。确保 80%+ 覆盖率。
 ---
 
 # TDD 命令
 
-此命令调用 **tdd-guide** agent 来强制执行测试驱动开发方法论。
+此命令调用 **tdd-guide-ts** agent 来强制执行测试驱动开发方法论。
 
 ## 命令作用
 
@@ -321,7 +321,7 @@ liquidity.ts   |   100   |   100    |   100   |   100
 ## 相关 Agent
 
 此命令调用位于以下位置的 `tdd-guide` agent：
-`~/.claude/agents/tdd-guide.md`
+`~.claude/agents/tdd-guide-ts.md`
 
 并且可以引用位于以下位置的 `tdd-workflow` skill：
 `~/.claude/skills/tdd-workflow/`
