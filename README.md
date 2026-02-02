@@ -14,6 +14,7 @@
   - `openai-skills/` - OpenAI 官方的 skills 仓库（submodule）
   - `ai-research-skills/` - Orchestra-Research 的 AI-research-SKILLs 仓库（submodule）
   - `obsidian-skills/` - kepano/obsidian-skills 仓库（submodule）
+  - `superpowers/` - obra/superpowers 完整软件开发工作流系统（submodule）
 - **`my/`** - 个人改造的配置（从 upstream 挑选并本地化）
 
 ## 目录结构
@@ -21,14 +22,16 @@
 ```
 .
 ├── my/                          # 个人配置
-│   ├── commands/                # 共用 commands（安装到 Claude Code 和 OpenCode）
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
-│   │   ├── rules/               # 改造后的 rules
 │   │   └── skills/              # 改造后的 skills
-│   └── opencode/                # OpenCode 专属配置
-│       ├── agents/
-│       └── skills/
+│   ├── opencode/                # OpenCode 专属配置
+│   │   ├── agents/
+│   │   ├── commands/            # OpenCode commands
+│   │   └── skills/
+│   ├── codex/                   # Codex 专属配置
+│   │   └── skills/
+│   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（submodule）
 │   ├── agents/
@@ -49,6 +52,12 @@
 ├── upstream/obsidian-skills/    # kepano/obsidian-skills（submodule）
 │   └── ...
 │
+├── upstream/superpowers/        # obra/superpowers 完整软件开发工作流（submodule）
+│   ├── agents/
+│   ├── commands/
+│   ├── skills/
+│   └── hooks/
+│
 ├── install.sh                   # 安装脚本
 └── README.md                    # 本文档
 ```
@@ -66,12 +75,12 @@
 
 | 目录 | 目标位置 |
 |------|----------|
-| `my/commands/` | Claude Code (`~/.claude/commands/`) + OpenCode (`~/.config/opencode/commands/`) |
 | `my/claudecode/agents/` | Claude Code (`~/.claude/agents/`) |
-| `my/claudecode/rules/` | Claude Code (`~/.claude/rules/`) |
 | `my/claudecode/skills/` | Claude Code (`~/.claude/skills/`) |
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
+| `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
 | `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
+| `my/codex/skills/` | Codex (`~/.codex/skills/`) |
 
 ## 日常工作流
 
@@ -103,6 +112,7 @@ git submodule update --remote upstream/anthropics-skills
 git submodule update --remote upstream/openai-skills
 git submodule update --remote upstream/ai-research-skills
 git submodule update --remote upstream/obsidian-skills
+git submodule update --remote upstream/superpowers
 
 # 查看有什么新变化
 cd upstream/everything-claude-code && git log HEAD@{1}..HEAD --oneline
@@ -110,6 +120,7 @@ cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
 cd ../openai-skills && git log HEAD@{1}..HEAD --oneline
 cd ../ai-research-skills && git log HEAD@{1}..HEAD --oneline
 cd ../obsidian-skills && git log HEAD@{1}..HEAD --oneline
+cd ../superpowers && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
 cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
@@ -135,8 +146,8 @@ description: 我的自定义助手
 这是我自己定义的 agent...
 EOF
 
-# 共用 command:
-cat > my/commands/my-command.md << 'EOF'
+# OpenCode command:
+cat > my/opencode/commands/my-command.md << 'EOF'
 description: 我的自定义命令
 
 # My Command
@@ -149,7 +160,10 @@ EOF
 
 ## 推荐工作流程
 
-### 1. 规划阶段 - `/plan`
+### 1. 规划阶段
+
+**Claude Code**: 使用 `planner` agent
+**OpenCode**: 使用 `/plan` command
 
 **使用时机**: 新功能、复杂重构、架构变更
 
@@ -158,7 +172,10 @@ EOF
 需求描述 → planner agent 分析 → 生成实施计划 → 用户确认 → 执行
 ```
 
-### 2. 开发阶段 - `/tdd`
+### 2. 开发阶段
+
+**Claude Code**: 使用 `tdd-guide-ts` 或 `tdd-guide-py` agent
+**OpenCode**: 使用 `/tdd` command
 
 **使用时机**: 编写新功能、修复 Bug、重构
 
@@ -170,7 +187,10 @@ EOF
 5. 重构代码
 6. 验证覆盖率 ≥ 80%
 
-### 3. 审查阶段 - `/code-review`
+### 3. 审查阶段
+
+**Claude Code**: 使用 `code-reviewer-ts` 或 `code-reviewer-py` agent
+**OpenCode**: 使用 `/code-review-ts` 或 `/code-review-py` command
 
 **使用时机**: 代码完成后
 
@@ -180,7 +200,10 @@ EOF
 - 性能问题识别
 - 一致性审查
 
-### 4. 更新文档 - `/update-docs`
+### 4. 更新文档
+
+**Claude Code**: 使用 `doc-updater` agent
+**OpenCode**: 使用 `/update-docs` command
 
 **使用时机**: 代码修改后同步更新相关文档
 
@@ -195,28 +218,57 @@ EOF
 
 ### Agents (Claude Code)
 
-- `planner` - 功能实施规划
-- `architect` - 系统设计决策
-- `tdd-guide` - 测试驱动开发
-- `code-reviewer-ts` - TypeScript 代码审查
-- `code-reviewer-py` - Python 代码审查
-- `refactor-cleaner-ts` - TypeScript 死代码清理
-- `refactor-cleaner-python` - Python 死代码清理
-- `doc-updater` - 文档更新
+| Agent | 描述 |
+|-------|------|
+| `planner` | 复杂功能和重构规划专员 |
+| `architect` | 软件架构专家，系统设计和可扩展性 |
+| `tdd-guide-ts` | TypeScript 测试驱动开发专家 |
+| `tdd-guide-py` | Python 测试驱动开发专家 |
+| `code-reviewer-ts` | TypeScript 代码审查专员 |
+| `code-reviewer-py` | Python 代码审查专员 |
+| `refactor-cleaner-ts` | TypeScript 死代码清理和重构 |
+| `refactor-cleaner-python` | Python 死代码清理和重构 |
+| `doc-updater` | 文档和代码地图专家 |
 
-### Commands (共用)
+### Commands (OpenCode)
 
-- `/plan` - 实施规划
-- `/tdd` - TDD 开发流程
-- `/code-review-ts` - TypeScript 代码审查
-- `/code-review-py` - Python 代码审查
-- `/update-docs` - 更新文档
-- `/update-codemaps` - 更新代码地图
+| Command | 描述 |
+|---------|------|
+| `/plan` | 实施规划 |
+| `/tdd` | TDD 开发流程 |
+| `/code-review-ts` | TypeScript 代码审查 |
+| `/code-review-py` | Python 代码审查 |
+| `/update-docs` | 更新文档 |
+| `/update-codemaps` | 更新代码地图 |
 
 ### Skills (Claude Code)
 
-- `skill-creator` - 从 Git 历史提取技能
-- `python-async-modernizer` - Python 异步代码分析和现代化（检测阻塞调用、迁移到 TaskGroup）
+| Skill | 描述 |
+|-------|------|
+| `dev-plan` | 开发项目规划 |
+| `dev-tdd-ts` | TypeScript 测试驱动开发工作流 |
+| `dev-tdd-py` | Python 测试驱动开发工作流 |
+| `dev-review-ts` | TypeScript 代码审查 |
+| `dev-review-py` | Python 代码审查 |
+| `dev-async-modernize` | Python 异步代码现代化 |
+| `dev-update-docs` | 开发文档更新 |
+| `dev-update-codemaps` | 代码地图更新 |
+| `dev-e2e` | 使用 Playwright 生成和运行端到端测试 |
+| `tool-mcp-builder` | MCP 服务器构建指南 |
+| `tool-macos-hidpi` | macOS HiDPI 分辨率设置 |
+| `tool-sshfs-mount` | SSH 远程目录挂载 |
+| `tool-skill-creator` | Skill 创建指南 |
+
+### Skills (Codex)
+
+| Skill | 描述 |
+|-------|------|
+| `dev-tdd-ts` | TypeScript 测试驱动开发 |
+| `dev-tdd-py` | Python 测试驱动开发 |
+| `dev-rehab-legacy-tests` | 遗留测试改造 TDD 流程 |
+| `life-obsidian-markdown` | Obsidian Markdown 技能 |
+| `life-obsidian-bases` | Obsidian Bases 技能 |
+| `life-obsidian-json-canvas` | Obsidian JSON Canvas 技能 |
 
 ## 注意事项
 
