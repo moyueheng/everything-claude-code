@@ -1,5 +1,5 @@
 ---
-name: writing-plans
+name: dev-writing-plans
 description: 当拥有多步骤任务的规格或需求时使用，在接触代码之前制定实施计划
 ---
 
