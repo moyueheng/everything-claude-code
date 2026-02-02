@@ -1,4 +1,4 @@
-# 更新或创建docs目录创建文件 `docs/diffrences.md` 用来对比 opencode, claudecode, codex 的配置异同点， 主要是关注 agents， skills， commands， rules， Hooks, mcp
+# 更新或创建docs目录创建文件 `docs/differences.md` 用来对比 opencode, claudecode, codex 的配置异同点， 主要是关注 agents， skills， commands， rules， Hooks, mcp
 
 # 相关文档如下
 
