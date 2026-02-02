@@ -5,7 +5,7 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 
 # 开发规划 Skill
 
-此 skill 在编写任何代码之前创建全面的实施计划。
+此 Skill 在编写任何代码之前创建全面的实施计划。
 
 ## Skill 作用
 
@@ -16,7 +16,7 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 
 ## 何时激活
 
-在以下情况使用此 skill：
+在以下情况使用此 Skill：
 - 开始新功能开发
 - 进行重大架构变更
 - 处理复杂重构
@@ -25,7 +25,7 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 
 ## 工作原理
 
-此 skill 将：
+此 Skill 将：
 
 1. **分析请求** 并用清晰的术语重述需求
 2. **拆分为阶段** 并制定具体可执行的步骤
@@ -104,6 +104,10 @@ Agent (planner):
 ## 与其他 Skills 配合
 
 规划完成后：
-- 使用 `dev-tdd-ts` 或 `dev-tdd-py` 进行测试驱动开发
+- 使用 `dev-tdd-workflow` 进行测试驱动开发（统一 TDD 流程）
 - 遇到构建错误时修复
-- 完成后使用 code-review agent 审查代码
+- 完成后使用 `dev-review-ts` 或 `dev-review-py` Skill 审查代码
+
+## Related Agents
+
+- `planner` Agent：负责输出可执行的实施计划
