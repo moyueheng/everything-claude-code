@@ -239,6 +239,7 @@ EOF
 | **dev-** | `dev-review-ts/` | TypeScript 代码审查 | 检查未提交的 TS/JS 代码 |
 | **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | TDD 工作流程 (RED-GREEN-REFACTOR) |
 | **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | Python TDD 工作流程 (pytest) |
+| **dev-** | `dev-tdd-workflow/` | 通用 TDD 工作流（合并 command + skill） | 新功能、修复 bug、重构时强制先写测试 |
 | **dev-** | `dev-update-codemaps/` | 代码地图更新 | 从代码库结构生成架构文档 |
 | **dev-** | `dev-update-docs/` | 开发文档更新 | 从 package.json 和 .env.example 同步文档 |
 | **tool-** | `tool-macos-hidpi/` | macOS HiDPI 分辨率设置 | 创建自定义显示器分辨率 |
