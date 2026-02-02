@@ -58,7 +58,7 @@ description: TypeScript 测试驱动开发工作流。强制执行 TDD 原则，
 ```
 
 ### 第 2 步：生成测试用例
-为每个用户旅程创建全面的测试用例：
+为每个用户旅程，创建全面的测试用例：
 
 ```typescript
 describe('语义搜索', () => {
@@ -80,7 +80,7 @@ describe('语义搜索', () => {
 })
 ```
 
-### 第 3 步：运行测试（应该失败）
+### 第 3 步：运行测试（它们应该失败）
 ```bash
 npm test
 # 测试应该失败 - 我们还没有实现
@@ -92,7 +92,7 @@ npm test
 ```typescript
 // 由测试指导的实现
 export async function searchMarkets(query: string) {
-  // 在这里实现
+  // 实现放在这里
 }
 ```
 
@@ -331,7 +331,7 @@ expect(screen.getByText('Count: 5')).toBeInTheDocument()
 await page.click('.css-class-xyz')
 ```
 
-### ✅ 正确：语义化选择器
+### ✅ 正确：语义选择器
 ```typescript
 // 对变化有弹性
 await page.click('button:has-text("Submit")')
@@ -361,7 +361,7 @@ test('更新用户', () => {
 
 ## 持续测试
 
-### 开发时 watch 模式
+### 开发时 Watch 模式
 ```bash
 npm test -- --watch
 # 文件更改时自动运行测试

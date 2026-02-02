@@ -57,7 +57,7 @@ description: Python 测试驱动开发工作流。强制执行 TDD 原则，确�
 ```
 
 ### 第 2 步：生成测试用例
-为每个用户旅程创建全面的测试用例：
+为每个用户旅程，创建全面的测试用例：
 
 ```python
 import pytest
@@ -80,7 +80,7 @@ class TestSemanticSearch:
         pass
 ```
 
-### 第 3 步：运行测试（应该失败）
+### 第 3 步：运行测试（它们应该失败）
 ```bash
 pytest
 # 测试应该失败 - 我们还没有实现
@@ -92,7 +92,7 @@ pytest
 ```python
 # 由测试指导的实现
 async def search_markets(query: str) -> list[Market]:
-    # 在这里实现
+    # 实现放在这里
     pass
 ```
 
@@ -464,22 +464,13 @@ assert len(result["items"]) == 3
 
 ## 持续测试
 
-### 开发时 watch 模式
+### 开发时 Watch 模式
 ```bash
 # 文件更改时自动运行测试
 pytest -f
 
 # 或安装 pytest-watch
 ptw
-```
-
-### 只运行失败的测试
-```bash
-# 重新运行上次失败的测试
-pytest --lf
-
-# 先运行失败的，然后其他的
-pytest --ff
 ```
 
 ### 预提交钩子 (.pre-commit-config.yaml)
@@ -546,29 +537,6 @@ jobs:
 8. **保持测试快速** - 单元测试 < 50ms 每个
 9. **清理副作用** - 使用 fixture 清理
 10. **审查覆盖率报告** - 识别覆盖缺口
-
-## 异步测试
-
-```python
-import pytest
-import asyncio
-
-@pytest.mark.asyncio
-async def test_async_function():
-    result = await async_function()
-    assert result == "expected"
-
-@pytest.fixture
-async def async_client():
-    async with AsyncClient() as client:
-        yield client
-        # 清理在 yield 之后
-
-@pytest.mark.asyncio
-async def test_with_async_fixture(async_client):
-    response = await async_client.get("/api/test")
-    assert response.status_code == 200
-```
 
 ## 成功指标
 
