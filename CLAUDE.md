@@ -24,6 +24,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ├── my/                          # 个人配置
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
+│   │   ├── rules/               # 改造后的 rules（中文/个性化）
 │   │   └── skills/              # 改造后的 skills
 │   ├── opencode/                # OpenCode 专属配置
 │   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
@@ -75,6 +76,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | 目录 | 目标位置 |
 |------|----------|
 | `my/claudecode/agents/` | Claude Code (`~/.claude/agents/`) |
+| `my/claudecode/rules/` | Claude Code (`~/.claude/rules/`) |
 | `my/claudecode/skills/` | Claude Code (`~/.claude/skills/`) |
 | `my/opencode/agents/` | OpenCode (`~/.config/opencode/agents/`) |
 | `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
@@ -226,6 +228,19 @@ EOF
 | `tdd-guide-py.md` | Python TDD 测试专家 | subagent |
 
 > 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
+
+## 可用 Rules (`my/claudecode/rules/`)
+
+| 文件 | 描述 |
+|------|------|
+| `coding-style.md` | 编码风格指南：不可变性、文件组织、错误处理、输入验证 |
+| `git-workflow.md` | Git 工作流：Commit 格式、PR 流程、TDD 方法 |
+| `testing.md` | 测试要求：80% 覆盖率、TDD 工作流、测试类型 |
+| `performance.md` | 性能优化：模型选择策略、上下文窗口管理 |
+| `patterns.md` | 通用设计模式：API 响应格式、Custom Hooks、Repository 模式 |
+| `hooks.md` | Hooks 系统：PreToolUse、PostToolUse、Stop hooks |
+| `agents.md` | Agent 编排：可用 Agents、并行任务执行、多角度分析 |
+| `security.md` | 安全指南：安全检查、Secret 管理、安全响应协议 |
 
 ## 可用 Skills
 
