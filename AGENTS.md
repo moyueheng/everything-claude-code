@@ -217,6 +217,7 @@ EOF
 
 | 分类 | 文件 | 描述 | 触发场景 |
 |------|------|------|----------|
+| **dev-** | `dev-architecture-critic/` | 全栈架构找茬与改进方向评审 | 架构评审/设计/重构 |
 | **dev-** | `dev-async-modernize/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup |
 | **dev-** | `dev-plan/` | 开发项目规划 | 新功能、复杂重构前的实施计划 |
 | **dev-** | `dev-review-py/` | Python 代码审查 | 检查未提交的 Python 代码 |
@@ -235,6 +236,7 @@ EOF
 
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
+| **dev-** | `dev-architecture-critic/` | 全栈架构找茬与改进方向评审 | `$dev-architecture-critic` |
 | **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | `$dev-tdd-ts` |
 | **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | `$dev-tdd-py` |
 | **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |
