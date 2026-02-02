@@ -1,36 +1,36 @@
 ---
-name: obsidian-bases
-description: Create and edit Obsidian Bases (.base files) with views, filters, formulas, and summaries. Use when working with .base files, creating database-like views of notes, or when the user mentions Bases, table views, card views, filters, or formulas in Obsidian.
+name: life-obsidian-bases
+description: 创建和编辑 Obsidian Bases (.base 文件)，包含 views、filters、formulas 和 summaries。当处理 .base 文件、创建类似数据库的笔记视图，或用户提到 Obsidian 中的 Bases、table views、card views、filters 或 formulas 时使用。
 ---
 
 # Obsidian Bases Skill
 
-This skill enables skills-compatible agents to create and edit valid Obsidian Bases (`.base` files) including views, filters, formulas, and all related configurations.
+此 skill 使 agents 能够创建和编辑有效的 Obsidian Bases（`.base` 文件），包括 views、filters、formulas 和所有相关配置。
 
-## Overview
+## 概述
 
-Obsidian Bases are YAML-based files that define dynamic views of notes in an Obsidian vault. A Base file can contain multiple views, global filters, formulas, property configurations, and custom summaries.
+Obsidian Bases 是基于 YAML 的文件，用于在 Obsidian vault 中定义笔记的动态视图。Base 文件可以包含多个 views、全局 filters、formulas、property 配置和自定义 summaries。
 
-## File Format
+## 文件格式
 
-Base files use the `.base` extension and contain valid YAML. They can also be embedded in Markdown code blocks.
+Base 文件使用 `.base` 扩展名，包含有效的 YAML。它们也可以嵌入 Markdown 代码块中。
 
-## Complete Schema
+## 完整 Schema
 
 ```yaml
-# Global filters apply to ALL views in the base
+# 全局 filters 应用于 base 中的所有 views
 filters:
-  # Can be a single filter string
-  # OR a recursive filter object with and/or/not
+  # 可以是单个 filter 字符串
+  # 或带有 and/or/not 的递归 filter 对象
   and: []
   or: []
   not: []
 
-# Define formula properties that can be used across all views
+# 定义可在所有 views 中使用的 formula properties
 formulas:
   formula_name: 'expression'
 
-# Configure display names and settings for properties
+# 配置 properties 的显示名称和设置
 properties:
   property_name:
     displayName: "Display Name"
@@ -39,56 +39,56 @@ properties:
   file.ext:
     displayName: "Extension"
 
-# Define custom summary formulas
+# 定义自定义 summary formulas
 summaries:
   custom_summary_name: 'values.mean().round(3)'
 
-# Define one or more views
+# 定义一个或多个 views
 views:
   - type: table | cards | list | map
     name: "View Name"
-    limit: 10                    # Optional: limit results
-    groupBy:                     # Optional: group results
+    limit: 10                    # 可选: 限制结果数量
+    groupBy:                     # 可选: 分组结果
       property: property_name
       direction: ASC | DESC
-    filters:                     # View-specific filters
+    filters:                     # View 特定的 filters
       and: []
-    order:                       # Properties to display in order
+    order:                       # 按顺序显示的 properties
       - file.name
       - property_name
       - formula.formula_name
-    summaries:                   # Map properties to summary formulas
+    summaries:                   # 将 properties 映射到 summary formulas
       property_name: Average
 ```
 
-## Filter Syntax
+## Filter 语法
 
-Filters narrow down results. They can be applied globally or per-view.
+Filters 用于缩小结果范围。它们可以全局应用或按 view 应用。
 
-### Filter Structure
+### Filter 结构
 
 ```yaml
-# Single filter
+# 单个 filter
 filters: 'status == "done"'
 
-# AND - all conditions must be true
+# AND - 所有条件必须为真
 filters:
   and:
     - 'status == "done"'
     - 'priority > 3'
 
-# OR - any condition can be true
+# OR - 任一条件可为真
 filters:
   or:
     - 'file.hasTag("book")'
     - 'file.hasTag("article")'
 
-# NOT - exclude matching items
+# NOT - 排除匹配项
 filters:
   not:
     - 'file.hasTag("archived")'
 
-# Nested filters
+# 嵌套 filters
 filters:
   or:
     - file.hasTag("tag")
@@ -100,165 +100,165 @@ filters:
         - file.inFolder("Required Reading")
 ```
 
-### Filter Operators
+### Filter 运算符
 
-| Operator | Description |
+| 运算符 | 描述 |
 |----------|-------------|
-| `==` | equals |
-| `!=` | not equal |
-| `>` | greater than |
-| `<` | less than |
-| `>=` | greater than or equal |
-| `<=` | less than or equal |
-| `&&` | logical and |
-| `\|\|` | logical or |
-| <code>!</code> | logical not |
+| `==` | 等于 |
+| `!=` | 不等于 |
+| `>` | 大于 |
+| `<` | 小于 |
+| `>=` | 大于或等于 |
+| `<=` | 小于或等于 |
+| `&&` | 逻辑与 |
+| `\|\|` | 逻辑或 |
+| <code>!</code> | 逻辑非 |
 
 ## Properties
 
-### Three Types of Properties
+### 三种 Property 类型
 
-1. **Note properties** - From frontmatter: `note.author` or just `author`
-2. **File properties** - File metadata: `file.name`, `file.mtime`, etc.
-3. **Formula properties** - Computed values: `formula.my_formula`
+1. **Note properties** - 来自 frontmatter: `note.author` 或仅 `author`
+2. **File properties** - 文件元数据: `file.name`, `file.mtime` 等
+3. **Formula properties** - 计算值: `formula.my_formula`
 
-### File Properties Reference
+### File Properties 参考
 
-| Property | Type | Description |
+| Property | 类型 | 描述 |
 |----------|------|-------------|
-| `file.name` | String | File name |
-| `file.basename` | String | File name without extension |
-| `file.path` | String | Full path to file |
-| `file.folder` | String | Parent folder path |
-| `file.ext` | String | File extension |
-| `file.size` | Number | File size in bytes |
-| `file.ctime` | Date | Created time |
-| `file.mtime` | Date | Modified time |
-| `file.tags` | List | All tags in file |
-| `file.links` | List | Internal links in file |
-| `file.backlinks` | List | Files linking to this file |
-| `file.embeds` | List | Embeds in the note |
-| `file.properties` | Object | All frontmatter properties |
+| `file.name` | String | 文件名 |
+| `file.basename` | String | 不带扩展名的文件名 |
+| `file.path` | String | 文件的完整路径 |
+| `file.folder` | String | 父文件夹路径 |
+| `file.ext` | String | 文件扩展名 |
+| `file.size` | Number | 文件大小（字节） |
+| `file.ctime` | Date | 创建时间 |
+| `file.mtime` | Date | 修改时间 |
+| `file.tags` | List | 文件中的所有 tags |
+| `file.links` | List | 文件中的内部 links |
+| `file.backlinks` | List | 链接到此文件的文件 |
+| `file.embeds` | List | 笔记中的 embeds |
+| `file.properties` | Object | 所有 frontmatter properties |
 
-### The `this` Keyword
+### `this` 关键字
 
-- In main content area: refers to the base file itself
-- When embedded: refers to the embedding file
-- In sidebar: refers to the active file in main content
+- 在主内容区域：指 base 文件本身
+- 嵌入时：指嵌入的文件
+- 在侧边栏：指主内容中的活动文件
 
-## Formula Syntax
+## Formula 语法
 
-Formulas compute values from properties. Defined in the `formulas` section.
+Formulas 从 properties 计算值。在 `formulas` 部分定义。
 
 ```yaml
 formulas:
-  # Simple arithmetic
+  # 简单算术
   total: "price * quantity"
 
-  # Conditional logic
+  # 条件逻辑
   status_icon: 'if(done, "✅", "⏳")'
 
-  # String formatting
+  # 字符串格式化
   formatted_price: 'if(price, price.toFixed(2) + " dollars")'
 
-  # Date formatting
+  # 日期格式化
   created: 'file.ctime.format("YYYY-MM-DD")'
 
-  # Calculate days since created (use .days for Duration)
+  # 计算自创建以来的天数（对 Duration 使用 .days）
   days_old: '(now() - file.ctime).days'
 
-  # Calculate days until due date
+  # 计算距截止日期的天数
   days_until_due: 'if(due_date, (date(due_date) - today()).days, "")'
 ```
 
-## Functions Reference
+## Functions 参考
 
-### Global Functions
+### 全局 Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `date()` | `date(string): date` | Parse string to date. Format: `YYYY-MM-DD HH:mm:ss` |
-| `duration()` | `duration(string): duration` | Parse duration string |
-| `now()` | `now(): date` | Current date and time |
-| `today()` | `today(): date` | Current date (time = 00:00:00) |
-| `if()` | `if(condition, trueResult, falseResult?)` | Conditional |
-| `min()` | `min(n1, n2, ...): number` | Smallest number |
-| `max()` | `max(n1, n2, ...): number` | Largest number |
-| `number()` | `number(any): number` | Convert to number |
-| `link()` | `link(path, display?): Link` | Create a link |
-| `list()` | `list(element): List` | Wrap in list if not already |
-| `file()` | `file(path): file` | Get file object |
-| `image()` | `image(path): image` | Create image for rendering |
-| `icon()` | `icon(name): icon` | Lucide icon by name |
-| `html()` | `html(string): html` | Render as HTML |
-| `escapeHTML()` | `escapeHTML(string): string` | Escape HTML characters |
+| `date()` | `date(string): date` | 将字符串解析为日期。格式: `YYYY-MM-DD HH:mm:ss` |
+| `duration()` | `duration(string): duration` | 解析 duration 字符串 |
+| `now()` | `now(): date` | 当前日期和时间 |
+| `today()` | `today(): date` | 当前日期（时间 = 00:00:00） |
+| `if()` | `if(condition, trueResult, falseResult?)` | 条件判断 |
+| `min()` | `min(n1, n2, ...): number` | 最小数字 |
+| `max()` | `max(n1, n2, ...): number` | 最大数字 |
+| `number()` | `number(any): number` | 转换为数字 |
+| `link()` | `link(path, display?): Link` | 创建 link |
+| `list()` | `list(element): List` | 如果还不是则包装为 list |
+| `file()` | `file(path): file` | 获取 file 对象 |
+| `image()` | `image(path): image` | 创建用于渲染的 image |
+| `icon()` | `icon(name): icon` | 按名称的 Lucide icon |
+| `html()` | `html(string): html` | 渲染为 HTML |
+| `escapeHTML()` | `escapeHTML(string): string` | 转义 HTML 字符 |
 
-### Any Type Functions
+### Any 类型 Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `isTruthy()` | `any.isTruthy(): boolean` | Coerce to boolean |
-| `isType()` | `any.isType(type): boolean` | Check type |
-| `toString()` | `any.toString(): string` | Convert to string |
+| `isTruthy()` | `any.isTruthy(): boolean` | 强制转换为 boolean |
+| `isType()` | `any.isType(type): boolean` | 检查类型 |
+| `toString()` | `any.toString(): string` | 转换为 string |
 
 ### Date Functions & Fields
 
 **Fields:** `date.year`, `date.month`, `date.day`, `date.hour`, `date.minute`, `date.second`, `date.millisecond`
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `date()` | `date.date(): date` | Remove time portion |
-| `format()` | `date.format(string): string` | Format with Moment.js pattern |
-| `time()` | `date.time(): string` | Get time as string |
-| `relative()` | `date.relative(): string` | Human-readable relative time |
-| `isEmpty()` | `date.isEmpty(): boolean` | Always false for dates |
+| `date()` | `date.date(): date` | 移除时间部分 |
+| `format()` | `date.format(string): string` | 使用 Moment.js 模式格式化 |
+| `time()` | `date.time(): string` | 获取时间字符串 |
+| `relative()` | `date.relative(): string` | 人类可读的相对时间 |
+| `isEmpty()` | `date.isEmpty(): boolean` | 对日期始终为 false |
 
-### Duration Type
+### Duration 类型
 
-When subtracting two dates, the result is a **Duration** type (not a number). Duration has its own properties and methods.
+当两个日期相减时，结果是 **Duration** 类型（不是数字）。Duration 有自己的属性和方法。
 
 **Duration Fields:**
-| Field | Type | Description |
+| Field | 类型 | 描述 |
 |-------|------|-------------|
-| `duration.days` | Number | Total days in duration |
-| `duration.hours` | Number | Total hours in duration |
-| `duration.minutes` | Number | Total minutes in duration |
-| `duration.seconds` | Number | Total seconds in duration |
-| `duration.milliseconds` | Number | Total milliseconds in duration |
+| `duration.days` | Number | duration 中的总天数 |
+| `duration.hours` | Number | duration 中的总小时数 |
+| `duration.minutes` | Number | duration 中的总分钟数 |
+| `duration.seconds` | Number | duration 中的总秒数 |
+| `duration.milliseconds` | Number | duration 中的总毫秒数 |
 
-**IMPORTANT:** Duration does NOT support `.round()`, `.floor()`, `.ceil()` directly. You must access a numeric field first (like `.days`), then apply number functions.
+**重要:** Duration 不直接支持 `.round()`、`.floor()`、`.ceil()`。你必须先访问数字字段（如 `.days`），然后应用 number functions。
 
 ```yaml
-# CORRECT: Calculate days between dates
-"(date(due_date) - today()).days"                    # Returns number of days
-"(now() - file.ctime).days"                          # Days since created
+# 正确: 计算日期之间的天数
+"(date(due_date) - today()).days"                    # 返回天数
+"(now() - file.ctime).days"                          # 自创建以来的天数
 
-# CORRECT: Round the numeric result if needed
-"(date(due_date) - today()).days.round(0)"           # Rounded days
-"(now() - file.ctime).hours.round(0)"                # Rounded hours
+# 正确: 如有需要，四舍五入数字结果
+"(date(due_date) - today()).days.round(0)"           # 四舍五入后的天数
+"(now() - file.ctime).hours.round(0)"                # 四舍五入后的小时数
 
-# WRONG - will cause error:
-# "((date(due) - today()) / 86400000).round(0)"      # Duration doesn't support division then round
+# 错误 - 会导致错误:
+# "((date(due) - today()) / 86400000).round(0)"      # Duration 不支持除法然后四舍五入
 ```
 
-### Date Arithmetic
+### 日期运算
 
 ```yaml
-# Duration units: y/year/years, M/month/months, d/day/days,
+# Duration 单位: y/year/years, M/month/months, d/day/days,
 #                 w/week/weeks, h/hour/hours, m/minute/minutes, s/second/seconds
 
-# Add/subtract durations
-"date + \"1M\""           # Add 1 month
-"date - \"2h\""           # Subtract 2 hours
-"now() + \"1 day\""       # Tomorrow
-"today() + \"7d\""        # A week from today
+# 添加/减去 durations
+"date + \"1M\""           # 加 1 个月
+"date - \"2h\""           # 减 2 小时
+"now() + \"1 day\""       # 明天
+"today() + \"7d\""        # 一周后
 
-# Subtract dates returns Duration type
-"now() - file.ctime"                    # Returns Duration
-"(now() - file.ctime).days"             # Get days as number
-"(now() - file.ctime).hours"            # Get hours as number
+# 日期相减返回 Duration 类型
+"now() - file.ctime"                    # 返回 Duration
+"(now() - file.ctime).days"             # 获取天数作为数字
+"(now() - file.ctime).hours"            # 获取小时数作为数字
 
-# Complex duration arithmetic
+# 复杂的 duration 运算
 "now() + (duration('1d') * 2)"
 ```
 
@@ -266,86 +266,86 @@ When subtracting two dates, the result is a **Duration** type (not a number). Du
 
 **Field:** `string.length`
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `contains()` | `string.contains(value): boolean` | Check substring |
-| `containsAll()` | `string.containsAll(...values): boolean` | All substrings present |
-| `containsAny()` | `string.containsAny(...values): boolean` | Any substring present |
-| `startsWith()` | `string.startsWith(query): boolean` | Starts with query |
-| `endsWith()` | `string.endsWith(query): boolean` | Ends with query |
-| `isEmpty()` | `string.isEmpty(): boolean` | Empty or not present |
-| `lower()` | `string.lower(): string` | To lowercase |
-| `title()` | `string.title(): string` | To Title Case |
-| `trim()` | `string.trim(): string` | Remove whitespace |
-| `replace()` | `string.replace(pattern, replacement): string` | Replace pattern |
-| `repeat()` | `string.repeat(count): string` | Repeat string |
-| `reverse()` | `string.reverse(): string` | Reverse string |
-| `slice()` | `string.slice(start, end?): string` | Substring |
-| `split()` | `string.split(separator, n?): list` | Split to list |
+| `contains()` | `string.contains(value): boolean` | 检查子字符串 |
+| `containsAll()` | `string.containsAll(...values): boolean` | 所有子字符串都存在 |
+| `containsAny()` | `string.containsAny(...values): boolean` | 任一子字符串存在 |
+| `startsWith()` | `string.startsWith(query): boolean` | 以 query 开头 |
+| `endsWith()` | `string.endsWith(query): boolean` | 以 query 结尾 |
+| `isEmpty()` | `string.isEmpty(): boolean` | 为空或不存在 |
+| `lower()` | `string.lower(): string` | 转为小写 |
+| `title()` | `string.title(): string` | 转为 Title Case |
+| `trim()` | `string.trim(): string` | 移除空白字符 |
+| `replace()` | `string.replace(pattern, replacement): string` | 替换模式 |
+| `repeat()` | `string.repeat(count): string` | 重复字符串 |
+| `reverse()` | `string.reverse(): string` | 反转字符串 |
+| `slice()` | `string.slice(start, end?): string` | 子字符串 |
+| `split()` | `string.split(separator, n?): list` | 分割为 list |
 
 ### Number Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `abs()` | `number.abs(): number` | Absolute value |
-| `ceil()` | `number.ceil(): number` | Round up |
-| `floor()` | `number.floor(): number` | Round down |
-| `round()` | `number.round(digits?): number` | Round to digits |
-| `toFixed()` | `number.toFixed(precision): string` | Fixed-point notation |
-| `isEmpty()` | `number.isEmpty(): boolean` | Not present |
+| `abs()` | `number.abs(): number` | 绝对值 |
+| `ceil()` | `number.ceil(): number` | 向上取整 |
+| `floor()` | `number.floor(): number` | 向下取整 |
+| `round()` | `number.round(digits?): number` | 四舍五入到指定位数 |
+| `toFixed()` | `number.toFixed(precision): string` | 定点表示法 |
+| `isEmpty()` | `number.isEmpty(): boolean` | 不存在 |
 
 ### List Functions
 
 **Field:** `list.length`
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `contains()` | `list.contains(value): boolean` | Element exists |
-| `containsAll()` | `list.containsAll(...values): boolean` | All elements exist |
-| `containsAny()` | `list.containsAny(...values): boolean` | Any element exists |
-| `filter()` | `list.filter(expression): list` | Filter by condition (uses `value`, `index`) |
-| `map()` | `list.map(expression): list` | Transform elements (uses `value`, `index`) |
-| `reduce()` | `list.reduce(expression, initial): any` | Reduce to single value (uses `value`, `index`, `acc`) |
-| `flat()` | `list.flat(): list` | Flatten nested lists |
-| `join()` | `list.join(separator): string` | Join to string |
-| `reverse()` | `list.reverse(): list` | Reverse order |
-| `slice()` | `list.slice(start, end?): list` | Sublist |
-| `sort()` | `list.sort(): list` | Sort ascending |
-| `unique()` | `list.unique(): list` | Remove duplicates |
-| `isEmpty()` | `list.isEmpty(): boolean` | No elements |
+| `contains()` | `list.contains(value): boolean` | 元素存在 |
+| `containsAll()` | `list.containsAll(...values): boolean` | 所有元素存在 |
+| `containsAny()` | `list.containsAny(...values): boolean` | 任一元素存在 |
+| `filter()` | `list.filter(expression): list` | 按条件过滤（使用 `value`, `index`） |
+| `map()` | `list.map(expression): list` | 转换元素（使用 `value`, `index`） |
+| `reduce()` | `list.reduce(expression, initial): any` | 归约为单个值（使用 `value`, `index`, `acc`） |
+| `flat()` | `list.flat(): list` | 扁平化嵌套 lists |
+| `join()` | `list.join(separator): string` | 连接为 string |
+| `reverse()` | `list.reverse(): list` | 反转顺序 |
+| `slice()` | `list.slice(start, end?): list` | 子 list |
+| `sort()` | `list.sort(): list` | 升序排序 |
+| `unique()` | `list.unique(): list` | 移除重复项 |
+| `isEmpty()` | `list.isEmpty(): boolean` | 无元素 |
 
 ### File Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `asLink()` | `file.asLink(display?): Link` | Convert to link |
-| `hasLink()` | `file.hasLink(otherFile): boolean` | Has link to file |
-| `hasTag()` | `file.hasTag(...tags): boolean` | Has any of the tags |
-| `hasProperty()` | `file.hasProperty(name): boolean` | Has property |
-| `inFolder()` | `file.inFolder(folder): boolean` | In folder or subfolder |
+| `asLink()` | `file.asLink(display?): Link` | 转换为 link |
+| `hasLink()` | `file.hasLink(otherFile): boolean` | 有指向文件的 link |
+| `hasTag()` | `file.hasTag(...tags): boolean` | 有任一 tags |
+| `hasProperty()` | `file.hasProperty(name): boolean` | 有 property |
+| `inFolder()` | `file.inFolder(folder): boolean` | 在文件夹或子文件夹中 |
 
 ### Link Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `asFile()` | `link.asFile(): file` | Get file object |
-| `linksTo()` | `link.linksTo(file): boolean` | Links to file |
+| `asFile()` | `link.asFile(): file` | 获取 file 对象 |
+| `linksTo()` | `link.linksTo(file): boolean` | 链接到文件 |
 
 ### Object Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `isEmpty()` | `object.isEmpty(): boolean` | No properties |
-| `keys()` | `object.keys(): list` | List of keys |
-| `values()` | `object.values(): list` | List of values |
+| `isEmpty()` | `object.isEmpty(): boolean` | 无 properties |
+| `keys()` | `object.keys(): list` | keys 的 list |
+| `values()` | `object.values(): list` | values 的 list |
 
-### Regular Expression Functions
+### 正则表达式 Functions
 
-| Function | Signature | Description |
+| Function | 签名 | 描述 |
 |----------|-----------|-------------|
-| `matches()` | `regexp.matches(string): boolean` | Test if matches |
+| `matches()` | `regexp.matches(string): boolean` | 测试是否匹配 |
 
-## View Types
+## View 类型
 
 ### Table View
 
@@ -387,38 +387,38 @@ views:
 
 ### Map View
 
-Requires latitude/longitude properties and the Maps community plugin.
+需要 latitude/longitude properties 和 Maps 社区插件。
 
 ```yaml
 views:
   - type: map
     name: "Locations"
-    # Map-specific settings for lat/lng properties
+    # Map 特定的 lat/lng properties 设置
 ```
 
-## Default Summary Formulas
+## 默认 Summary Formulas
 
-| Name | Input Type | Description |
+| 名称 | 输入类型 | 描述 |
 |------|------------|-------------|
-| `Average` | Number | Mathematical mean |
-| `Min` | Number | Smallest number |
-| `Max` | Number | Largest number |
-| `Sum` | Number | Sum of all numbers |
+| `Average` | Number | 数学平均值 |
+| `Min` | Number | 最小数字 |
+| `Max` | Number | 最大数字 |
+| `Sum` | Number | 所有数字的总和 |
 | `Range` | Number | Max - Min |
-| `Median` | Number | Mathematical median |
-| `Stddev` | Number | Standard deviation |
-| `Earliest` | Date | Earliest date |
-| `Latest` | Date | Latest date |
+| `Median` | Number | 数学中位数 |
+| `Stddev` | Number | 标准差 |
+| `Earliest` | Date | 最早日期 |
+| `Latest` | Date | 最新日期 |
 | `Range` | Date | Latest - Earliest |
-| `Checked` | Boolean | Count of true values |
-| `Unchecked` | Boolean | Count of false values |
-| `Empty` | Any | Count of empty values |
-| `Filled` | Any | Count of non-empty values |
-| `Unique` | Any | Count of unique values |
+| `Checked` | Boolean | true 值的数量 |
+| `Unchecked` | Boolean | false 值的数量 |
+| `Empty` | Any | 空值的数量 |
+| `Filled` | Any | 非空值的数量 |
+| `Unique` | Any | 唯一值的数量 |
 
-## Complete Examples
+## 完整示例
 
-### Task Tracker Base
+### 任务追踪 Base
 
 ```yaml
 filters:
@@ -467,7 +467,7 @@ views:
       - completed_date
 ```
 
-### Reading List Base
+### 阅读列表 Base
 
 ```yaml
 filters:
@@ -512,7 +512,7 @@ views:
       - formula.reading_time
 ```
 
-### Project Notes Base
+### 项目笔记 Base
 
 ```yaml
 filters:
@@ -554,7 +554,7 @@ views:
       - status
 ```
 
-### Daily Notes Index
+### 每日笔记索引
 
 ```yaml
 filters:
@@ -583,47 +583,47 @@ views:
       - file.mtime
 ```
 
-## Embedding Bases
+## 嵌入 Bases
 
-Embed in Markdown files:
+嵌入 Markdown 文件：
 
 ```markdown
 ![[MyBase.base]]
 
-<!-- Specific view -->
+<!-- 特定 view -->
 ![[MyBase.base#View Name]]
 ```
 
-## YAML Quoting Rules
+## YAML 引号规则
 
-- Use single quotes for formulas containing double quotes: `'if(done, "Yes", "No")'`
-- Use double quotes for simple strings: `"My View Name"`
-- Escape nested quotes properly in complex expressions
+- 对包含双引号的 formulas 使用单引号: `'if(done, "Yes", "No")'`
+- 对简单字符串使用双引号: `"My View Name"`
+- 在复杂表达式中正确转义嵌套引号
 
-## Common Patterns
+## 常见模式
 
-### Filter by Tag
+### 按 Tag 过滤
 ```yaml
 filters:
   and:
     - file.hasTag("project")
 ```
 
-### Filter by Folder
+### 按文件夹过滤
 ```yaml
 filters:
   and:
     - file.inFolder("Notes")
 ```
 
-### Filter by Date Range
+### 按日期范围过滤
 ```yaml
 filters:
   and:
     - 'file.mtime > now() - "7d"'
 ```
 
-### Filter by Property Value
+### 按 Property 值过滤
 ```yaml
 filters:
   and:
@@ -631,7 +631,7 @@ filters:
     - 'priority >= 3'
 ```
 
-### Combine Multiple Conditions
+### 组合多个条件
 ```yaml
 filters:
   or:
@@ -643,7 +643,7 @@ filters:
         - 'due != ""'
 ```
 
-## References
+## 参考
 
 - [Bases Syntax](https://help.obsidian.md/bases/syntax)
 - [Functions](https://help.obsidian.md/bases/functions)

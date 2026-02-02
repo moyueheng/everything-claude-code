@@ -1,34 +1,34 @@
 ---
-name: obsidian-markdown
-description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
+name: life-obsidian-markdown
+description: 创建和编辑 Obsidian Flavored Markdown，包含 wikilinks、embeds、callouts、properties 和其他 Obsidian 特定语法。当处理 Obsidian 中的 .md 文件，或用户提到 wikilinks、callouts、frontmatter、tags、embeds 或 Obsidian notes 时使用。
 ---
 
 # Obsidian Flavored Markdown Skill
 
-This skill enables skills-compatible agents to create and edit valid Obsidian Flavored Markdown, including all Obsidian-specific syntax extensions.
+此 skill 使 agents 能够创建和编辑有效的 Obsidian Flavored Markdown，包括所有 Obsidian 特定的语法扩展。
 
-## Overview
+## 概述
 
-Obsidian uses a combination of Markdown flavors:
+Obsidian 使用多种 Markdown 风格的组合：
 - [CommonMark](https://commonmark.org/)
 - [GitHub Flavored Markdown](https://github.github.com/gfm/)
-- [LaTeX](https://www.latex-project.org/) for math
-- Obsidian-specific extensions (wikilinks, callouts, embeds, etc.)
+- [LaTeX](https://www.latex-project.org/) 用于数学公式
+- Obsidian 特定的扩展（wikilinks、callouts、embeds 等）
 
-## Basic Formatting
+## 基本格式
 
-### Paragraphs and Line Breaks
+### 段落和换行
 
 ```markdown
 This is a paragraph.
 
 This is another paragraph (blank line between creates separate paragraphs).
 
-For a line break within a paragraph, add two spaces at the end  
+For a line break within a paragraph, add two spaces at the end
 or use Shift+Enter.
 ```
 
-### Headings
+### 标题
 
 ```markdown
 # Heading 1
@@ -39,31 +39,32 @@ or use Shift+Enter.
 ###### Heading 6
 ```
 
-### Text Formatting
+### 文本格式
 
-| Style | Syntax | Example | Output |
+| 样式 | 语法 | 示例 | 输出 |
 |-------|--------|---------|--------|
-| Bold | `**text**` or `__text__` | `**Bold**` | **Bold** |
-| Italic | `*text*` or `_text_` | `*Italic*` | *Italic* |
-| Bold + Italic | `***text***` | `***Both***` | ***Both*** |
-| Strikethrough | `~~text~~` | `~~Striked~~` | ~~Striked~~ |
-| Highlight | `==text==` | `==Highlighted==` | ==Highlighted== |
-| Inline code | `` `code` `` | `` `code` `` | `code` |
+| 粗体 | `**text**` 或 `__text__` | `**Bold**` | **Bold** |
+| 斜体 | `*text*` 或 `_text_` | `*Italic*` | *Italic* |
+| 粗体 + 斜体 | `***text***` | `***Both***` | ***Both*** |
+| 删除线 | `~~text~~` | `~~Striked~~` | ~~Striked~~ |
+| 高亮 | `==text==` | `==Highlighted==` | ==Highlighted== |
+| 行内代码 | `` `code` `` | `` `code` `` | `code` |
 
-### Escaping Formatting
+### 转义格式
 
-Use backslash to escape special characters:
+使用反斜杠转义特殊字符：
+
 ```markdown
 \*This won't be italic\*
 \#This won't be a heading
 1\. This won't be a list item
 ```
 
-Common characters to escape: `\*`, `\_`, `\#`, `` \` ``, `\|`, `\~`
+常见需要转义的字符：`\*`, `\_`, `\#`, `` \` ``, `\|`, `\~`
 
-## Internal Links (Wikilinks)
+## 内部链接 (Wikilinks)
 
-### Basic Links
+### 基本链接
 
 ```markdown
 [[Note Name]]
@@ -71,7 +72,7 @@ Common characters to escape: `\*`, `\_`, `\#`, `` \` ``, `\|`, `\~`
 [[Note Name|Display Text]]
 ```
 
-### Link to Headings
+### 链接到标题
 
 ```markdown
 [[Note Name#Heading]]
@@ -80,19 +81,21 @@ Common characters to escape: `\*`, `\_`, `\#`, `` \` ``, `\|`, `\~`
 [[##Search all headings in vault]]
 ```
 
-### Link to Blocks
+### 链接到块
 
 ```markdown
 [[Note Name#^block-id]]
 [[Note Name#^block-id|Custom Text]]
 ```
 
-Define a block ID by adding `^block-id` at the end of a paragraph:
+通过在段落末尾添加 `^block-id` 来定义块 ID：
+
 ```markdown
 This is a paragraph that can be linked to. ^my-block-id
 ```
 
-For lists and quotes, add the block ID on a separate line:
+对于列表和引用，在单独一行添加块 ID：
+
 ```markdown
 > This is a quote
 > With multiple lines
@@ -100,14 +103,14 @@ For lists and quotes, add the block ID on a separate line:
 ^quote-id
 ```
 
-### Search Links
+### 搜索链接
 
 ```markdown
-[[##heading]]     Search for headings containing "heading"
-[[^^block]]       Search for blocks containing "block"
+[[##heading]]     搜索包含 "heading" 的 headings
+[[^^block]]       搜索包含 "block" 的 blocks
 ```
 
-## Markdown-Style Links
+## Markdown 风格链接
 
 ```markdown
 [Display Text](Note%20Name.md)
@@ -116,11 +119,11 @@ For lists and quotes, add the block ID on a separate line:
 [Note](obsidian://open?vault=VaultName&file=Note.md)
 ```
 
-Note: Spaces must be URL-encoded as `%20` in Markdown links.
+注意：Markdown 链接中的空格必须 URL 编码为 `%20`。
 
 ## Embeds
 
-### Embed Notes
+### Embed 笔记
 
 ```markdown
 ![[Note Name]]
@@ -128,22 +131,22 @@ Note: Spaces must be URL-encoded as `%20` in Markdown links.
 ![[Note Name#^block-id]]
 ```
 
-### Embed Images
+### Embed 图片
 
 ```markdown
 ![[image.png]]
-![[image.png|640x480]]    Width x Height
-![[image.png|300]]        Width only (maintains aspect ratio)
+![[image.png|640x480]]    宽度 x 高度
+![[image.png|300]]        仅宽度（保持长宽比）
 ```
 
-### External Images
+### 外部图片
 
 ```markdown
 ![Alt text](https://example.com/image.png)
 ![Alt text|300](https://example.com/image.png)
 ```
 
-### Embed Audio
+### Embed 音频
 
 ```markdown
 ![[audio.mp3]]
@@ -158,13 +161,14 @@ Note: Spaces must be URL-encoded as `%20` in Markdown links.
 ![[document.pdf#height=400]]
 ```
 
-### Embed Lists
+### Embed 列表
 
 ```markdown
 ![[Note#^list-id]]
 ```
 
-Where the list has been defined with a block ID:
+其中列表已用块 ID 定义：
+
 ```markdown
 - Item 1
 - Item 2
@@ -173,7 +177,7 @@ Where the list has been defined with a block ID:
 ^list-id
 ```
 
-### Embed Search Results
+### Embed 搜索结果
 
 ````markdown
 ```query
@@ -183,7 +187,7 @@ tag:#project status:done
 
 ## Callouts
 
-### Basic Callout
+### 基本 Callout
 
 ```markdown
 > [!note]
@@ -195,43 +199,43 @@ tag:#project status:done
 > [!tip] Title Only
 ```
 
-### Foldable Callouts
+### 可折叠 Callouts
 
 ```markdown
-> [!faq]- Collapsed by default
+> [!faq]- 默认折叠
 > This content is hidden until expanded.
 
-> [!faq]+ Expanded by default
+> [!faq]+ 默认展开
 > This content is visible but can be collapsed.
 ```
 
-### Nested Callouts
+### 嵌套 Callouts
 
 ```markdown
-> [!question] Outer callout
-> > [!note] Inner callout
+> [!question] 外层 callout
+> > [!note] 内层 callout
 > > Nested content
 ```
 
-### Supported Callout Types
+### 支持的 Callout 类型
 
-| Type | Aliases | Description |
+| 类型 | 别名 | 描述 |
 |------|---------|-------------|
-| `note` | - | Blue, pencil icon |
-| `abstract` | `summary`, `tldr` | Teal, clipboard icon |
-| `info` | - | Blue, info icon |
-| `todo` | - | Blue, checkbox icon |
-| `tip` | `hint`, `important` | Cyan, flame icon |
-| `success` | `check`, `done` | Green, checkmark icon |
-| `question` | `help`, `faq` | Yellow, question mark |
-| `warning` | `caution`, `attention` | Orange, warning icon |
-| `failure` | `fail`, `missing` | Red, X icon |
-| `danger` | `error` | Red, zap icon |
-| `bug` | - | Red, bug icon |
-| `example` | - | Purple, list icon |
-| `quote` | `cite` | Gray, quote icon |
+| `note` | - | 蓝色，铅笔图标 |
+| `abstract` | `summary`, `tldr` | 青色，剪贴板图标 |
+| `info` | - | 蓝色，信息图标 |
+| `todo` | - | 蓝色，复选框图标 |
+| `tip` | `hint`, `important` | 青色，火焰图标 |
+| `success` | `check`, `done` | 绿色，勾选图标 |
+| `question` | `help`, `faq` | 黄色，问号 |
+| `warning` | `caution`, `attention` | 橙色，警告图标 |
+| `failure` | `fail`, `missing` | 红色，X 图标 |
+| `danger` | `error` | 红色，闪电图标 |
+| `bug` | - | 红色，bug 图标 |
+| `example` | - | 紫色，列表图标 |
+| `quote` | `cite` | 灰色，引用图标 |
 
-### Custom Callouts (CSS)
+### 自定义 Callouts (CSS)
 
 ```css
 .callout[data-callout="custom-type"] {
@@ -240,9 +244,9 @@ tag:#project status:done
 }
 ```
 
-## Lists
+## 列表
 
-### Unordered Lists
+### 无序列表
 
 ```markdown
 - Item 1
@@ -251,11 +255,11 @@ tag:#project status:done
   - Another nested
 - Item 3
 
-* Also works with asterisks
-+ Or plus signs
+* 也可以使用星号
++ 或加号
 ```
 
-### Ordered Lists
+### 有序列表
 
 ```markdown
 1. First item
@@ -264,11 +268,11 @@ tag:#project status:done
    2. Another nested
 3. Third item
 
-1) Alternative syntax
-2) With parentheses
+1) 替代语法
+2) 带括号
 ```
 
-### Task Lists
+### 任务列表
 
 ```markdown
 - [ ] Incomplete task
@@ -278,7 +282,7 @@ tag:#project status:done
   - [x] Subtask 2
 ```
 
-## Quotes
+## 引用
 
 ```markdown
 > This is a blockquote.
@@ -289,16 +293,16 @@ tag:#project status:done
 > > Nested quotes work too.
 ```
 
-## Code
+## 代码
 
-### Inline Code
+### 行内代码
 
 ```markdown
 Use `backticks` for inline code.
 Use double backticks for ``code with a ` backtick inside``.
 ```
 
-### Code Blocks
+### 代码块
 
 ````markdown
 ```
@@ -319,9 +323,9 @@ def greet(name):
 ```
 ````
 
-### Nesting Code Blocks
+### 嵌套代码块
 
-Use more backticks or tildes for the outer block:
+对外层块使用更多反引号或波浪号：
 
 `````markdown
 ````markdown
@@ -331,8 +335,9 @@ console.log("Hello")
 ```
 ````
 `````
+````
 
-## Tables
+## 表格
 
 ```markdown
 | Header 1 | Header 2 | Header 3 |
@@ -341,7 +346,7 @@ console.log("Hello")
 | Cell 4   | Cell 5   | Cell 6   |
 ```
 
-### Alignment
+### 对齐
 
 ```markdown
 | Left     | Center   | Right    |
@@ -349,24 +354,25 @@ console.log("Hello")
 | Left     | Center   | Right    |
 ```
 
-### Using Pipes in Tables
+### 在表格中使用管道
 
-Escape pipes with backslash:
+用反斜杠转义管道符：
+
 ```markdown
 | Column 1 | Column 2 |
 |----------|----------|
 | [[Link\|Display]] | ![[Image\|100]] |
 ```
 
-## Math (LaTeX)
+## 数学公式 (LaTeX)
 
-### Inline Math
+### 行内数学
 
 ```markdown
 This is inline math: $e^{i\pi} + 1 = 0$
 ```
 
-### Block Math
+### 块级数学
 
 ```markdown
 $$
@@ -377,19 +383,19 @@ c & d
 $$
 ```
 
-### Common Math Syntax
+### 常见数学语法
 
 ```markdown
-$x^2$              Superscript
-$x_i$              Subscript
-$\frac{a}{b}$      Fraction
-$\sqrt{x}$         Square root
-$\sum_{i=1}^{n}$   Summation
-$\int_a^b$         Integral
-$\alpha, \beta$    Greek letters
+$x^2$              上标
+$x_i$              下标
+$\frac{a}{b}$      分数
+$\sqrt{x}$         平方根
+$\sum_{i=1}^{n}$   求和
+$\int_a^b$         积分
+$\alpha, \beta$    希腊字母
 ```
 
-## Diagrams (Mermaid)
+## 图表 (Mermaid)
 
 ````markdown
 ```mermaid
@@ -402,7 +408,7 @@ graph TD
 ```
 ````
 
-### Sequence Diagrams
+### 序列图
 
 ````markdown
 ```mermaid
@@ -412,7 +418,7 @@ sequenceDiagram
 ```
 ````
 
-### Linking in Diagrams
+### 图表中的链接
 
 ````markdown
 ```mermaid
@@ -424,7 +430,7 @@ graph TD
 ```
 ````
 
-## Footnotes
+## 脚注
 
 ```markdown
 This sentence has a footnote[^1].
@@ -438,7 +444,7 @@ You can also use named footnotes[^note].
 Inline footnotes are also supported.^[This is an inline footnote.]
 ```
 
-## Comments
+## 注释
 
 ```markdown
 This is visible %%but this is hidden%% text.
@@ -449,7 +455,7 @@ It won't appear in reading view.
 %%
 ```
 
-## Horizontal Rules
+## 水平线
 
 ```markdown
 ---
@@ -461,7 +467,7 @@ ___
 
 ## Properties (Frontmatter)
 
-Properties use YAML frontmatter at the start of a note:
+Properties 使用笔记开头的 YAML frontmatter：
 
 ```yaml
 ---
@@ -482,23 +488,23 @@ due: 2024-02-01T14:30:00
 ---
 ```
 
-### Property Types
+### Property 类型
 
-| Type | Example |
+| 类型 | 示例 |
 |------|---------|
-| Text | `title: My Title` |
-| Number | `rating: 4.5` |
-| Checkbox | `completed: true` |
-| Date | `date: 2024-01-15` |
-| Date & Time | `due: 2024-01-15T14:30:00` |
-| List | `tags: [one, two]` or YAML list |
-| Links | `related: "[[Other Note]]"` |
+| 文本 | `title: My Title` |
+| 数字 | `rating: 4.5` |
+| 复选框 | `completed: true` |
+| 日期 | `date: 2024-01-15` |
+| 日期和时间 | `due: 2024-01-15T14:30:00` |
+| 列表 | `tags: [one, two]` 或 YAML 列表 |
+| 链接 | `related: "[[Other Note]]"` |
 
-### Default Properties
+### 默认 Properties
 
-- `tags` - Note tags
-- `aliases` - Alternative names for the note
-- `cssclasses` - CSS classes applied to the note
+- `tags` - 笔记 tags
+- `aliases` - 笔记的替代名称
+- `cssclasses` - 应用于笔记的 CSS 类
 
 ## Tags
 
@@ -508,7 +514,7 @@ due: 2024-02-01T14:30:00
 #tag-with-dashes
 #tag_with_underscores
 
-In frontmatter:
+在 frontmatter 中：
 ---
 tags:
   - tag1
@@ -516,16 +522,16 @@ tags:
 ---
 ```
 
-Tags can contain:
-- Letters (any language)
-- Numbers (not as first character)
-- Underscores `_`
-- Hyphens `-`
-- Forward slashes `/` (for nesting)
+Tags 可以包含：
+- 字母（任何语言）
+- 数字（不能作为首字符）
+- 下划线 `_`
+- 连字符 `-`
+- 正斜杠 `/`（用于嵌套）
 
-## HTML Content
+## HTML 内容
 
-Obsidian supports HTML within Markdown:
+Obsidian 支持 Markdown 中的 HTML：
 
 ```markdown
 <div class="custom-container">
@@ -540,7 +546,7 @@ Obsidian supports HTML within Markdown:
 <kbd>Ctrl</kbd> + <kbd>C</kbd>
 ```
 
-## Complete Example
+## 完整示例
 
 ````markdown
 ---
@@ -555,14 +561,14 @@ priority: high
 
 # Project Alpha
 
-## Overview
+## 概述
 
 This project aims to [[improve workflow]] using modern techniques.
 
-> [!important] Key Deadline
+> [!important] 关键截止日期
 > The first milestone is due on ==January 30th==.
 
-## Tasks
+## 任务
 
 - [x] Initial planning
 - [x] Resource allocation
@@ -572,7 +578,7 @@ This project aims to [[improve workflow]] using modern techniques.
 - [ ] Testing
 - [ ] Deployment
 
-## Technical Notes
+## 技术说明
 
 The main algorithm uses the formula $O(n \log n)$ for sorting.
 
@@ -581,7 +587,7 @@ def process_data(items):
     return sorted(items, key=lambda x: x.priority)
 ```
 
-## Architecture
+## 架构
 
 ```mermaid
 graph LR
@@ -590,13 +596,13 @@ graph LR
     B --> D[Cache]
 ```
 
-## Related Documents
+## 相关文档
 
 - ![[Meeting Notes 2024-01-10#Decisions]]
 - [[Budget Allocation|Budget]]
 - [[Team Members]]
 
-## References
+## 参考
 
 For more details, see the official documentation[^1].
 
@@ -608,8 +614,9 @@ Internal notes:
 - Consider alternative approaches
 %%
 ````
+````
 
-## References
+## 参考
 
 - [Basic formatting syntax](https://help.obsidian.md/syntax)
 - [Advanced formatting syntax](https://help.obsidian.md/advanced-syntax)
