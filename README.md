@@ -263,6 +263,8 @@ EOF
 | `dev-review-ts` | TypeScript 代码审查 |
 | `dev-review-py` | Python 代码审查 |
 | `dev-async-modernize` | Python 异步代码现代化 |
+| `dev-build-fix-py` | Python 构建错误增量修复 |
+| `dev-build-fix-ts` | TypeScript 构建错误增量修复 |
 | `dev-update-docs` | 开发文档更新 |
 | `dev-update-codemaps` | 代码地图更新 |
 | `dev-e2e` | 使用 Playwright 生成和运行端到端测试 |

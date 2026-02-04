@@ -288,6 +288,8 @@ EOF
 |------|------|------|----------|
 | **dev-** | `dev-architecture-critic/` | 全栈架构找茬与改进方向评审（偏现代 Python） | 架构评审/设计/重构 |
 | **dev-** | `dev-async-modernize/` | Python 异步代码现代化 | 分析 async 代码质量问题、迁移到 TaskGroup |
+| **dev-** | `dev-build-fix-py/` | Python 构建错误增量修复 | Python 构建/打包失败时逐条修复 |
+| **dev-** | `dev-build-fix-ts/` | TypeScript 构建错误增量修复 | TypeScript/前端构建失败时逐条修复 |
 | **dev-** | `dev-plan/` | 开发项目规划 | 新功能、复杂重构前的实施计划 |
 | **dev-** | `dev-review-py/` | Python 代码审查 | 检查未提交的 Python 代码 |
 | **dev-** | `dev-review-ts/` | TypeScript 代码审查 | 检查未提交的 TS/JS 代码 |
