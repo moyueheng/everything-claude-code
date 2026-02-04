@@ -6,23 +6,23 @@
 
 | Agent | 用途 | 使用时机 |
 |-------|---------|-------------|
-| planner | 实施规划 | 复杂功能、重构 |
-| architect | 系统设计 | 架构决策 |
-| tdd-guide | 测试驱动开发 | 新功能、bug 修复 |
-| code-reviewer | 代码审查 | 编写代码后 |
-| security-reviewer | 安全分析 | Commit 前 |
-| build-error-resolver | 修复构建错误 | 构建失败时 |
-| e2e-runner | E2E 测试 | 关键用户流程 |
-| refactor-cleaner | 死代码清理 | 代码维护 |
-| doc-updater | 文档 | 更新文档 |
+| dev-planner | 实施规划 | 复杂功能、重构 |
+| dev-architect | 系统设计 | 架构决策 |
+| dev-tdd-guide-ts | 测试驱动开发 | 新功能、bug 修复 |
+| dev-tdd-guide-py | 测试驱动开发 | 新功能、bug 修复 |
+| dev-code-reviewer-ts | 代码审查 | 编写代码后 |
+| dev-code-reviewer-py | 代码审查 | 编写代码后 |
+| dev-refactor-cleaner-ts | 死代码清理 | 代码维护 |
+| dev-refactor-cleaner-python | 死代码清理 | 代码维护 |
+| dev-doc-updater | 文档 | 更新文档 |
 
 ## 立即使用 Agent
 
 无需用户提示:
-1. 复杂功能请求 - 使用 **planner** Agent
-2. 代码刚编写/修改 - 使用 **code-reviewer** Agent
-3. Bug 修复或新功能 - 使用 **tdd-guide** Agent
-4. 架构决策 - 使用 **architect** Agent
+1. 复杂功能请求 - 使用 **dev-planner** Agent
+2. 代码刚编写/修改 - 使用 **dev-code-reviewer-ts** 或 **dev-code-reviewer-py** Agent
+3. Bug 修复或新功能 - 使用 **dev-tdd-guide-ts** 或 **dev-tdd-guide-py** Agent
+4. 架构决策 - 使用 **dev-architect** Agent
 
 ## 并行任务执行
 
