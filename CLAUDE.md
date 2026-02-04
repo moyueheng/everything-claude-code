@@ -226,36 +226,42 @@ EOF
 - 上游项目文档：`upstream/everything-claude-code/README.md`
 - 迁移方案：`MIGRATION_STEPS.md`
 - 配置对比：`docs/differences.md` - OpenCode、Claude Code、Codex 配置系统对比
+- Subagent MCP 配置：`docs/subagent-mcp-config.md` - Subagent 与 MCP 工具配置指南
 
 ## 可用 Agents
 
 ### Claude Code Agents (`my/claudecode/agents/`)
 
-| 文件 | 描述 | 工具 |
-|------|------|------|
-| `architect.md` | 软件架构专家，系统设计和可扩展性 | Read, Grep, Glob |
-| `code-reviewer-py.md` | Python 代码审查专员 | Read, Grep, Glob, Bash |
-| `code-reviewer-ts.md` | TypeScript 代码审查专员 | Read, Grep, Glob, Bash |
-| `doc-updater.md` | 文档和代码地图专家 | Read, Write, Edit, Bash, Grep, Glob |
-| `planner.md` | 复杂功能和重构规划专员 | Read, Grep, Glob |
-| `refactor-cleaner-python.md` | Python 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
-| `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
-| `tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
-| `tdd-guide-py.md` | Python 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| 文件 | 描述 | 权限 | MCP 工具 |
+|------|------|------|----------|
+| `planner.md` | 复杂功能和重构规划专员 | 只读 (disallowedTools: Write/Edit) | auggie-mcp, context7 |
+| `architect.md` | 软件架构专家，系统设计和可扩展性 | 只读 (disallowedTools: Write/Edit) | context7, auggie-mcp |
+| `code-reviewer-py.md` | Python 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
+| `code-reviewer-ts.md` | TypeScript 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
+| `tdd-guide-py.md` | Python 测试驱动开发专家 | 完整权限 | context7 |
+| `tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | 完整权限 | context7 |
+| `doc-updater.md` | 文档和代码地图专家 | 完整权限 | context7 |
+| `refactor-cleaner-python.md` | Python 死代码清理和重构 | 完整权限 | context7 |
+| `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | 完整权限 | context7 |
+
+**权限说明：**
+- **只读 Agent**：通过 `disallowedTools: ["Write", "Edit", "NotebookEdit"]` 限制，只能提供建议，不能直接修改代码
+- **完整权限 Agent**：未指定 `tools` 字段，继承所有内置工具和 MCP 工具，可以执行写入操作
+- **MCP 工具访问**：所有 Agent 移除了 `tools` 限制后，都可以访问配置的 MCP 工具（context7, auggie-mcp 等）
 
 ### OpenCode Agents (`my/opencode/agents/`)
 
 | 文件 | 描述 | 模式 |
 |------|------|------|
-| `architect.md` | 软件架构专家（只读） | subagent |
-| `code-reviewer-py.md` | Python 代码审查 | subagent |
-| `code-reviewer-ts.md` | TypeScript 代码审查 | subagent |
-| `doc-updater.md` | 文档和代码地图专家 | subagent |
-| `planner.md` | 规划专家（只读） | subagent |
-| `refactor-cleaner-python.md` | Python 重构和清理 | subagent |
-| `refactor-cleaner-ts.md` | TypeScript 重构和清理 | subagent |
-| `tdd-guide-ts.md` | TypeScript TDD 测试专家 | subagent |
-| `tdd-guide-py.md` | Python TDD 测试专家 | subagent |
+| `planner.md` | 规划专家（只读，可访问 MCP） | subagent |
+| `architect.md` | 软件架构专家（只读，可访问 MCP） | subagent |
+| `code-reviewer-py.md` | Python 代码审查（只读，可访问 MCP） | subagent |
+| `code-reviewer-ts.md` | TypeScript 代码审查（只读，可访问 MCP） | subagent |
+| `tdd-guide-py.md` | Python TDD 测试专家（完整权限） | subagent |
+| `tdd-guide-ts.md` | TypeScript TDD 测试专家（完整权限） | subagent |
+| `doc-updater.md` | 文档和代码地图专家（完整权限） | subagent |
+| `refactor-cleaner-python.md` | Python 重构和清理（完整权限） | subagent |
+| `refactor-cleaner-ts.md` | TypeScript 重构和清理（完整权限） | subagent |
 
 > 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
 
