@@ -250,6 +250,8 @@ EOF
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
 | **dev-** | `dev-architecture-critic/` | 全栈架构找茬与改进方向评审 | `$dev-architecture-critic` |
+| **dev-** | `dev-plan/` | 开发项目规划 | `$dev-plan` |
+| **dev-** | `dev-tdd-workflow/` | 通用 TDD 工作流（合并 command + skill） | `$dev-tdd-workflow` |
 | **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | `$dev-tdd-ts` |
 | **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | `$dev-tdd-py` |
 | **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |

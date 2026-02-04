@@ -26,15 +26,6 @@ description: 重述需求、评估风险、创建分步实施计划并持久化�
 - 多个文件/组件会受到影响
 - 需求不清晰或模棱两可
 
-## Agent 协作协议（必须执行）
-
-- `planner` Agent：**必须调用**，生成计划初稿与任务拆分
-- `architect` Agent：当涉及架构决策/跨模块/性能/可靠性/安全时 **必须调用**，合并建议到计划
-- `tdd-guide-ts` / `tdd-guide-py` Agent：依据技术栈 **必须调用其一**，补齐测试策略与用例覆盖
-- `code-reviewer-ts` / `code-reviewer-py` Agent：计划执行后用于审查（在交接中明确）
-- `doc-updater` Agent：若计划涉及文档/目录结构变更则调用
-
-
 ## 工作流程（严格顺序）
 
 1. **需求重述**：用清晰术语复述要构建的内容与成功标准
@@ -49,7 +40,7 @@ description: 重述需求、评估风险、创建分步实施计划并持久化�
 
 ## 积极提问原则
 
-**规划过程中必须主动使用 `AskUserQuestion`：**
+**规划过程中主动向用户澄清一些问题, 比如：**
 - 需求不清晰时 → 询问具体细节
 - 有多种实现方案时 → 让用户选择
 - 技术选型不确定时 → 确认用户偏好
@@ -166,15 +157,6 @@ git commit -m "feat: add specific feature"
 
 规划完成后：
 - 使用 `dev-tdd-workflow` 进行测试驱动开发（统一 TDD 流程）
-- 遇到构建错误时修复
-- 完成后使用 `dev-review-ts` 或 `dev-review-py` Skill 审查代码
-
-## Related Agents
-
-- `planner` Agent：输出可执行实施计划（必用）
-- `architect` Agent：架构审查与权衡
-- `tdd-guide-ts` / `tdd-guide-py` Agent：测试策略与用例覆盖
-- `code-reviewer-ts` / `code-reviewer-py` Agent：实现后代码审查
 
 ## 计划保存位置
 

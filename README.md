@@ -275,6 +275,8 @@ EOF
 
 | Skill | 描述 |
 |-------|------|
+| `dev-plan` | 开发项目规划 |
+| `dev-tdd-workflow` | 通用 TDD 工作流（合并 command + skill） |
 | `dev-tdd-ts` | TypeScript 测试驱动开发 |
 | `dev-tdd-py` | Python 测试驱动开发 |
 | `dev-rehab-legacy-tests` | 遗留测试改造 TDD 流程 |
