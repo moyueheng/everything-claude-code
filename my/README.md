@@ -12,7 +12,7 @@
 
 **流程**:
 ```
-需求描述 → planner agent 分析 → 生成实施计划 → 用户确认 → 执行
+需求描述 → dev-planner agent 分析 → 生成实施计划 → 用户确认 → 执行
 ```
 
 **关键点**:
@@ -107,10 +107,10 @@ Observer Agent 分析 (Haiku 后台运行)
 
 | 场景 | 使用 Agent |
 |------|-----------|
-| 复杂功能需求 | `planner` - 先规划 |
-| 刚写完代码 | `code-reviewer` - 代码审查 |
-| Bug 修复/新功能 | `tdd-guide` - TDD 指导 |
-| 架构决策 | `architect` - 系统设计 |
+| 复杂功能需求 | `dev-planner` - 先规划 |
+| 刚写完代码 | `dev-code-reviewer-ts` / `dev-code-reviewer-py` - 代码审查 |
+| Bug 修复/新功能 | `dev-tdd-guide-ts` / `dev-tdd-guide-py` - TDD 指导 |
+| 架构决策 | `dev-architect` - 系统设计 |
 | 构建失败 | `build-error-resolver` - 修复构建 |
 | 安全审查 | `security-reviewer` - 安全分析 |
 
@@ -193,7 +193,7 @@ my/
 │   ├── update-codemaps.md
 │   └── update-docs.md
 ├── claudecode/                    # Claude Code 专属配置
-│   ├── agents/                    # Agents (8个)
+│   ├── agents/                    # Agents (9个)
 │   ├── rules/                     # Rules (空，可自定义)
 │   └── skills/                    # Skills
 │       └── skill-creator/

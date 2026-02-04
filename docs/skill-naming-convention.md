@@ -1,6 +1,8 @@
-# Skill 命名规范
+# 命名前缀规范
 
-最后更新：2026-02-02
+最后更新：2026-02-04
+
+本规范适用于所有可命名的组件：Agents、Commands、Skills 以及相关配置中的 `name` 字段。
 
 ## 前缀分类体系
 
@@ -28,9 +30,9 @@
 | 系统工具配置 | `sshfs-mount` | `tool-sshfs-mount` |
 | 研究论文笔记 | `research-notes` | `learn-paper` |
 
-## 现有 Skills 映射
+## 现有命名映射
 
-### 需要重命名的 Skills
+### 需要重命名的条目
 
 | 当前名称 | 新名称 | 说明 |
 |----------|--------|------|
@@ -46,14 +48,14 @@
 | `update-codemaps` | `dev-update-codemaps` | 代码地图更新 |
 | `update-docs` | `dev-update-docs` | 开发文档更新 |
 
-### 无需重命名的 Skills
+### 无需重命名的条目
 
 | 名称 | 说明 |
 |------|------|
 | `rehabilitating-legacy-tests` | 已明确是开发相关，可改为 `dev-rehab-legacy-tests` |
 | `test-driven-development` | 已明确是开发相关，可改为 `dev-tdd` |
 
-## 新 Skills 命名指南
+## 新命名指南
 
 ### 开发类 (dev-)
 
@@ -62,8 +64,8 @@
 | `dev-plan` | 项目开发规划 |
 | `dev-tdd` | 测试驱动开发 |
 | `dev-review-*` | 代码审查（py/ts/js/java 等） |
-| `debug-*` | 调试技巧 |
-| `refactor-*` | 代码重构 |
+| `dev-architect` | 架构评审/设计 |
+| `dev-refactor-*` | 代码重构 |
 
 ### 生活类 (life-)
 

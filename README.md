@@ -103,10 +103,10 @@
 ls upstream/everything-claude-code/agents/
 
 # 复制想用的文件到 my/ 进行改造
-cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
+cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/dev-planner.md
 
 # 编辑改造（翻译成中文、调整内容）
-vim my/claudecode/agents/planner.md
+vim my/claudecode/agents/dev-planner.md
 
 # 安装测试
 ./install.sh
@@ -135,7 +135,7 @@ cd ../obsidian-skills && git log HEAD@{1}..HEAD --oneline
 cd ../superpowers && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
-cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
+cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/dev-new-agent.md
 cp upstream/anthropics-skills/skills/some-skill.md my/claudecode/skills/some-skill.md
 cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```
@@ -147,13 +147,13 @@ cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```bash
 # 创建新的 agent（根据目标工具选择目录）
 # Claude Code 专属:
-cat > my/claudecode/agents/my-helper.md << 'EOF'
+cat > my/claudecode/agents/dev-my-helper.md << 'EOF'
 ---
-name: my-helper
+name: dev-my-helper
 description: 我的自定义助手
 ---
 
-# My Helper
+# Dev My Helper
 
 这是我自己定义的 agent...
 EOF
@@ -174,19 +174,19 @@ EOF
 
 ### 1. 规划阶段
 
-**Claude Code**: 使用 `planner` agent
+**Claude Code**: 使用 `dev-planner` agent
 **OpenCode**: 使用 `/plan` command
 
 **使用时机**: 新功能、复杂重构、架构变更
 
 **流程**:
 ```
-需求描述 → planner agent 分析 → 生成实施计划 → 用户确认 → 执行
+需求描述 → dev-planner agent 分析 → 生成实施计划 → 用户确认 → 执行
 ```
 
 ### 2. 开发阶段
 
-**Claude Code**: 使用 `tdd-guide-ts` 或 `tdd-guide-py` agent
+**Claude Code**: 使用 `dev-tdd-guide-ts` 或 `dev-tdd-guide-py` agent
 **OpenCode**: 使用 `/tdd` command
 
 **使用时机**: 编写新功能、修复 Bug、重构
@@ -201,7 +201,7 @@ EOF
 
 ### 3. 审查阶段
 
-**Claude Code**: 使用 `code-reviewer-ts` 或 `code-reviewer-py` agent
+**Claude Code**: 使用 `dev-code-reviewer-ts` 或 `dev-code-reviewer-py` agent
 **OpenCode**: 使用 `/code-review-ts` 或 `/code-review-py` command
 
 **使用时机**: 代码完成后
@@ -214,7 +214,7 @@ EOF
 
 ### 4. 更新文档
 
-**Claude Code**: 使用 `doc-updater` agent
+**Claude Code**: 使用 `dev-doc-updater` agent
 **OpenCode**: 使用 `/update-docs` command
 
 **使用时机**: 代码修改后同步更新相关文档
@@ -226,21 +226,23 @@ EOF
 | `upstream/` | 保持原名 | 不修改，仅参考 |
 | `my/` | `xxx.md` 或自定义名 | 中文改造版本或原创内容 |
 
+命名前缀规范适用于 Agents/Commands/Skills 及其 frontmatter `name` 字段，按用途选择前缀。详见 `docs/skill-naming-convention.md`。
+
 ## 可用组件
 
 ### Agents (Claude Code)
 
 | Agent | 描述 |
 |-------|------|
-| `planner` | 复杂功能和重构规划专员 |
-| `architect` | 软件架构专家，系统设计和可扩展性 |
-| `tdd-guide-ts` | TypeScript 测试驱动开发专家 |
-| `tdd-guide-py` | Python 测试驱动开发专家 |
-| `code-reviewer-ts` | TypeScript 代码审查专员 |
-| `code-reviewer-py` | Python 代码审查专员 |
-| `refactor-cleaner-ts` | TypeScript 死代码清理和重构 |
-| `refactor-cleaner-python` | Python 死代码清理和重构 |
-| `doc-updater` | 文档和代码地图专家 |
+| `dev-planner` | 复杂功能和重构规划专员 |
+| `dev-architect` | 软件架构专家，系统设计和可扩展性 |
+| `dev-tdd-guide-ts` | TypeScript 测试驱动开发专家 |
+| `dev-tdd-guide-py` | Python 测试驱动开发专家 |
+| `dev-code-reviewer-ts` | TypeScript 代码审查专员 |
+| `dev-code-reviewer-py` | Python 代码审查专员 |
+| `dev-refactor-cleaner-ts` | TypeScript 死代码清理和重构 |
+| `dev-refactor-cleaner-python` | Python 死代码清理和重构 |
+| `dev-doc-updater` | 文档和代码地图专家 |
 
 ### Commands (OpenCode)
 

@@ -22,7 +22,7 @@
 **配置格式：**
 ```yaml
 ---
-name: code-reviewer
+name: dev-code-reviewer-ts
 description: Reviews code for quality and best practices
 tools: Read, Glob, Grep
 model: sonnet
@@ -79,7 +79,7 @@ hidden: false
 ```json
 {
   "agent": {
-    "code-reviewer": {
+    "dev-code-reviewer-ts": {
       "mode": "subagent",
       "description": "Reviews code for quality",
       "model": "anthropic/claude-sonnet-4-20250514",

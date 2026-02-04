@@ -26,7 +26,7 @@ Subagent 通过 Markdown 文件的 YAML frontmatter 定义，位于 `~/.claude/a
 
 ```yaml
 ---
-name: code-reviewer
+name: dev-code-reviewer-ts
 description: 代码审查专员，主动审查代码质量
 tools: Read, Glob, Grep
 model: sonnet
@@ -115,7 +115,7 @@ model: sonnet
 
 ```yaml
 ---
-name: code-reviewer
+name: dev-code-reviewer-ts
 description: 代码审查（不能修改文件）
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit, NotebookEdit
