@@ -4,6 +4,36 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - 重要原则： 不允许改上游仓库的任何东西， 如果修改了说明严重违反规定强行更正， 上游仓库是完全只读我们只需要跟踪就行了
 - 翻译成中文的时候专有名词不需要翻译, 比如Agent, Skill, Command, Hook
+
+## 当前工作重点（2026-02-03 ~ 2026-03-03）
+
+**优先级：专注于上游 everything-claude-code 仓库的深入研究与改造**
+
+未来一个月的主要工作目标是对 `upstream/everything-claude-code/` 进行系统性梳理和本地化改造：
+
+1. **上游内容分析** - 深入研究 everything-claude-code 的所有 agents、commands、skills、rules、contexts
+2. **本地化改造** - 将有价值的配置从 `upstream/` 复制到 `my/` 并进行中文改造
+3. **文档更新** - 同步更新 `CLAUDE.md` 和 `README.md` 中的可用组件列表
+4. **贡献上游** - 如有改进，考虑向 affaan-m/everything-claude-code 提交 PR
+
+**工作流程**：
+```bash
+# 1. 更新上游
+git submodule update --remote upstream/everything-claude-code
+
+# 2. 查看新内容
+cd upstream/everything-claude-code
+git log HEAD@{1}..HEAD --oneline
+ls -la agents/ commands/ skills/ rules/ contexts/
+
+# 3. 复制到 my/ 改造
+cp upstream/everything-claude-code/agents/some-agent.md my/claudecode/agents/some-agent.md
+# 编辑改造...
+
+# 4. 更新文档
+# 编辑 CLAUDE.md 和 README.md
+```
+
 ## 项目概述
 
 这是个人 Claude Code 配置仓库，基于 [everything-claude-code](https://github.com/affaan-m/everything-claude-code) 改造。

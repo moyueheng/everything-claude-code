@@ -4,6 +4,17 @@
 
 ---
 
+## 📌 当前工作重点（2026-02-03 ~ 2026-03-03）
+
+**未来一个月专注于上游 everything-claude-code 仓库的深入研究与改造**
+
+- 系统性梳理 upstream/everything-claude-code/ 的所有配置
+- 将有价值的组件复制到 my/ 进行中文本地化改造
+- 同步更新文档中的可用组件列表
+- 向 affaan-m/everything-claude-code 贡献改进
+
+---
+
 ## 项目概述
 
 这是个人 Claude Code/OpenCode 配置仓库，采用 submodule 架构管理：
