@@ -22,6 +22,16 @@ echo ""
 # === Claude Code 安装 ===
 echo ">>> 安装 Claude Code 专属配置"
 
+# 确保 hooks 目录存在
+mkdir -p "$CLAUDE_DIR/hooks"
+
+# 安装 hook 脚本（如果存在）
+if [ -d "my/claudecode/hooks" ] && [ -f "my/claudecode/hooks/on-exit-plan-mode.py" ]; then
+  cp my/claudecode/hooks/on-exit-plan-mode.py "$CLAUDE_DIR/hooks/"
+  chmod +x "$CLAUDE_DIR/hooks/on-exit-plan-mode.py"
+  echo "  ✓ hooks/on-exit-plan-mode.py"
+fi
+
 # 清空 Claude Code 目录
 rm -rf "$CLAUDE_DIR/agents/"/* 2>/dev/null || true
 rm -rf "$CLAUDE_DIR/rules/"/* 2>/dev/null || true
@@ -117,6 +127,8 @@ echo "  commands:"
 ls -la "$CLAUDE_DIR/commands/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
 echo "  skills:"
 ls "$CLAUDE_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  hooks:"
+ls "$CLAUDE_DIR/hooks/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | grep "\.py$" | awk '{print "    " $NF}' || echo "    (无)"
 echo ""
 
 echo "OpenCode (~/.config/opencode/):"
@@ -139,3 +151,19 @@ if [ -f "$CODEX_DIR/AGENTS.md" ]; then
 else
   echo "    (无)"
 fi
+
+echo ""
+echo "=== Hooks 配置 ==="
+echo ""
+echo "已安装的 Hooks:"
+echo "  - on-exit-plan-mode.py  (ExitPlanMode → TDD 自动触发)"
+echo ""
+echo "注意: Hooks 需要手动配置到 ~/.claude/settings.json 中:"
+echo ""
+echo "  1. 复制以下配置到 settings.json 的 hooks 对象中:"
+echo ""
+cat my/claudecode/hooks/hooks.json | grep -v "^_comment" | grep -v "^_instructions"
+echo ""
+echo "  2. 或者使用 jq 合并配置:"
+echo "     jq -s '.[0] * .[1]' ~/.claude/settings.json my/claudecode/hooks/hooks.json > /tmp/settings.json && mv /tmp/settings.json ~/.claude/settings.json"
+echo ""
