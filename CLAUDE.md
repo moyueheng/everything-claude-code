@@ -127,10 +127,10 @@ ls upstream/anthropics-skills/skills/
 ls upstream/obsidian-skills/
 
 # 复制想用的文件到 my/ 进行改造
-cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
+cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/dev-planner.md
 
 # 编辑改造（翻译成中文、调整内容）
-vim my/claudecode/agents/planner.md
+vim my/claudecode/agents/dev-planner.md
 
 # 安装测试
 ./install.sh
@@ -157,7 +157,7 @@ cd ../superpowers && git log HEAD@{1}..HEAD --oneline
 cd ../obsidian-skills && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
-cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
+cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/dev-new-agent.md
 cp upstream/anthropics-skills/skills/some-skill.md my/claudecode/skills/some-skill.md
 cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```
@@ -169,13 +169,13 @@ cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```bash
 # 创建新的 agent（根据目标工具选择目录）
 # Claude Code 专属:
-cat > my/claudecode/agents/my-helper.md << 'EOF'
+cat > my/claudecode/agents/dev-my-helper.md << 'EOF'
 ---
-name: my-helper
+name: dev-my-helper
 description: 我的自定义助手
 ---
 
-# My Helper
+# Dev My Helper
 
 这是我自己定义的 agent...
 EOF
@@ -215,6 +215,8 @@ EOF
 
 详细规范见 `docs/skill-naming-convention.md`
 
+命名前缀规范适用于 Agents/Commands/Skills 及其 frontmatter `name` 字段，按用途选择前缀。
+
 ## 注意事项
 
 1. **永远不要修改 `upstream/` 目录** - 只使用 `git submodule update --remote` 更新
@@ -236,15 +238,16 @@ EOF
 
 | 文件 | 描述 | 权限 | MCP 工具 |
 |------|------|------|----------|
-| `planner.md` | 复杂功能和重构规划专员 | 只读 (disallowedTools: Write/Edit) | auggie-mcp, context7 |
-| `architect.md` | 软件架构专家，系统设计和可扩展性 | 只读 (disallowedTools: Write/Edit) | context7, auggie-mcp |
-| `code-reviewer-py.md` | Python 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
-| `code-reviewer-ts.md` | TypeScript 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
-| `tdd-guide-py.md` | Python 测试驱动开发专家 | 完整权限 | context7 |
-| `tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | 完整权限 | context7 |
-| `doc-updater.md` | 文档和代码地图专家 | 完整权限 | context7 |
-| `refactor-cleaner-python.md` | Python 死代码清理和重构 | 完整权限 | context7 |
-| `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | 完整权限 | context7 |
+| `dev-planner.md` | 复杂功能和重构规划专员 | 只读 (disallowedTools: Write/Edit) | auggie-mcp, context7 |
+| `dev-architect.md` | 软件架构专家，系统设计和可扩展性 | 只读 (disallowedTools: Write/Edit) | context7, auggie-mcp |
+| `dev-code-reviewer-py.md` | Python 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
+| `dev-code-reviewer-ts.md` | TypeScript 代码审查专员 | 只读 (disallowedTools: Write/Edit) | context7 |
+| `dev-tdd-guide-py.md` | Python 测试驱动开发专家 | 完整权限 | context7 |
+| `dev-tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | 完整权限 | context7 |
+| `dev-doc-updater.md` | 文档和代码地图专家 | 完整权限 | context7 |
+| `dev-refactor-cleaner-python.md` | Python 死代码清理和重构 | 完整权限 | context7 |
+| `dev-refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | 完整权限 | context7 |
+| `dev-security-reviewer.md` | 安全漏洞审查与修复专家 | 完整权限 | context7 |
 
 **权限说明：**
 - **只读 Agent**：通过 `disallowedTools: ["Write", "Edit", "NotebookEdit"]` 限制，只能提供建议，不能直接修改代码
@@ -259,8 +262,7 @@ EOF
 | `architect.md` | 软件架构专家（只读，可访问 MCP） | subagent |
 | `code-reviewer-py.md` | Python 代码审查（只读，可访问 MCP） | subagent |
 | `code-reviewer-ts.md` | TypeScript 代码审查（只读，可访问 MCP） | subagent |
-| `tdd-guide-py.md` | Python TDD 测试专家（完整权限） | subagent |
-| `tdd-guide-ts.md` | TypeScript TDD 测试专家（完整权限） | subagent |
+| `tdd-guide.md` | TDD 测试专家（完整权限） | subagent |
 | `doc-updater.md` | 文档和代码地图专家（完整权限） | subagent |
 | `refactor-cleaner-python.md` | Python 重构和清理（完整权限） | subagent |
 | `refactor-cleaner-ts.md` | TypeScript 重构和清理（完整权限） | subagent |

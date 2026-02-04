@@ -94,10 +94,10 @@ ls upstream/anthropics-skills/agents/
 ls upstream/anthropics-skills/skills/
 
 # 复制想用的文件到 my/ 进行改造
-cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/planner.md
+cp upstream/everything-claude-code/agents/planner.md my/claudecode/agents/dev-planner.md
 
 # 编辑改造（翻译成中文、调整内容）
-vim my/claudecode/agents/planner.md
+vim my/claudecode/agents/dev-planner.md
 
 # 安装测试
 ./install.sh
@@ -120,7 +120,7 @@ cd ../anthropics-skills && git log HEAD@{1}..HEAD --oneline
 cd ../openai-skills && git log HEAD@{1}..HEAD --oneline
 
 # 如果有新内容想改造，复制到 my/
-cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/new-agent.md
+cp upstream/everything-claude-code/agents/new-agent.md my/claudecode/agents/dev-new-agent.md
 cp upstream/anthropics-skills/skills/some-skill.md my/claudecode/skills/some-skill.md
 cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```
@@ -132,13 +132,13 @@ cp upstream/openai-skills/some-skill.md my/claudecode/skills/some-skill.md
 ```bash
 # 创建新的 agent（根据目标工具选择目录）
 # Claude Code 专属:
-cat > my/claudecode/agents/my-helper.md << 'EOF'
+cat > my/claudecode/agents/dev-my-helper.md << 'EOF'
 ---
-name: my-helper
+name: dev-my-helper
 description: 我的自定义助手
 ---
 
-# My Helper
+# Dev My Helper
 
 这是我自己定义的 agent...
 EOF
@@ -178,6 +178,8 @@ EOF
 
 详细规范见 `docs/skill-naming-convention.md`
 
+命名前缀规范适用于 Agents/Commands/Skills 及其 frontmatter `name` 字段，按用途选择前缀。
+
 ## 注意事项
 
 1. **永远不要修改 `upstream/` 目录** - 只使用 `git submodule update --remote` 更新
@@ -198,15 +200,16 @@ EOF
 
 | 文件 | 描述 | 工具 |
 |------|------|------|
-| `architect.md` | 软件架构专家，系统设计和可扩展性 | Read, Grep, Glob |
-| `code-reviewer-py.md` | Python 代码审查专员 | Read, Grep, Glob, Bash |
-| `code-reviewer-ts.md` | TypeScript 代码审查专员 | Read, Grep, Glob, Bash |
-| `doc-updater.md` | 文档和代码地图专家 | Read, Write, Edit, Bash, Grep, Glob |
-| `planner.md` | 复杂功能和重构规划专员 | Read, Grep, Glob |
-| `refactor-cleaner-python.md` | Python 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
-| `refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
-| `tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
-| `tdd-guide-py.md` | Python 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| `dev-architect.md` | 软件架构专家，系统设计和可扩展性 | Read, Grep, Glob |
+| `dev-code-reviewer-py.md` | Python 代码审查专员 | Read, Grep, Glob, Bash |
+| `dev-code-reviewer-ts.md` | TypeScript 代码审查专员 | Read, Grep, Glob, Bash |
+| `dev-doc-updater.md` | 文档和代码地图专家 | Read, Write, Edit, Bash, Grep, Glob |
+| `dev-planner.md` | 复杂功能和重构规划专员 | Read, Grep, Glob |
+| `dev-refactor-cleaner-python.md` | Python 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
+| `dev-refactor-cleaner-ts.md` | TypeScript 死代码清理和重构 | Read, Write, Edit, Bash, Grep, Glob |
+| `dev-tdd-guide-ts.md` | TypeScript 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| `dev-tdd-guide-py.md` | Python 测试驱动开发专家 | Read, Write, Edit, Bash, Grep |
+| `dev-security-reviewer.md` | 安全漏洞审查与修复专家 | Read, Write, Edit, Bash, Grep, Glob |
 
 ### OpenCode Agents (`my/opencode/agents/`)
 
@@ -219,8 +222,7 @@ EOF
 | `planner.md` | 规划专家（只读） | subagent |
 | `refactor-cleaner-python.md` | Python 重构和清理 | subagent |
 | `refactor-cleaner-ts.md` | TypeScript 重构和清理 | subagent |
-| `tdd-guide-ts.md` | TypeScript TDD 测试专家 | subagent |
-| `tdd-guide-py.md` | Python TDD 测试专家 | subagent |
+| `tdd-guide.md` | TDD 测试专家 | subagent |
 
 > 注意：OpenCode agents 从 Claude Code 格式转换而来，主要差异见 `docs/differences.md`
 
