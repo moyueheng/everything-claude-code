@@ -14,7 +14,7 @@
 
 **文件：**
 - 读取: `upstream/obsidian-skills/skills/*/SKILL.md`
-- 记录清单: `docs/plans/2026-01-30-obsidian-skills-localization.md`
+- 记录清单: `.plans/2026-01-30-obsidian-skills-localization.md`
 
 **步骤 1: 列出上游 Skill 目录**
 

@@ -51,6 +51,7 @@ cp upstream/everything-claude-code/agents/some-agent.md my/claudecode/agents/som
 
 ```
 .
+├── .plans/                     # 实施计划持久化目录
 ├── my/                          # 个人配置
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
@@ -220,6 +221,7 @@ EOF
 2. **所有个人配置放在 `my/`** - 这是唯一会被 `install.sh` 安装的目录
 3. **改造前先从 upstream 复制** - 保留原文件参考，在副本上修改
 4. **定期同步上游** - 获取原项目的新功能和修复
+5. **实施计划统一存放在 `.plans/`** - 使用 `YYYY-MM-DD-<feature-name>.md` 命名
 
 ## 参考文档
 

@@ -15,7 +15,7 @@ description: 当拥有多步骤任务的规格或需求时使用，在接触代�
 
 **上下文：** 这应该在由 brainstorming skill 创建的独立 worktree 中运行。
 
-**保存计划到：** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**保存计划到：** `.plans/YYYY-MM-DD-<feature-name>.md`
 
 ## 小块任务粒度
 
@@ -99,7 +99,7 @@ git commit -m "feat: add specific feature"
 
 保存计划后，提供执行选择：
 
-**"计划已完成并保存到 `docs/plans/<filename>.md`。两种执行选项：**
+**"计划已完成并保存到 `.plans/<filename>.md`。两种执行选项：**
 
 **1. 子代理驱动（本会话）** - 我为每个任务分派新的子代理，任务之间进行审核，快速迭代
 

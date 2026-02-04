@@ -105,7 +105,7 @@ REPEAT:   下一个场景/功能
 
 ### 计划文件位置
 ```
-docs/plans/YYYY-MM-DD-<feature-name>.md
+.plans/YYYY-MM-DD-<feature-name>.md
 ```
 
 ### 更新时机

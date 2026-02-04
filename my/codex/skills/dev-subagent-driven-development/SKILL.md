@@ -46,7 +46,7 @@ description: 在当前会话中执行具有独立任务的实施计划时使用
 ```
 你：我正在使用子代理驱动开发来执行此计划。
 
-[读取计划文件一次：docs/plans/feature-plan.md]
+[读取计划文件一次：.plans/feature-plan.md]
 [提取所有 5 个任务及完整文本和上下文]
 [创建 TodoWrite 包含所有任务]
 

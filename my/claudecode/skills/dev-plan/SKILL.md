@@ -1,18 +1,21 @@
 ---
 name: dev-plan
-description: 重述需求、评估风险、创建分步实施计划。WAIT for user CONFIRM before touching any code.
+description: 重述需求、评估风险、创建分步实施计划并持久化到 .plans。WAIT for user CONFIRM before touching any code.
 ---
 
 # 开发规划 Skill
 
-此 Skill 在编写任何代码之前创建全面的实施计划。
+此 Skill 在编写任何代码之前创建可执行、可审查、可追踪的实施计划，并将计划持久化到 `.plans/`。
 
-## Skill 作用
+## 产出与约束
 
-1. **重述需求** - 明确需要构建什么
-2. **识别风险** - 揭示潜在问题和阻塞点
-3. **创建步骤计划** - 将实施拆分为多个阶段
-4. **等待确认** - 必须先获得用户批准才能继续
+**产出：**
+- 计划文件：`.plans/YYYY-MM-DD-<feature-name>.md`
+- 回复中给出：需求重述、关键风险、执行选项与确认请求
+
+**约束：**
+- 未获得明确确认，不得编写任何代码
+- 计划必须包含精确路径、命令、预期结果与测试策略
 
 ## 何时激活
 
@@ -23,26 +26,35 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 - 多个文件/组件会受到影响
 - 需求不清晰或模棱两可
 
-## 工作原理
+## Agent 协作协议（必须执行）
 
-此 Skill 将：
+- `planner` Agent：**必须调用**，生成计划初稿与任务拆分
+- `architect` Agent：当涉及架构决策/跨模块/性能/可靠性/安全时 **必须调用**，合并建议到计划
+- `tdd-guide-ts` / `tdd-guide-py` Agent：依据技术栈 **必须调用其一**，补齐测试策略与用例覆盖
+- `code-reviewer-ts` / `code-reviewer-py` Agent：计划执行后用于审查（在交接中明确）
+- `doc-updater` Agent：若计划涉及文档/目录结构变更则调用
 
-1. **分析请求** 并用清晰的术语重述需求
-2. **积极提问** - 使用 `AskUserQuestion` 工具澄清模糊需求、确认技术选型、询问实现偏好
-3. **拆分为阶段** 并制定具体可执行的步骤
-4. **识别依赖** 分析组件间的关系
-5. **评估风险** 和潜在阻塞点
-6. **估算复杂度** (High/Medium/Low)
-7. **呈现计划** 并 WAIT for your explicit confirmation
+> 若技术栈不明确，先使用 `AskUserQuestion` 确认后再调用对应 Agent。
+
+## 工作流程（严格顺序）
+
+1. **需求重述**：用清晰术语复述要构建的内容与成功标准
+2. **澄清问题**：使用 `AskUserQuestion` 澄清边界与偏好
+3. **现状梳理**：识别受影响模块/依赖，必要时使用 auggie-mcp 检索
+4. **架构与风险**：记录方案、权衡、依赖与潜在阻塞点
+5. **任务拆分**：按 2-5 分钟的可执行步骤拆分
+6. **测试策略**：补齐单元/集成/E2E 覆盖与命令
+7. **复杂度评估**：High/Medium/Low + 关键不确定点
+8. **计划持久化**：写入 `.plans/` 文件（见下文模板）
+9. **输出交接**：给出执行选项并等待确认
 
 ## 积极提问原则
 
 **规划过程中必须主动使用 `AskUserQuestion`：**
-
 - 需求不清晰时 → 询问具体细节
 - 有多种实现方案时 → 让用户选择
 - 技术选型不确定时 → 确认用户偏好
-- 优先级不明确时 → 询问哪些是 must-have vs nice-to-have
+- 优先级不明确时 → 询问 must-have 与 nice-to-have
 - 边界条件模糊时 → 确认行为
 
 **提问示例：**
@@ -51,11 +63,15 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 - "错误处理策略：静默失败 / 记录日志 / 抛出异常？"
 - "实时性要求：WebSocket / Server-Sent Events / 轮询？"
 
-## 计划文档结构
+## 计划文档规范
+
+### 文件位置（必须）
+
+- 保存到：`.plans/YYYY-MM-DD-<feature-name>.md`
+- 若 `.plans/` 不存在，先创建目录
+- `<feature-name>` 使用 kebab-case 且仅包含 ASCII
 
 ### Plan Header（必须包含）
-
-每个计划必须以以下 Header 开头：
 
 ```markdown
 # [功能名称] 实施计划
@@ -64,12 +80,28 @@ description: 重述需求、评估风险、创建分步实施计划。WAIT for u
 
 **Goal:** [一句话描述要构建什么]
 
-**Architecture:** [2-3 句话描述实现方法]
+**Architecture:** [2-3 句话描述实现方法与关键权衡]
 
 **Tech Stack:** [关键技术/库]
 
+**Dependencies:** [外部服务/模块/数据]
+
+**Risks:** [High/Medium/Low + 简述]
+
+**Complexity:** [High/Medium/Low]
+
 ---
 ```
+
+### 计划主体必须包含
+
+- 需求重述
+- 成功标准（可勾选）
+- 任务清单（Task 1..N）
+- 依赖关系
+- 风险与缓解
+- 测试策略（单元/集成/E2E + 命令）
+- 预估复杂度与不确定点
 
 ### 任务结构
 
@@ -123,47 +155,13 @@ git commit -m "feat: add specific feature"
 ```
 ```
 
-## 完整计划示例
-
-```markdown
-# 实时市场结算通知 实施计划
-
-> **For Claude:** REQUIRED SUB-SKILL: 使用 dev-tdd-workflow 按任务实施此计划。
-
-**Goal:** 当市场结算时向用户发送实时通知
-
-**Architecture:** 使用 BullMQ 队列处理通知发送，支持多渠道（应用内、邮件、Webhook）。前端使用 Supabase 订阅实现实时更新。
-
-**Tech Stack:** TypeScript, Next.js, BullMQ, Redis, Supabase, Prisma
-
----
-
-### Task 1: 数据库 Schema 设计
-
-**Files:**
-- Create: `prisma/migrations/20240101000000_add_notifications/migration.sql`
-- Modify: `prisma/schema.prisma`
-- Test: `tests/db/notifications.test.ts`
-
-**Step 1: 编写迁移测试**
-...
-
-**Step 2: 添加 Prisma 模型**
-...
-
-**Step 3: 运行迁移**
-...
-
-**Step 4: 提交**
-```
-
 ## 执行交接
 
-计划完成后，提供两种执行选项：
+计划完成并写入 `.plans/` 后，提供两种执行选项：
 
-**"计划已保存。两种执行方式：**
+**"计划已保存到 `.plans/<filename>.md`。两种执行方式：**
 
-**1. Subagent-Driven（当前会话）** - 我分配子 Agent 按任务执行，任务间审查，快速迭代
+**1. Subagent-Driven（当前会话）** - 分配子 Agent 按任务执行，任务间审查，快速迭代
 
 **2. Parallel Session（独立会话）** - 开启新会话使用 dev-tdd-workflow Skill，批量执行并设置检查点
 
@@ -171,73 +169,11 @@ git commit -m "feat: add specific feature"
 
 **如果选 Subagent-Driven：**
 - 保持当前会话
-- 每个任务使用新鲜子 Agent + 代码审查
+- 每个任务使用新的子 Agent + 代码审查 Agent
 
 **如果选 Parallel Session：**
 - 引导用户在工作树中开启新会话
 - 新会话使用 dev-tdd-workflow Skill
-
-## 使用示例
-
-```
-用户: /dev-plan 我需要添加市场结算时的实时通知功能
-
-Agent:
-# 实施计划：实时市场结算通知
-
-> **For Claude:** REQUIRED SUB-SKILL: 使用 dev-tdd-workflow 按任务实施此计划。
-
-**Goal:** 当市场结算时向用户发送实时通知
-
-**Architecture:** 使用 BullMQ 队列处理通知发送，支持多渠道（应用内、邮件、Webhook）
-
-**Tech Stack:** TypeScript, Next.js, BullMQ, Redis, Supabase
-
----
-
-## 需求重述
-- 当用户关注的市场结算时发送通知
-- 支持多种通知渠道（应用内、邮件、Webhook）
-- 确保通知可靠送达
-- 包含市场结果和用户仓位收益
-
-## 实施任务
-
-### Task 1: 数据库设计
-**Files:**
-- Create: `prisma/migrations/xxx_notifications/migration.sql`
-- Modify: `prisma/schema.prisma`
-- Test: `tests/db/notifications.test.ts`
-
-**Steps:**
-1. 编写 Schema 测试
-2. 添加 notifications 表
-3. 添加 user_notification_preferences 表
-4. 创建索引
-5. 提交
-
-### Task 2: 通知服务
-...
-
-## 依赖关系
-- Redis（队列使用）
-- 邮件服务（SendGrid/Resend）
-- Supabase 实时订阅
-
-## 风险
-- HIGH: 邮件送达率（需要 SPF/DKIM）
-- MEDIUM: 单市场 1000+ 用户时的性能
-- MEDIUM: 市场频繁结算导致的通知泛滥
-- LOW: 实时订阅开销
-
-## 预估复杂度: MEDIUM
-- 后端：4-6 小时
-- 前端：3-4 小时
-- 测试：2-3 小时
-- 总计：9-13 小时
-
-**等待确认**: 是否继续执行此计划？(yes/no/modify)
-```
 
 ## 重要说明
 
@@ -257,11 +193,14 @@ Agent:
 
 ## Related Agents
 
-- `planner` Agent：负责输出可执行的实施计划
+- `planner` Agent：输出可执行实施计划（必用）
+- `architect` Agent：架构审查与权衡
+- `tdd-guide-ts` / `tdd-guide-py` Agent：测试策略与用例覆盖
+- `code-reviewer-ts` / `code-reviewer-py` Agent：实现后代码审查
 
 ## 计划保存位置
 
-计划保存到: `docs/plans/YYYY-MM-DD-<feature-name>.md`
+计划保存到: `.plans/YYYY-MM-DD-<feature-name>.md`
 
 ## 记住原则
 
