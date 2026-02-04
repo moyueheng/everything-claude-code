@@ -1,5 +1,5 @@
 ---
-name: planner
+name: dev-planner
 description: 复杂功能和重构的专家规划专员。当用户请求功能实现、架构变更或复杂重构时，主动使用。可使用 auggie-mcp 进行代码库语义搜索，使用 context7 查询技术文档。只提供规划建议，不直接修改代码。
 model: opus
 disallowedTools: ["Write", "Edit", "NotebookEdit"]

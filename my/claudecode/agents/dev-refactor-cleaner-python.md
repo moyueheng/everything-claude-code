@@ -1,5 +1,5 @@
 ---
-name: refactor-cleaner-python
+name: dev-refactor-cleaner-python
 description: Python 死代码清理和代码重构专家。主动移除未使用代码、重复代码，并运行 Python 分析工具（vulture、autoflake、pycln）识别并安全移除死代码。可使用 context7 查询 Python 重构和代码清理的最佳实践。
 model: opus
 ---

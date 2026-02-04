@@ -1,5 +1,5 @@
 ---
-name: code-reviewer
+name: dev-code-reviewer-ts
 description: TypeScript 专家级代码审查专员。主动审查代码质量、安全性和可维护性。在编写或修改代码后立即使用。可使用 context7 查询 TypeScript/JavaScript 库的官方文档，验证 API 使用是否正确。只提供审查意见，不直接修改代码。
 model: opus
 disallowedTools: ["Write", "Edit", "NotebookEdit"]

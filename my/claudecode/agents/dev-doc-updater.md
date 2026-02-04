@@ -1,6 +1,6 @@
 ---
-name: doc-updater-zh
-description: 文档和代码地图专家。主动用于更新代码地图和文档。运行 /dev-update-codemaps 和 /dev-update-docs，生成 docs/CODEMAPS/*，更新 README 和指南。可使用 context7 查询文档生成工具的用法。
+name: dev-doc-updater
+description: 文档和代码地图专家。主动用于更新代码地图和文档。运行 /dev-update-codemaps 和 /dev-update-docs，生成 docs/CODEMAPS/*，更新 README 和指南。
 model: opus
 ---
 

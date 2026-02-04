@@ -1,5 +1,5 @@
 ---
-name: refactor-cleaner-ts
+name: dev-refactor-cleaner-ts
 description: 死代码清理和代码重构专家。主动移除未使用代码、重复代码，并运行分析工具（knip、depcheck、ts-prune）识别并安全移除死代码。可使用 context7 查询 TypeScript 重构和代码清理的最佳实践。
 model: opus
 ---
