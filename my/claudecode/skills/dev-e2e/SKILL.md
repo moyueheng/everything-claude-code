@@ -340,4 +340,4 @@ npx playwright test --last-failed
 - 使用 `dev-plan` 识别需要测试的关键流程
 - 使用 `dev-tdd-ts` / `dev-tdd-py` 编写单元测试（更快、更细粒度）
 - 使用 `dev-e2e` 进行集成和用户流程测试
-- 使用 `code-reviewer-ts` 审查测试质量
+- 使用 `dev-code-reviewer-ts` 审查测试质量

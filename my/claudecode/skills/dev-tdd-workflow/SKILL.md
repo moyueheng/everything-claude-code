@@ -171,5 +171,5 @@ REPEAT:   下一个场景/功能
 
 ## 与 Agent/流程配合
 
-- 需要执行型引导时可配合 `tdd-guide-ts` 或 `tdd-guide-py` Agent。
+- 需要执行型引导时可配合 `dev-tdd-guide-ts` 或 `dev-tdd-guide-py` Agent。
 - 从 `dev-plan` 进入时，必须同步更新计划文件状态。
