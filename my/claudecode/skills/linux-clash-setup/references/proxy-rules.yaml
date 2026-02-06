@@ -1,0 +1,193 @@
+# 分类代理规则集
+# 用于 Clash/Mihomo 的分流规则
+# 将这些规则添加到 ~/clashctl/resources/runtime.yaml 的 rules: 段落
+
+# ============================================
+# Discord
+# ============================================
+discord:
+  - DOMAIN-KEYWORD,discord,🚀 节点选择
+
+# ============================================
+# Apple 强化：涵盖 App Store、iCloud、iMessage 及系统更新
+# ============================================
+apple:
+  - DOMAIN-SUFFIX,apple.com,🚀 节点选择
+  - DOMAIN-SUFFIX,icloud.com,🚀 节点选择
+  - DOMAIN-SUFFIX,itunes.com,🚀 节点选择
+  - DOMAIN-SUFFIX,me.com,🚀 节点选择                # 早期 iCloud/邮件后缀
+  - DOMAIN-SUFFIX,mzstatic.com,🚀 节点选择          # 关键：App Store 图片、资源及应用下载
+  - DOMAIN-SUFFIX,icloud-content.com,🚀 节点选择    # 关键：iCloud 文件上传下载
+  - DOMAIN-SUFFIX,apple-cloudkit.com,🚀 节点选择    # iCloud 云服务同步
+  - DOMAIN-SUFFIX,aaplimg.com,🚀 节点选择           # 静态资源加速
+  - DOMAIN-SUFFIX,cdn-apple.com,🚀 节点选择         # 苹果 CDN
+  - DOMAIN-SUFFIX,apple-mapkit.com,🚀 节点选择      # 地图相关
+  - DOMAIN-SUFFIX,digicert.com,🚀 节点选择          # 部分证书校验（苹果常用）
+  - DOMAIN-KEYWORD,apple,🚀 节点选择
+  - DOMAIN-KEYWORD,icloud,🚀 节点选择
+
+# ============================================
+# OpenAI 强化：解决 Access Denied 和验证码断流
+# ============================================
+openai:
+  - DOMAIN-SUFFIX,openai.com,🚀 节点选择
+  - DOMAIN-SUFFIX,chatgpt.com,🚀 节点选择
+  - DOMAIN-SUFFIX,oaistatic.com,🚀 节点选择
+  - DOMAIN-SUFFIX,oaiusercontent.com,🚀 节点选择
+  - DOMAIN-SUFFIX,chat.com,🚀 节点选择
+  - DOMAIN-SUFFIX,chatgpt.livekit.cloud,🚀 节点选择
+  - DOMAIN,chat.openai.com.cdn.cloudflare.net,🚀 节点选择
+  - DOMAIN-SUFFIX,intercom.io,🚀 节点选择           # 客服及消息系统
+  - DOMAIN-SUFFIX,identrust.com,🚀 节点选择         # 证书相关
+  - DOMAIN-SUFFIX,arkoselabs.com,🚀 节点选择        # 关键：OpenAI 的风控验证码
+  - DOMAIN-KEYWORD,openai,🚀 节点选择
+  - DOMAIN,in.appcenter.ms,🚀 节点选择
+  # 新增 ChatGPT 相关规则
+  - DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net,🚀 节点选择
+  - DOMAIN-SUFFIX,ai.com,🚀 节点选择
+  - DOMAIN-SUFFIX,openaicom.imgix.net,🚀 节点选择
+  - DOMAIN-SUFFIX,sentry.io,🚀 节点选择
+  - DOMAIN,api.msn.com,🚀 节点选择
+  - DOMAIN,api.statsig.com,🚀 节点选择
+  - DOMAIN,assets.msn.com,🚀 节点选择
+  - DOMAIN,browser-intake-datadoghq.com,🚀 节点选择
+  - DOMAIN,copilot.microsoft.com,🚀 节点选择
+  - DOMAIN,gateway.bingviz.microsoft.net,🚀 节点选择
+  - DOMAIN,gateway.bingviz.microsoftapp.net,🚀 节点选择
+  - DOMAIN,location.microsoft.com,🚀 节点选择
+  - DOMAIN,odc.officeapps.live.com,🚀 节点选择
+  - DOMAIN,openai-api.arkoselabs.com,🚀 节点选择
+  - DOMAIN,openaicomproductionae4b.blob.core.windows.net,🚀 节点选择
+  - DOMAIN,production-openaicom-storage.azureedge.net,🚀 节点选择
+  - DOMAIN,r.bing.com,🚀 节点选择
+  - DOMAIN,self.events.data.microsoft.com,🚀 节点选择
+  - DOMAIN,services.bingapis.com,🚀 节点选择
+  - DOMAIN,static.cloudflareinsights.com,🚀 节点选择
+  - DOMAIN,sydney.bing.com,🚀 节点选择
+  - DOMAIN,www.bing.com,🚀 节点选择
+  - DOMAIN-SUFFIX,algolia.net,🚀 节点选择
+  - DOMAIN-SUFFIX,api.microsoftapp.net,🚀 节点选择
+  - DOMAIN-SUFFIX,auth0.com,🚀 节点选择
+  - DOMAIN-SUFFIX,bing-shopping.microsoft-falcon.io,🚀 节点选择
+  - DOMAIN-SUFFIX,challenges.cloudflare.com,🚀 节点选择
+  - DOMAIN-SUFFIX,client-api.arkoselabs.com,🚀 节点选择
+  - DOMAIN-SUFFIX,edgeservices.bing.com,🚀 节点选择
+  - DOMAIN-SUFFIX,events.statsigapi.net,🚀 节点选择
+  - DOMAIN-SUFFIX,featuregates.org,🚀 节点选择
+  - DOMAIN-SUFFIX,host.livekit.cloud,🚀 节点选择
+  - DOMAIN-SUFFIX,intercomcdn.com,🚀 节点选择
+  - DOMAIN-SUFFIX,launchdarkly.com,🚀 节点选择
+  - DOMAIN-SUFFIX,observeit.net,🚀 节点选择
+  - DOMAIN-SUFFIX,openaiapi-site.azureedge.net,🚀 节点选择
+  - DOMAIN-SUFFIX,segment.io,🚀 节点选择
+  - DOMAIN-SUFFIX,stripe.com,🚀 节点选择
+  - DOMAIN-SUFFIX,turn.livekit.cloud,🚀 节点选择
+  - DOMAIN-SUFFIX,sora.com,🚀 节点选择
+  - DOMAIN-KEYWORD,openaicom-api,🚀 节点选择
+  - DOMAIN,cdn.usefathom.com,🚀 节点选择
+  - DOMAIN-SUFFIX,razie.ai,🚀 节点选择
+  - DOMAIN-SUFFIX,razie.aws.intellij.net,🚀 节点选择
+  - DOMAIN-SUFFIX,etbrains.ai,🚀 节点选择
+  - DOMAIN-SUFFIX,meta.com,🚀 节点选择
+
+# ============================================
+# Claude 强化
+# ============================================
+claude:
+  - DOMAIN-SUFFIX,claude.ai,🚀 节点选择
+  - DOMAIN-SUFFIX,anthropic.com,🚀 节点选择
+  - DOMAIN-SUFFIX,claudeusercontent.com,🚀 节点选择
+  - DOMAIN-KEYWORD,anthropic,🚀 节点选择
+  - DOMAIN-KEYWORD,claude,🚀 节点选择
+  - DOMAIN-SUFFIX,intellimize.co,🚀 节点选择
+
+# ============================================
+# Google 强化：解决 Search Console/Account 地区跳回
+# ============================================
+google:
+  - DOMAIN-KEYWORD,google,🚀 节点选择
+  - DOMAIN-SUFFIX,google.com,🚀 节点选择
+  - DOMAIN-SUFFIX,googleapis.com,🚀 节点选择
+  - DOMAIN-SUFFIX,gstatic.com,🚀 节点选择
+  - DOMAIN-SUFFIX,googleusercontent.com,🚀 节点选择
+  - DOMAIN-SUFFIX,googlevideo.com,🚀 节点选择      # YouTube 流量
+  - DOMAIN-SUFFIX,google-analytics.com,🚀 节点选择
+  - DOMAIN-SUFFIX,recaptcha.net,🚀 节点选择         # Google 验证码
+  - DOMAIN-SUFFIX,ggpht.com,🚀 节点选择             # 图片/头像存储
+
+# ============================================
+# X / Twitter 强化：解决图片加载和视频流
+# ============================================
+x:
+  - DOMAIN-SUFFIX,x.com,🚀 节点选择
+  - DOMAIN-SUFFIX,x.ai,🚀 节点选择
+  - DOMAIN-SUFFIX,grok.com,🚀 节点选择
+  - DOMAIN-SUFFIX,twitter.com,🚀 节点选择
+  - DOMAIN-SUFFIX,twimg.com,🚀 节点选择             # 关键：静态资源和图片
+  - DOMAIN-SUFFIX,t.co,🚀 节点选择                  # 关键：短链接转发
+  - DOMAIN-SUFFIX,periscope.tv,🚀 节点选择          # 直播流
+  - DOMAIN-KEYWORD,twitter,🚀 节点选择
+
+# ============================================
+# TikTok 规则
+# ============================================
+tiktok:
+  - DOMAIN-KEYWORD,tiktok,🚀 节点选择
+  - DOMAIN-SUFFIX,tiktok.com,🚀 节点选择
+  - DOMAIN-SUFFIX,tiktokv.com,🚀 节点选择
+  - DOMAIN-SUFFIX,tiktokcdn.com,🚀 节点选择
+  - DOMAIN-SUFFIX,byteoversea.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ibytedtos.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ipstatp.com,🚀 节点选择
+  - DOMAIN-SUFFIX,muscdn.com,🚀 节点选择
+  - DOMAIN-SUFFIX,byteintl.net,🚀 节点选择
+  - DOMAIN-SUFFIX,snssdk.com,🚀 节点选择
+
+# ============================================
+# 检测与隐私
+# ============================================
+detection:
+  - DOMAIN-SUFFIX,scamalytics.com,🚀 节点选择
+  - DOMAIN-SUFFIX,whoer.net,🚀 节点选择
+  - DOMAIN-SUFFIX,browserleaks.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ipinfo.io,🚀 节点选择
+  - DOMAIN-SUFFIX,ipcheck.ing,🚀 节点选择
+  - DOMAIN-SUFFIX,pixelscan.net,🚀 节点选择
+  - DOMAIN-SUFFIX,surfsharkdns.com,🚀 节点选择
+  - DOMAIN-SUFFIX,browserscan.net,🚀 节点选择
+  - DOMAIN-SUFFIX,abuseipdb.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ippure.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ping0.cc,🚀 节点选择
+  - DOMAIN-SUFFIX,www.ipjiance.com,🚀 节点选择
+  - DOMAIN-SUFFIX,iping.cc,🚀 节点选择
+  - DOMAIN-SUFFIX,ip125.com,🚀 节点选择
+  # 新增 IP 检测服务
+  - DOMAIN-SUFFIX,ipwho.is,🚀 节点选择
+  - DOMAIN-SUFFIX,ip-api.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ipstack.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ipdata.co,🚀 节点选择
+  - DOMAIN-SUFFIX,ip2location.com,🚀 节点选择
+  - DOMAIN-SUFFIX,maxmind.com,🚀 节点选择
+  - DOMAIN-SUFFIX,db-ip.com,🚀 节点选择
+  - DOMAIN-SUFFIX,abstractapi.com,🚀 节点选择
+  - DOMAIN-SUFFIX,freegeoip.app,🚀 节点选择
+  - DOMAIN-SUFFIX,extreme-ip-lookup.com,🚀 节点选择
+  - DOMAIN-SUFFIX,ipapi.co,🚀 节点选择
+  - DOMAIN-SUFFIX,whoisxmlapi.com,🚀 节点选择
+
+# ============================================
+# 使用示例：在 runtime.yaml 中添加特定分类
+# ============================================
+# 复制需要的分类到 rules: 段落下，例如：
+#
+# rules:
+#   - DOMAIN,api64.ipify.org,DIRECT
+#   # OpenAI 相关
+#   - DOMAIN-SUFFIX,openai.com,🚀 节点选择
+#   - DOMAIN-SUFFIX,chatgpt.com,🚀 节点选择
+#   # ... 其他 openai 规则
+#   # Claude 相关
+#   - DOMAIN-SUFFIX,claude.ai,🚀 节点选择
+#   - DOMAIN-SUFFIX,anthropic.com,🚀 节点选择
+#   # ... 其他 claude 规则
+#   - MATCH,🚀 节点选择
