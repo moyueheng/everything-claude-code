@@ -62,7 +62,7 @@ cp upstream/everything-claude-code/agents/some-agent.md my/claudecode/agents/som
 │   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
 │   │   ├── commands/
 │   │   └── skills/
-│   ├── codex/                   # Codex 专属配置
+│   ├── codex/                   # Codex 专属配置（主要参考自 upstream/superpowers/）
 │   │   └── skills/              # 改造后的 skills
 │   └── mcp-configs/             # MCP 服务器配置
 │
@@ -317,12 +317,19 @@ EOF
 
 ### Codex Skills (`my/codex/skills/`)
 
+> **来源说明**: `my/codex/` 目录下的配置主要参考自 `upstream/superpowers/`（obra/superpowers 完整软件开发工作流系统），经过本地化改造后适配 Codex 使用。
+
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
 | **dev-** | `dev-architecture-critic/` | 全栈架构找茬与改进方向评审 | `$dev-architecture-critic` |
 | **dev-** | `dev-plan/` | 开发项目规划 | `$dev-plan` |
+| **dev-** | `dev-subagent-driven-development/` | 子代理驱动开发（任务分派 + 两阶段审查） | `$dev-subagent-driven-development` |
+| **dev-** | `dev-systematic-debugging/` | 系统化调试（根因分析后修复） | `$dev-systematic-debugging` |
 | **dev-** | `dev-tdd-workflow/` | 通用 TDD 工作流（合并 command + skill） | `$dev-tdd-workflow` |
 | **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | `$dev-tdd-ts` |
 | **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | `$dev-tdd-py` |
 | **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |
+| **life-** | `life-obsidian-bases/` | Obsidian Bases 功能 | `$life-obsidian-bases` |
+| **life-** | `life-obsidian-json-canvas/` | Obsidian JSON Canvas | `$life-obsidian-json-canvas` |
+| **life-** | `life-obsidian-markdown/` | Obsidian Markdown 编辑 | `$life-obsidian-markdown` |
 | **tool-** | `tool-agent-browser/` | Agent 浏览器自动化 | 网页交互、表单填写、截图、数据提取 |
