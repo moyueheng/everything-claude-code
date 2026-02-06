@@ -238,6 +238,7 @@ EOF
 - 上游项目文档：`upstream/everything-claude-code/README.md`
 - 迁移方案：`MIGRATION_STEPS.md`
 - 配置对比：`docs/differences.md` - OpenCode、Claude Code、Codex 配置系统对比
+- 上游仓库对比：`docs/upstream-repos-comparison.md` - everything-claude-code vs superpowers 详细对比
 - Subagent MCP 配置：`docs/subagent-mcp-config.md` - Subagent 与 MCP 工具配置指南
 
 ## 可用 Agents
