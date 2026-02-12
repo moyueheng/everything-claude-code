@@ -167,6 +167,20 @@ description: 何时使用[具体触发条件和症状]
 - ✅ `creating-skills` 不是 `skill-creation`
 - ✅ `condition-based-waiting` 不是 `async-test-helpers`
 
+**遵循仓库命名前缀规范（`docs/skill-naming-convention.md`）：**
+- 格式固定：`<category>-<name>`
+- 分类前缀：`dev-`、`life-`、`work-`、`tool-`、`learn-`
+- Skill 的 `name` 必须按用途选择前缀（开发类默认 `dev-`）
+
+**名称与目录一致性：**
+- skill 目录名应与 frontmatter `name` 一致
+- 示例：目录 `dev-writing-skills/` 对应 `name: dev-writing-skills`
+
+**避免：**
+- 无前缀或前缀错误（如 `writing-skills`、`misc-helper`）
+- 过于泛化（如 `tools`、`helper`、`utils`）
+- 同一技能集合内命名风格不一致
+
 ### 4. 令牌效率（关键）
 
 **问题：** 入门和频繁引用的 skills 加载到每个对话。每个令牌都重要。
@@ -197,6 +211,108 @@ search-conversations 支持多种模式和过滤器。运行 --help 获取详情
 总是使用子 agent（节省 50-100 倍上下文）。必需：使用 [other-skill-name] 工作流。
 ```
 
+### 4. 引用其他 Skills
+
+**当文档需要引用其他 skill：**
+
+只使用 skill 名称，并明确标注是否强制依赖：
+- ✅ 好：`**REQUIRED SUB-SKILL:** Use superpowers:test-driven-development`
+- ✅ 好：`**REQUIRED BACKGROUND:** You MUST understand superpowers:systematic-debugging`
+- ❌ 差：`See skills/testing/test-driven-development`（不清楚是否必需）
+- ❌ 差：`@skills/testing/test-driven-development/SKILL.md`（会强制加载并消耗上下文）
+
+**为什么不要 `@` 链接：** `@` 会立即加载文件，可能在真正需要前就消耗大量上下文。
+
+## 流程图使用
+
+```dot
+digraph when_flowchart {
+    "需要展示信息吗？" [shape=diamond];
+    "这是容易判断错误的决策点吗？" [shape=diamond];
+    "用 Markdown 文本" [shape=box];
+    "小型内联流程图" [shape=box];
+
+    "需要展示信息吗？" -> "这是容易判断错误的决策点吗？" [label="yes"];
+    "这是容易判断错误的决策点吗？" -> "小型内联流程图" [label="yes"];
+    "这是容易判断错误的决策点吗？" -> "用 Markdown 文本" [label="no"];
+}
+```
+
+**仅在以下场景使用流程图：**
+- 非显而易见的决策点
+- 容易过早停止的流程循环
+- “何时用 A vs B”的分流判断
+
+**不要用流程图表达：**
+- 参考资料（改用表格/列表）
+- 代码示例（改用 Markdown 代码块）
+- 线性步骤（改用编号列表）
+- 无语义标签（step1、helper2）
+
+图形规范见 `graphviz-conventions.dot`。
+
+**给人类协作者可视化：** 使用当前目录的 `render-graphs.js` 渲染 SVG：
+```bash
+./render-graphs.js ../some-skill
+./render-graphs.js ../some-skill --combine
+```
+
+## 代码示例
+
+**一个高质量示例胜过多个平庸示例。**
+
+优先选最相关语言：
+- 测试技术：TypeScript/JavaScript
+- 系统调试：Shell/Python
+- 数据处理：Python
+
+**好示例应该：**
+- 完整可运行
+- 通过注释解释“为什么”
+- 来自真实场景
+- 清晰体现核心模式
+- 可直接改造，不是空模板
+
+**不要：**
+- 同一示例实现 5+ 语言版本
+- 写填空式模板
+- 构造脱离实际的例子
+
+## 文件组织
+
+### 自包含 Skill
+```
+defense-in-depth/
+  SKILL.md
+```
+适用：内容可全部内联，无重参考材料。
+
+### 带可复用工具的 Skill
+```
+condition-based-waiting/
+  SKILL.md
+  example.ts
+```
+适用：需要可复用代码工具，而不只是叙述。
+
+### 带重参考的 Skill
+```
+pptx/
+  SKILL.md
+  pptxgenjs.md
+  ooxml.md
+  scripts/
+```
+适用：参考材料过大，不适合内联。
+
+## 铁律（与 TDD 相同）
+
+```
+没有先失败的测试，就没有 skill
+```
+
+这条规则同时适用于新建 skill 和修改既有 skill。
+
 ## Skill 的红-绿-重构
 
 遵循 TDD 循环：
@@ -220,9 +336,17 @@ search-conversations 支持多种模式和过滤器。运行 --help 获取详情
 
 Agent 找到新合理化？添加明确对策。重新测试直到防弹。
 
+**测试方法学：** 详见 `testing-skills-with-subagents.md`，包含：
+- 如何设计压力场景
+- 压力类型（时间、沉没成本、权威、疲惫）
+- 如何系统性补洞
+- 元测试技巧
+
 ## 漏洞防护
 
 需要执行纪律的 skills（如 TDD）需要抵抗合理化。Agent 很聪明，会在压力下找到漏洞。
+
+**心理学补充：** 了解“为什么说服策略有效”有助于系统应用。研究基础见 `persuasion-principles.md`。
 
 ### 明确关闭每个漏洞
 
@@ -280,6 +404,14 @@ Agent 找到新合理化？添加明确对策。重新测试直到防弹。
 - "这次不同因为..."
 
 **所有这些意味着：删除代码。用 TDD 重新开始。**
+```
+
+### 更新 CSO 的违规症状
+
+在 description 中加入“即将违规时”的触发症状，例如：
+
+```yaml
+description: Use when implementing any feature or bugfix, before writing implementation code
 ```
 
 ## 所有 Skill 类型的测试
@@ -391,7 +523,9 @@ helper1、helper2、step3、pattern4
 
 **绿阶段 - 编写最小 Skill：**
 - [ ] 名称仅使用字母、数字、连字符（无括号/特殊字符）
+- [ ] 名称符合 `docs/skill-naming-convention.md`：`<category>-<name>`，前缀按用途选择
 - [ ] YAML frontmatter 仅 name 和 description（最多 1024 字符）
+- [ ] skill 目录名与 frontmatter `name` 完全一致
 - [ ] Description 以"何时使用..."开头，包括具体触发器/症状
 - [ ] Description 第三人称书写
 - [ ] 全文关键词用于搜索（错误、症状、工具）
@@ -417,6 +551,20 @@ helper1、helper2、step3、pattern4
 
 **部署：**
 - [ ] 提交 skill 到 git 并推送到你的 fork（如果配置）
+- [ ] 如果具备通用价值，考虑提交 PR 回馈上游
+
+## 发现工作流
+
+未来 agent 通常会这样找到你的 skill：
+
+1. 遇到问题（例如“测试不稳定”）
+2. 在可用 skills 中检索
+3. 命中描述（description 匹配）
+4. 快速扫读概述（判断相关性）
+5. 读取模式与快速参考
+6. 仅在实现时加载示例文件
+
+**优化方向：** 让可检索关键词尽量前置且重复出现。
 
 ## 底线
 

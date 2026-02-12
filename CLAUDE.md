@@ -234,6 +234,7 @@ EOF
 3. **改造前先从 upstream 复制** - 保留原文件参考，在副本上修改
 4. **定期同步上游** - 获取原项目的新功能和修复
 5. **实施计划统一存放在 `.plans/`** - 使用 `YYYY-MM-DD-<feature-name>.md` 命名
+6. **迁移 superpowers 类 skill 时保持结构完整** - `SKILL.md` 可中文化，但同目录 supporting files（参考文档、脚本、示例）默认保留上游原文并一并迁移
 
 ## 参考文档
 

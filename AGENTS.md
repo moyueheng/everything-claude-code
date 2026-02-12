@@ -268,6 +268,8 @@ EOF
 
 基于 upstream/superpowers 核心 skill 转换的 Kimi 格式 skills。
 
+`dev-writing-skills/` 迁移规则：`SKILL.md` 使用中文改造；其余配套文件（如 `anthropic-best-practices.md`、`testing-skills-with-subagents.md`、`persuasion-principles.md`、`graphviz-conventions.dot`、`render-graphs.js`、`examples/`）保持上游原文同步，不做翻译。
+
 | 分类 | 文件 | 描述 | 调用方式 |
 |------|------|------|----------|
 | **dev-** | `dev-brainstorming/` | 头脑风暴：从想法到设计 | `/skill:dev-brainstorming` |
