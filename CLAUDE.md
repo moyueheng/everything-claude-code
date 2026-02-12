@@ -57,7 +57,9 @@ cp upstream/everything-claude-code/agents/some-agent.md my/claudecode/agents/som
 │   ├── claudecode/              # Claude Code 专属配置
 │   │   ├── agents/              # 改造后的 agents（中文/个性化）
 │   │   ├── rules/               # 改造后的 rules（中文/个性化）
-│   │   └── skills/              # 改造后的 skills
+│   │   ├── skills/              # 改造后的 skills
+│   │   ├── hooks/               # hooks 配置（SessionStart, Stop, SessionEnd）
+│   │   └── scripts/             # hooks 依赖的脚本（lib/, hooks/）
 │   ├── opencode/                # OpenCode 专属配置
 │   │   ├── agents/              # 改造后的 agents（从 Claude Code 转换）
 │   │   ├── commands/
@@ -333,3 +335,15 @@ EOF
 | **life-** | `life-obsidian-json-canvas/` | Obsidian JSON Canvas | `$life-obsidian-json-canvas` |
 | **life-** | `life-obsidian-markdown/` | Obsidian Markdown 编辑 | `$life-obsidian-markdown` |
 | **tool-** | `tool-agent-browser/` | Agent 浏览器自动化 | 网页交互、表单填写、截图、数据提取 |
+
+### Claude Code Hooks (`my/claudecode/hooks/`)
+
+| Hook 类型 | 脚本文件 | 功能描述 |
+|-----------|------------|----------|
+| **SessionStart** | `session-start.js` | 会话启动时加载前文上下文、检测包管理器、列出可用 session aliases |
+| **Stop** | `suggest-compact.js` | 工具调用达到阈值时建议手动 compact |
+| **Stop** | `agent` (内置) | 验证 Python 和 TypeScript 文件质量（ruff/pyright/eslint/tsc） |
+| **SessionEnd** | `session-end.js` | 会话结束时持久化状态到 session 文件 |
+| **SessionEnd** | `evaluate-session.js` | 评估会话是否可提取 reusable patterns |
+
+> **注意**: Hooks 通过 `install.sh` 安装到 `~/.claude/settings.json`，脚本安装到 `~/.claude/scripts/`

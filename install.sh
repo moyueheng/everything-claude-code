@@ -12,7 +12,7 @@ OPENCODE_DIR="$HOME/.config/opencode"
 CODEX_DIR="$HOME/.codex"
 
 # 确保目录存在
-mkdir -p "$CLAUDE_DIR"/{agents,rules,commands,skills}
+mkdir -p "$CLAUDE_DIR"/{agents,rules,commands,skills,scripts/hooks,scripts/lib}
 mkdir -p "$OPENCODE_DIR"/{agents,commands,skills}
 mkdir -p "$CODEX_DIR"/{skills,rules}
 
@@ -44,7 +44,35 @@ if [ -d "my/claudecode/skills" ]; then
   echo "  ✓ skills"
 fi
 
+# 安装 scripts (hooks 依赖)
+if [ -d "my/claudecode/scripts" ]; then
+  rm -rf "$CLAUDE_DIR/scripts/"/* 2>/dev/null || true
+  cp -r my/claudecode/scripts/* "$CLAUDE_DIR/scripts/" 2>/dev/null || true
+  echo "  ✓ scripts"
+fi
 
+# 合并 hooks.json 到 settings.json
+if [ -f "my/claudecode/hooks/hooks.json" ]; then
+  SETTINGS_FILE="$CLAUDE_DIR/settings.json"
+
+  # 如果 settings.json 不存在，创建空文件
+  if [ ! -f "$SETTINGS_FILE" ]; then
+    echo "{}" > "$SETTINGS_FILE"
+  fi
+
+  # 使用 node 合并 JSON（保留现有的其他配置）
+  node -e "
+    const fs = require('fs');
+    const settings = JSON.parse(fs.readFileSync('$SETTINGS_FILE', 'utf8'));
+    const hooks = JSON.parse(fs.readFileSync('my/claudecode/hooks/hooks.json', 'utf8'));
+
+    // 合并 hooks
+    settings.hooks = { ...settings.hooks, ...hooks.hooks };
+
+    // 写回
+    fs.writeFileSync('$SETTINGS_FILE', JSON.stringify(settings, null, 2) + '\n');
+  " 2>/dev/null && echo "  ✓ hooks" || echo "  - hooks (合并失败，请手动安装)"
+fi
 
 echo ""
 echo ">>> 安装 OpenCode 专属配置"
@@ -117,6 +145,8 @@ echo "  commands:"
 ls -la "$CLAUDE_DIR/commands/" 2>/dev/null | grep -E "\.md$" | awk '{print "    " $NF}' || echo "    (无)"
 echo "  skills:"
 ls "$CLAUDE_DIR/skills/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  scripts/hooks:"
+ls "$CLAUDE_DIR/scripts/hooks/" 2>/dev/null | grep "\.js$" | awk '{print "    " $NF}' || echo "    (无)"
 echo ""
 
 echo "OpenCode (~/.config/opencode/):"
