@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "exit 0"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/hooks/session-start.js"
+          }
+        ],
+        "description": "会话启动时加载前文上下文、检测包管理器"
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "agent",
+            "timeout": 240,
+            "prompt": "你是代码质量验收 Agent。目标是在允许 Claude 停止之前，验证本次修改的 Python 和 TypeScript 文件质量。\n\n步骤：\n1. 运行: git diff --name-only --diff-filter=ACM\n2. 分类文件：\n   - 以 .py 结尾 → Python 文件\n   - 以 .ts 或 .tsx 结尾 → TypeScript 文件\n\nPython 验证：\n3. 如果存在 Python 文件：\n   - 运行: ruff check <python_files>\n   - 若失败，返回 {\"ok\": false, \"reason\": \"Ruff 检查失败。列出文件及关键错误。\"}\n   - 若通过，再运行: pyright\n   - 若 pyright 有类型错误，返回 {\"ok\": false, \"reason\": \"Pyright 类型检查失败。列出主要错误。\"}\n\nTypeScript 验证：\n4. 如果存在 TypeScript 文件：\n   - 运行: npx eslint <ts_files>\n   - 若失败，返回 {\"ok\": false, \"reason\": \"ESLint 检查失败。列出主要错误。\"}\n   - 若通过，再运行: npx tsc --noEmit\n   - 若类型检查失败，返回 {\"ok\": false, \"reason\": \"TypeScript 类型检查失败。列出关键错误。\"}\n\n5. 如果所有检查都通过，返回 {\"ok\": true}\n\n要求：\n- 不自动修复\n- 输出简洁\n- 只总结关键错误\n- 若无相关文件修改，直接返回 {\"ok\": true}"
+          }
+        ],
+        "description": "验证 Python 和 TypeScript 文件质量, https://code.claude.com/docs/en/hooks-guide"
+      },
+      {
+        "matcher": "tool == \"Edit\" || tool == \"Write\"",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/hooks/suggest-compact.js"
+          }
+        ],
+        "description": "在逻辑间隔建议手动 compact"
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/hooks/session-end.js"
+          }
+        ],
+        "description": "会话结束时持久化状态到 session 文件"
+      },
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ~/.claude/scripts/hooks/evaluate-session.js"
+          }
+        ],
+        "description": "评估会话是否可提取 reusable patterns"
+      }
+    ]
+  }
+}
