@@ -1,5 +1,4 @@
 version: 1
 agent:
   extend: default
-  name: dev
-  system_prompt_path: ./dev.md
+  system_prompt_path: ./system.md
