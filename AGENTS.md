@@ -279,6 +279,7 @@ EOF
 | **dev-** | `dev-finishing-branch/` | 完成开发分支 | `/skill:dev-finishing-branch` |
 | **dev-** | `dev-requesting-review/` | 请求代码审查 | `/skill:dev-requesting-review` |
 | **dev-** | `dev-writing-skills/` | 编写 Skills 指南 | `/skill:dev-writing-skills` |
+| **dev-** | `dev-using-skills/` | 如何使用 Skills（入门指南） | `/skill:dev-using-skills` |
 
 **使用方式：**
 ```bash
