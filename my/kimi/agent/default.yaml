@@ -1,0 +1,10 @@
+version: 1
+agent:
+  extend: default
+  name: default-with-skills
+  system_prompt_path: ./system.md
+  system_prompt_args:
+    SKILL_AUTOLOAD: |
+      自动加载的 Skills 指南：
+      - dev-using-skills: 必须在每次对话开始时调用
+      - 其他 skills 根据任务类型按需调用

@@ -148,12 +148,31 @@ fi
 echo ""
 echo ">>> 安装 Kimi 专属配置"
 
-# 复制 Kimi 专属配置（如果目录为空则跳过）
+# 设置 Kimi agent 目录
+KIMI_AGENT_DIR="$HOME/.kimi/agents"
+mkdir -p "$KIMI_AGENT_DIR"
+
+# 复制 Kimi skills（如果目录为空则跳过）
 if [ -d "my/kimi/skills" ] && [ "$(ls -A my/kimi/skills/ 2>/dev/null)" ]; then
   cp -r my/kimi/skills/* "$KIMI_SKILLS_DIR/" 2>/dev/null || true
   echo "  ✓ skills -> $KIMI_SKILLS_DIR"
 else
   echo "  - skills (无配置)"
+fi
+
+# 复制 Kimi agent 配置
+if [ -d "my/kimi/agent" ]; then
+  cp my/kimi/agent/*.yaml "$KIMI_AGENT_DIR/" 2>/dev/null || true
+  cp my/kimi/agent/*.md "$KIMI_AGENT_DIR/" 2>/dev/null || true
+  echo "  ✓ agent config -> $KIMI_AGENT_DIR"
+  echo ""
+  echo "  提示: 使用以下命令启动带自动 skill 注入的 Kimi:"
+  echo "    kimi --agent-file $KIMI_AGENT_DIR/default.yaml"
+  echo ""
+  echo "  或设置别名:"
+  echo "    alias kimi='kimi --agent-file $KIMI_AGENT_DIR/default.yaml'"
+else
+  echo "  - agent config (无配置)"
 fi
 
 echo ""
@@ -198,4 +217,6 @@ echo ""
 echo "Kimi ($KIMI_SKILLS_DIR):"
 echo "  skills:"
 ls "$KIMI_SKILLS_DIR/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
+echo "  agent config:"
+ls "$KIMI_AGENT_DIR/" 2>/dev/null | grep -E "\.(yaml|md)$" | awk '{print "    " $NF}' || echo "    (无)"
 
