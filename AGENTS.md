@@ -302,24 +302,23 @@ cp -r my/kimi/skills/* ~/.config/agents/skills/
 ./install.sh  # 安装 skills 和 agent 配置
 ```
 
-### Kimi Agent 配置 (`my/kimi/agent/`)
+### Kimi Agent 配置 (`my/kimi/agents/`)
 
 自定义 Agent 配置，用于在启动 Kimi 时自动注入 `dev-using-skills` 的使用要求。
 
-| 文件 | 说明 |
+| 文件/目录 | 说明 |
 |------|------|
-| `dev.yaml` | Agent 配置文件，继承内置 default agent |
-| `dev.md` | 系统提示词，包含强制使用 skills 的规则 |
-| `README.md` | 配置说明文档 |
+| `dev.yaml` | 主 Agent 配置文件，继承内置 default agent |
+| `superpower/` | Superpower agent 子目录，包含 system.md 和 agent.yaml |
 
 **使用方法：**
 
 ```bash
 # 方法 1：命令行参数
-kimi --agent-file my/kimi/agent/dev.yaml
+kimi --agent-file my/kimi/agents/dev.yaml
 
 # 方法 2：设置别名（推荐）
-alias kimi='kimi --agent-file /path/to/my/kimi/agent/dev.yaml'
+alias kimi='kimi --agent-file /path/to/my/kimi/agents/dev.yaml'
 
 # 方法 3：安装后使用
 ./install.sh
@@ -328,7 +327,7 @@ kimi --agent-file ~/.kimi/agents/dev.yaml
 
 **工作原理：**
 
-系统提示词中强制要求 Kimi 在每次对话开始时：
+`superpower/system.md` 中强制要求 Kimi 在每次对话开始时：
 1. 检查 `${KIMI_SKILLS}` 列表（所有可用 skills）
 2. 首先调用 `/skill:dev-using-skills`（如果可用）
 3. 根据用户请求调用其他适用的 skills

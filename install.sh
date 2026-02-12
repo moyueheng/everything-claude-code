@@ -161,16 +161,15 @@ else
 fi
 
 # 复制 Kimi agent 配置
-if [ -d "my/kimi/agent" ]; then
-  cp my/kimi/agent/*.yaml "$KIMI_AGENT_DIR/" 2>/dev/null || true
-  cp my/kimi/agent/*.md "$KIMI_AGENT_DIR/" 2>/dev/null || true
+if [ -d "my/kimi/agents" ]; then
+  cp -r my/kimi/agents/* "$KIMI_AGENT_DIR/" 2>/dev/null || true
   echo "  ✓ agent config -> $KIMI_AGENT_DIR"
   echo ""
   echo "  提示: 使用以下命令启动带自动 skill 注入的 Kimi:"
-  echo "    kimi --agent-file $KIMI_AGENT_DIR/default.yaml"
+  echo "    kimi --agent-file $KIMI_AGENT_DIR/dev.yaml"
   echo ""
   echo "  或设置别名:"
-  echo "    alias kimi='kimi --agent-file $KIMI_AGENT_DIR/default.yaml'"
+  echo "    alias kimi='kimi --agent-file $KIMI_AGENT_DIR/dev.yaml'"
 else
   echo "  - agent config (无配置)"
 fi

@@ -2,4 +2,4 @@ version: 1
 agent:
   extend: default
   name: dev
-  ROLE_ADDITIONAL: ./dev.md
+  system_prompt_path: ./dev.md
