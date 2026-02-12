@@ -1,20 +1,33 @@
 #!/bin/bash
 set -e
 
-# 将 my/ 目录下的配置安装到 Claude Code、OpenCode 和 Codex
-# 将 my/ 目录下的配置安装到 Claude Code、OpenCode 和 Codex
+# 将 my/ 目录下的配置安装到 Claude Code、OpenCode、Codex 和 Kimi
 # Claude Code: 覆盖 ~/.claude/{agents,rules,skills}
 # OpenCode:    覆盖 ~/.config/opencode/{agents,commands,skills}
 # Codex:       覆盖 ~/.codex/{skills,rules}
+# Kimi:        覆盖 ~/.config/agents/skills/ 或 ~/.kimi/skills/
 
 CLAUDE_DIR="$HOME/.claude"
 OPENCODE_DIR="$HOME/.config/opencode"
 CODEX_DIR="$HOME/.codex"
 
+# Kimi 支持多个可能的 skills 目录，按优先级选择
+if [ -d "$HOME/.config/agents/skills" ]; then
+  KIMI_SKILLS_DIR="$HOME/.config/agents/skills"
+elif [ -d "$HOME/.agents/skills" ]; then
+  KIMI_SKILLS_DIR="$HOME/.agents/skills"
+elif [ -d "$HOME/.kimi/skills" ]; then
+  KIMI_SKILLS_DIR="$HOME/.kimi/skills"
+else
+  # 默认使用推荐的目录
+  KIMI_SKILLS_DIR="$HOME/.config/agents/skills"
+fi
+
 # 确保目录存在
 mkdir -p "$CLAUDE_DIR"/{agents,rules,commands,skills,scripts/hooks,scripts/lib}
 mkdir -p "$OPENCODE_DIR"/{agents,commands,skills}
 mkdir -p "$CODEX_DIR"/{skills,rules}
+mkdir -p "$KIMI_SKILLS_DIR"
 
 echo "=== 安装配置文件 ==="
 echo ""
@@ -133,6 +146,17 @@ if [ -f "my/codex/AGENTS.md" ]; then
 fi
 
 echo ""
+echo ">>> 安装 Kimi 专属配置"
+
+# 复制 Kimi 专属配置（如果目录为空则跳过）
+if [ -d "my/kimi/skills" ] && [ "$(ls -A my/kimi/skills/ 2>/dev/null)" ]; then
+  cp -r my/kimi/skills/* "$KIMI_SKILLS_DIR/" 2>/dev/null || true
+  echo "  ✓ skills -> $KIMI_SKILLS_DIR"
+else
+  echo "  - skills (无配置)"
+fi
+
+echo ""
 echo "=== 安装完成 ==="
 echo ""
 
@@ -169,4 +193,9 @@ if [ -f "$CODEX_DIR/AGENTS.md" ]; then
 else
   echo "    (无)"
 fi
+
+echo ""
+echo "Kimi ($KIMI_SKILLS_DIR):"
+echo "  skills:"
+ls "$KIMI_SKILLS_DIR/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
 

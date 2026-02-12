@@ -41,6 +41,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 │   │   └── skills/
 │   ├── codex/                   # Codex 专属配置
 │   │   └── skills/              # 改造后的 skills
+│   ├── kimi/                    # Kimi CLI 专属配置
+│   │   └── skills/              # 转换后的 skills（从 superpowers）
 │   └── mcp-configs/             # MCP 服务器配置
 │
 ├── upstream/everything-claude-code/  # 上游原项目（submodule）
@@ -65,7 +67,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 安装配置
 
 ```bash
-# 将 my/ 下的配置安装到 Claude Code 和 OpenCode
+# 将 my/ 下的配置安装到 Claude Code、OpenCode 和 Kimi
 ./install.sh
 ```
 
@@ -81,6 +83,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `my/opencode/commands/` | OpenCode (`~/.config/opencode/commands/`) |
 | `my/opencode/skills/` | OpenCode (`~/.config/opencode/skills/`) |
 | `my/codex/skills/` | Codex (`~/.codex/skills/`) |
+| `my/kimi/skills/` | Kimi (`~/.config/agents/skills/` 或 `~/.kimi/skills/`) |
 
 ## 日常工作流
 
@@ -259,3 +262,40 @@ EOF
 | **dev-** | `dev-tdd-ts/` | TypeScript 测试驱动开发 | `$dev-tdd-ts` |
 | **dev-** | `dev-tdd-py/` | Python 测试驱动开发 | `$dev-tdd-py` |
 | **dev-** | `dev-rehab-legacy-tests/` | 遗留测试改造 TDD 流程 | `$dev-rehab-legacy-tests` |
+
+### Kimi Skills (`my/kimi/skills/`)
+
+基于 upstream/superpowers 核心 skill 转换的 Kimi 格式 skills。
+
+| 分类 | 文件 | 描述 | 调用方式 |
+|------|------|------|----------|
+| **dev-** | `dev-brainstorming/` | 头脑风暴：从想法到设计 | `/skill:dev-brainstorming` |
+| **dev-** | `dev-writing-plans/` | 编写实施计划 | `/skill:dev-writing-plans` |
+| **dev-** | `dev-executing-plans/` | 执行实施计划 | `/skill:dev-executing-plans` |
+| **dev-** | `dev-tdd/` | 测试驱动开发 (TDD) | `/skill:dev-tdd` |
+| **dev-** | `dev-debugging/` | 系统化调试 | `/skill:dev-debugging` |
+| **dev-** | `dev-verification/` | 完成前验证 | `/skill:dev-verification` |
+| **dev-** | `dev-git-worktrees/` | 使用 Git Worktrees | `/skill:dev-git-worktrees` |
+| **dev-** | `dev-finishing-branch/` | 完成开发分支 | `/skill:dev-finishing-branch` |
+| **dev-** | `dev-requesting-review/` | 请求代码审查 | `/skill:dev-requesting-review` |
+| **dev-** | `dev-writing-skills/` | 编写 Skills 指南 | `/skill:dev-writing-skills` |
+
+**使用方式：**
+```bash
+# 使用 skill
+/skill:dev-brainstorming
+
+# 或使用简写（唯一前缀即可）
+/skill:dev-brain
+
+# skill 后可以继续输入任务描述
+/skill:dev-tdd 实现用户认证功能
+```
+
+**安装到 Kimi：**
+```bash
+# 手动复制到 Kimi skills 目录
+cp -r my/kimi/skills/* ~/.config/agents/skills/
+# 或
+./install.sh  # 如果已更新安装脚本支持 kimi
+```
