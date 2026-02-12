@@ -334,6 +334,7 @@ EOF
 | **life-** | `life-obsidian-bases/` | Obsidian Bases 功能 | `$life-obsidian-bases` |
 | **life-** | `life-obsidian-json-canvas/` | Obsidian JSON Canvas | `$life-obsidian-json-canvas` |
 | **life-** | `life-obsidian-markdown/` | Obsidian Markdown 编辑 | `$life-obsidian-markdown` |
+| **tool-** | `tool-using-skills/` | Skill 使用规范（元级 skill） | 任何行动前先检查相关 skill |
 | **tool-** | `tool-agent-browser/` | Agent 浏览器自动化 | 网页交互、表单填写、截图、数据提取 |
 
 ### Claude Code Hooks (`my/claudecode/hooks/`)
