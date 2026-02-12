@@ -149,7 +149,7 @@ echo ""
 echo ">>> 安装 Kimi 专属配置"
 
 # 设置 Kimi agent 目录
-KIMI_AGENT_DIR="$HOME/.kimi/agents"
+KIMI_AGENT_DIR="$HOME/.agents/kimi"
 mkdir -p "$KIMI_AGENT_DIR"
 
 # 复制 Kimi skills（如果目录为空则跳过）
