@@ -217,5 +217,5 @@ echo "Kimi ($KIMI_SKILLS_DIR):"
 echo "  skills:"
 ls "$KIMI_SKILLS_DIR/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
 echo "  agent config:"
-ls "$KIMI_AGENT_DIR/" 2>/dev/null | grep -E "\.(yaml|md)$" | awk '{print "    " $NF}' || echo "    (无)"
+ls "$KIMI_AGENT_DIR/" 2>/dev/null | grep -v "^\.$" | grep -v "^\.\.$" | awk '{print "    " $NF}' || echo "    (无)"
 
