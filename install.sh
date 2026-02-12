@@ -166,10 +166,10 @@ if [ -d "my/kimi/agents" ]; then
   echo "  ✓ agent config -> $KIMI_AGENT_DIR"
   echo ""
   echo "  提示: 使用以下命令启动带自动 skill 注入的 Kimi:"
-  echo "    kimi --agent-file $KIMI_AGENT_DIR/dev.yaml"
+  echo "    kimi --agent-file $KIMI_AGENT_DIR/superpower/agent.yaml"
   echo ""
   echo "  或设置别名:"
-  echo "    alias kimi='kimi --agent-file $KIMI_AGENT_DIR/dev.yaml'"
+  echo "    alias kimi='kimi --agent-file $KIMI_AGENT_DIR/superpower/agent.yaml'"
 else
   echo "  - agent config (无配置)"
 fi
