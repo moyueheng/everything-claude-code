@@ -6,15 +6,15 @@
 
 | 文件 | 说明 |
 |------|------|
-| `default.yaml` | Agent 配置文件，继承内置 default agent 并覆盖系统提示词 |
-| `system.md` | 系统提示词模板，包含强制使用 skills 的规则 |
+| `dev.yaml` | Agent 配置文件，继承内置 default agent 并覆盖系统提示词 |
+| `dev.md` | 系统提示词模板，包含强制使用 skills 的规则 |
 
 ## 使用方法
 
 ### 方法一：命令行参数（推荐用于测试）
 
 ```bash
-kimi --agent-file /path/to/my/kimi/agent/default.yaml
+kimi --agent-file /path/to/my/kimi/agent/dev.yaml
 ```
 
 ### 方法二：设置别名（推荐日常使用）
@@ -22,7 +22,7 @@ kimi --agent-file /path/to/my/kimi/agent/default.yaml
 在 `~/.zshrc` 或 `~/.bashrc` 中添加：
 
 ```bash
-alias kimi='kimi --agent-file /path/to/my/kimi/agent/default.yaml'
+alias kimi='kimi --agent-file /path/to/my/kimi/agent/dev.yaml'
 ```
 
 然后重新加载配置：
@@ -38,11 +38,11 @@ source ~/.zshrc  # 或 source ~/.bashrc
 mkdir -p ~/.kimi/agents
 
 # 复制 agent 配置
-cp my/kimi/agent/default.yaml ~/.kimi/agents/
-cp my/kimi/agent/system.md ~/.kimi/agents/
+cp my/kimi/agent/dev.yaml ~/.kimi/agents/
+cp my/kimi/agent/dev.md ~/.kimi/agents/
 
 # 然后使用
-kimi --agent-file ~/.kimi/agents/default.yaml
+kimi --agent-file ~/.kimi/agents/dev.yaml
 ```
 
 ### 方法四：使用安装脚本
@@ -57,7 +57,7 @@ kimi --agent-file ~/.kimi/agents/default.yaml
 
 ## 工作原理
 
-1. **系统提示词注入**：`system.md` 中包含了强制要求在每次对话开始时检查和使用 skills 的指令
+1. **系统提示词注入**：`dev.md` 中包含了强制要求在每次对话开始时检查和使用 skills 的指令
 
 2. **`${KIMI_SKILLS}` 变量**：Kimi 会自动将发现的 skills 列表注入到这个变量中
 
@@ -68,12 +68,12 @@ kimi --agent-file ~/.kimi/agents/default.yaml
 
 ## 自定义配置
 
-你可以修改 `system.md` 来添加：
+你可以修改 `dev.md` 来添加：
 - 项目特定的规则
 - 自定义行为准则
 - 额外的环境变量使用
 
-修改 `default.yaml` 来：
+修改 `dev.yaml` 来：
 - 排除不需要的工具
 - 添加子 agent 定义
 - 配置自定义参数

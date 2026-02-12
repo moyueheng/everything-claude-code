@@ -308,22 +308,22 @@ cp -r my/kimi/skills/* ~/.config/agents/skills/
 
 | 文件 | 说明 |
 |------|------|
-| `default.yaml` | Agent 配置文件，继承内置 default agent |
-| `system.md` | 系统提示词，包含强制使用 skills 的规则 |
+| `dev.yaml` | Agent 配置文件，继承内置 default agent |
+| `dev.md` | 系统提示词，包含强制使用 skills 的规则 |
 | `README.md` | 配置说明文档 |
 
 **使用方法：**
 
 ```bash
 # 方法 1：命令行参数
-kimi --agent-file my/kimi/agent/default.yaml
+kimi --agent-file my/kimi/agent/dev.yaml
 
 # 方法 2：设置别名（推荐）
-alias kimi='kimi --agent-file /path/to/my/kimi/agent/default.yaml'
+alias kimi='kimi --agent-file /path/to/my/kimi/agent/dev.yaml'
 
 # 方法 3：安装后使用
 ./install.sh
-kimi --agent-file ~/.kimi/agents/default.yaml
+kimi --agent-file ~/.kimi/agents/dev.yaml
 ```
 
 **工作原理：**
